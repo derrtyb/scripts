@@ -821,7 +821,8 @@ local ruby = {
             NoSlow = nil,
             JumpCooldown = nil,
             Reach = nil,
-            AntiFlame = nil
+            AntiFlame = nil,
+            AutoCashPick = nil
         },
         AntiStomp = {
             Enabled = nil,
@@ -835,6 +836,7 @@ local ruby = {
             SemiLegit = nil,
             DesyncAntiLock = nil,
             DesyncUnhittable = nil,
+            LayVis = nil,
             NoPred = nil,
             PredBreaker = nil,
             RotVelocity = {
@@ -860,7 +862,11 @@ local ruby = {
                 Enabled = nil,
                 Duration = nil,
                 Color = nil,
-                Material = nil
+                Material = nil,
+            },
+            BulletTracer = {
+                Enabled = nil,
+                Color = nil
             }
         },
     }
@@ -918,7 +924,7 @@ local FOVTag = Tabs.Visuals:AddRightGroupbox('FOV')
 local CrosshairTab = Tabs.Visuals:AddRightGroupbox('Crosshair')
 local ESPTab = Tabs.Visuals:AddLeftGroupbox('ESP')
 local WorldTab = Tabs.Visuals:AddLeftGroupbox('World')
-local SkyboxTab = Tabs.Visuals:AddRightGroupbox('Sky box')
+local BulletTab = Tabs.Visuals:AddRightGroupbox('Bullet Tracer')
 
 local AnimationsTab = Tabs.Misc:AddLeftGroupbox('Animations')
 
@@ -1219,6 +1225,7 @@ Toggles.PingbasedTggle:OnChanged(function()
     ruby.Aiming.Target.PingBased = Toggles.PingbasedTggle.Value
 end)
 
+
 TargetTab:AddToggle('TracerEnabledTracerTarget', {
     Text = 'Tracers',
     Default = false, 
@@ -1414,16 +1421,6 @@ Toggles.TargetStrafeEnabled:OnChanged(function()
     ruby.Aiming.TargetStrafe.Enabled = Toggles.TargetStrafeEnabled.Value
 end)
 
-Toggles.TargetStrafeEnabled:AddKeyPicker('StrafeKeyPickerXD', {
-    Default = 'None', 
-    SyncToggleState = true, 
-
-    Mode = 'Toggle',
-
-    Text = 'Strafe (Target)', 
-    NoUI = false,
-})
-
 StrafeTab:AddToggle('TargetStrafeVisualizatiONcOLR', {
     Text = 'Visualize Rotation',
     Default = false, 
@@ -1570,6 +1567,16 @@ Toggles.AntiFlame:OnChanged(function()
     ruby.Blatant.Exploits.AntiFlame = Toggles.AntiFlame.Value
 end)
 
+ExploitsTab:AddToggle('AutoCashPick', {
+    Text = 'Auto-Pickup Cash',
+    Default = false, 
+    Tooltip = 'Takes Cash Nearby', 
+})
+
+Toggles.AutoCashPick:OnChanged(function()
+    ruby.Blatant.Exploits.AutoCashPick = Toggles.AutoCashPick.Value
+end)
+
 ExploitsTab:AddToggle('NoclipEnabled', {
     Text = 'Noclip',
     Default = false, 
@@ -1589,16 +1596,6 @@ Toggles.NoclipEnabled:OnChanged(function()
         NoclipLoop:Disconnect()
     end
 end)
-
-Toggles.NoclipEnabled:AddKeyPicker('NoclipBind', {
-    Default = 'None', 
-    SyncToggleState = true, 
-
-    Mode = 'Toggle',
-
-    Text = 'Noclip', 
-    NoUI = false,
-})
 
 AntiStompTab:AddButton('Force Reset', function()
     for L_170_forvar0, L_171_forvar1 in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
@@ -1691,54 +1688,7 @@ Options.FakeLagEnabledSlider:OnChanged(function()
     ruby.Blatant.FakeLag.Duration = Options.FakeLagEnabledSlider.Value
 end)
 
-local PredictorPart = Instance.new("Part",game.Workspace)
 
-local newBillboardx = Instance.new("BillboardGui", PredictorPart)
-
-local newFramex = Instance.new("Frame", newBillboardx)
-local newUiCornorx = Instance.new("UICorner", newFramex)
-
-task.spawn(function ()
-    PredictorPart.Anchored = true
-    PredictorPart.CanCollide = false
-    PredictorPart.CFrame = CFrame.new(0,9999,0)
-    PredictorPart.Transparency = 1
-    newBillboardx.Name = "ruby_billboardpredictor"
-    newBillboardx.Adornee = PredictorPart
-    newBillboardx.Size = UDim2.new(1, 0, 1, 0)
-    newBillboardx.AlwaysOnTop = true
-    newFramex.Size = UDim2.new(1, 0, 1, 0)
-    newFramex.BackgroundTransparency = 0
-    newUiCornorx.CornerRadius = UDim.new(50, 50)
-end)
-
-AntiAimTab:AddToggle('PredictiorRoblox', {
-    Text = 'Predictor',
-    Default = false, 
-    Tooltip = 'Predictor Enabled', 
-})
-
-Toggles.PredictiorRoblox:OnChanged(function()
-    if Toggles.PredictiorRoblox.Value then
-        PredictorHook = game:GetService("RunService").Stepped:Connect(function ()
-            PredictorPart.CFrame = CFrame.new(LocalPlayer.Character.HumanoidRootPart.Position+(LocalPlayer.Character.HumanoidRootPart.Velocity*0.11))
-            spawn(function ()
-                newFramex.BackgroundColor3 = PredictorColoxr
-            end)
-        end)
-    elseif Toggles.PredictiorRoblox.Value == false and PredictorHook then
-        PredictorHook:Disconnect()
-        PredictorPart.CFrame = CFrame.new(0,5000,0)
-    end
-end)
-
-Toggles.PredictiorRoblox:AddColorPicker('AddColorPickerForTxxxxxxxxxxracerTargetThingy', {
-    Default = Color3.fromRGB(255,255,255),
-})
-
-Options.AddColorPickerForTxxxxxxxxxxracerTargetThingy:OnChanged(function()
-    PredictorColoxr = Options.AddColorPickerForTxxxxxxxxxxracerTargetThingy.Value
-end)
 
 TargetResolverTab:AddToggle('UnderGroundResolver', {
     Text = 'Underground Resolver',
@@ -1777,55 +1727,13 @@ end)
 AntiAimTab:AddToggle('PredBreaker', {
     Text = 'Prediction Breaker',
     Default = false, 
-    Tooltip = 'Might fling others nearby', 
+    Tooltip = 'No Velocity', 
 })
 
 Toggles.PredBreaker:OnChanged(function()
     ruby.Blatant.AntiAim.PredBreaker = Toggles.PredBreaker.Value
 end)
 
-
-if Toggles.PredBreaker.Value then
-    getgenv().VelocityChanger = true
-    getgenv().Velocity = Vector3.new(200,0,200)
-    
-    
-    --// main scapt | realkscapter... omg
-    local Players     = game:GetService("Players")
-    local RunService  = game:GetService("RunService")
-    
-    local LocalPlayer = Players.LocalPlayer
-    local Character   = LocalPlayer.Character
-    local RootPart    = Character:FindFirstChild("HumanoidRootPart")
-    
-    local Heartbeat, RStepped, Stepped = RunService.Heartbeat, RunService.RenderStepped, RunService.Stepped
-    
-    LocalPlayer.CharacterAdded:Connect(function(NewCharacter)
-       Character = NewCharacter
-    end)
-    
-    local RVelocity, YVelocity = nil, 0.1
-    
-    while true do
-       if VelocityChanger then
-           --// this a dumb check asnilsadsa
-           if (not RootPart) or (not RootPart.Parent) or (not RootPart.Parent.Parent) then
-               warn("weird ahh died")
-               RootPart = Character:FindFirstChild("HumanoidRootPart")
-           else
-               RVelocity = RootPart.Velocity
-       
-               RootPart.Velocity = type(Velocity) == "vector" and Velocity or Velocity(RVelocity)
-           
-               RStepped:wait()
-           
-               RootPart.Velocity = RVelocity
-           end
-       end
-       
-       Heartbeat:wait()
-    end
-end   
 AntiAimTab:AddToggle('DesyncUnhittable', {
     Text = 'Spin Desync',
     Default = false, 
@@ -1893,6 +1801,99 @@ end)
             return XDDDDDD(self, key)
         end))
 
+AntiAimTab:AddToggle('LayVis', {
+    Text = 'Layvis (WIP)',
+    Default = false, 
+    Tooltip = 'Lay Under the Road', 
+})
+
+Toggles.LayVis:OnChanged(function()
+    if Toggles.LayVis.Value then
+        local lplr = game.Players.LocalPlayer
+        local desync_stuff = {}
+        local cframetpdesync = nil
+        local cframetpdesynctype = "Layvis"
+        local visualizemodellol = nil
+        local r6_dummy = game:GetObjects("rbxassetid://9474737816")[1]
+            r6_dummy.Head.Face:Destroy()
+                for i, v in pairs(r6_dummy:GetChildren()) do
+                    v.Transparency = v.Name == "HumanoidRootPart" and 1 or 0.70
+                    v.Material = "Neon"
+                    v.Color = Color3.fromRGB(255, 139, 139)
+                    v.CanCollide = false
+                    v.Anchored = false
+                end
+
+        game:GetService("RunService").heartbeat:Connect(
+                        function()
+                            if cframetpdesync == true then
+                                desync_stuff[1] = lplr.Character.HumanoidRootPart.CFrame
+                                local fakeCFrame = lplr.Character.HumanoidRootPart.CFrame
+                            if cframetpdesynctype == "Layvis" then
+                                    fakeCFrame = fakeCFrame * CFrame.new(0, -5, 0)
+                                    fakeCFrame = fakeCFrame * CFrame.Angles(1.55, 0, 0)
+                                    
+                                    if visualizemodellol == true then
+                                        r6_dummy.Parent = workspace
+                                        r6_dummy.HumanoidRootPart.Velocity = Vector3.new()
+                                        r6_dummy:SetPrimaryPartCFrame(fakeCFrame)
+                                    else
+                                        r6_dummy.Parent = nil
+                                    end
+                                    lplr.Character.HumanoidRootPart.CFrame = fakeCFrame
+                                game:GetService("RunService").RenderStepped:Wait()
+                                lplr.Character.HumanoidRootPart.CFrame = desync_stuff[1]
+                                else
+                                    if r6_dummy.Parent ~= nil then
+                                        r6_dummy.Parent = nil
+                                    end
+                                end
+                            end
+                        end)
+                        
+                        local oldIndex
+                    oldIndex =
+                        hookmetamethod(
+                        game,
+                        "__index",
+                        newcclosure(
+                            function(self, key)
+                                if not velocitywalk == true or enablehitpartdesync == true then
+                                    if not checkcaller() then
+                                        if
+                                            key == "CFrame" and cframetpdesync and lplr.Character and
+                                                lplr.Character:FindFirstChild("HumanoidRootPart") and
+                                                lplr.Character:FindFirstChild("Humanoid") and
+                                                lplr.Character:FindFirstChild("Humanoid").Health > 0
+                                         then
+                                            if self == lplr.Character.HumanoidRootPart then
+                                                return desync_stuff[1] or CFrame.new()
+                                            elseif self == lplr.Character.Head then
+                                                return desync_stuff[1] and
+                                                    desync_stuff[1] +
+                                                        Vector3.new(0, lplr.Character.HumanoidRootPart.Size / 2 + 0.5, 0) or
+                                                    CFrame.new()
+                                            end
+                                        end
+                                    end
+                                end
+                                return oldIndex(self, key)
+                            end
+                        )
+                    )
+                else cframetpdesync = false
+            end
+        end)        
+
+Toggles.LayVis:AddKeyPicker('LayBind', {
+    Default = 'None', 
+    SyncToggleState = true, 
+
+    Mode = 'Toggle',
+
+    Text = 'Lay-Under', 
+    NoUI = false,
+})
 
 
 AntiAimTab:AddToggle('VFallTggle', {
@@ -2011,42 +2012,7 @@ task.spawn(function ()
         end
     end
 end)
---[[
-LocalTab:AddToggle('GunChamsTggle', {
-    Text = 'Enable Gun Chams',
-    Default = false, 
-    Tooltip = 'Gun Chams Enabled', 
-})
 
-Toggles.GunChamsTggle:OnChanged(function()
-    ruby.Visuals.Local.GunChams.Enabled = Toggles.GunChamsTggle.Value
-end)
-
-Toggles.GunChamsTggle:AddColorPicker('GunChamsColr', {
-    Default = Color3.fromRGB(255,255,255),
-    Title = 'Gun Chams Color'
-})
-
-Options.GunChamsColr:OnChanged(function()
-    ruby.Visuals.Local.GunChams.Color = Options.GunChamsColr.Value
-end)
-
-task.spawn(function ()
-    while true do
-        wait()
-        if ruby.Visuals.Local.GunChams.Enabled then
-            if game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Tool") then
-                game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Tool").Default.Material = "ForceField"
-                game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Tool").Default.Color = ruby.Visuals.Local.GunChams.Color
-            end
-        else
-            if game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Tool") then
-                game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Tool").Default.Material = "Plastic"
-            end
-        end
-    end
-end)
-]]
 
 local LocalHL = Instance.new("Highlight")
 
@@ -2700,6 +2666,129 @@ Toggles.RainbowCrosshair:OnChanged(function()
     end
 end)
 
+BulletTab:AddToggle('BulletTracer', {
+    Text = 'Enabled (WIP)',
+    Default = false, 
+    Tooltip = 'Tracers Enabled', 
+})
+
+Toggles.BulletTracer:OnChanged(function()
+    ruby.Visuals.Local.BulletTracer.Enabled = Toggles.BulletTracer.Value
+end)
+
+Toggles.BulletTracer:AddColorPicker('BulletTracerColor', {
+    Default = Color3.fromRGB(255,255,255)
+})
+
+Options.BulletTracerColor:OnChanged(function()
+    ruby.Visuals.Local.BulletTracer.Color = Options.BulletTracerColor.Value
+end)
+
+
+    bullet_tracer_color = ruby.Visuals.Local.BulletTracer.Color
+    
+    function GetGun()
+        if game.Players.LocalPlayer.Character then
+            for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                if v:FindFirstChild 'Ammo' then
+                    return v
+                end
+            end
+        end
+        return nil
+    end
+    
+    local Services = {
+        Players = game:GetService("Players"),
+        UserInputService = game:GetService("UserInputService"),
+        RunService = game:GetService("RunService"),
+    }
+    
+    local Local = {
+        Player = Services.Players.LocalPlayer,
+        Mouse = Services.Players.LocalPlayer:GetMouse(),
+    }
+    local Other = {
+        Camera = workspace.CurrentCamera,
+        BeamPart = Instance.new("Part", workspace)
+    }
+    
+    Other.BeamPart.Name = "BeamPart"
+    Other.BeamPart.Transparency = 1
+    local Settings = {
+        StartColor = bullet_tracer_color,
+        EndColor = bullet_tracer_color,
+        StartWidth = 3,
+        EndWidth = 3,
+        ShowImpactPoint = false,
+        ImpactTransparency = 0.5,
+        ImpactColor = Color3.new(1, 1, 1),
+        Time = 1,
+    }
+    game:GetService "RunService".Heartbeat:Connect(function()
+        if game:GetService("Workspace").Ignored:FindFirstChild 'BULLET_RAYS' and BulletTracers then
+            game:GetService("Workspace").Ignored.BULLET_RAYS:Destroy()
+        end
+    end)
+    local funcs = {}
+    Local.Mouse.TargetFilter = Other.BeamPart
+    function funcs:Beam(v1, v2)
+        v2 = Vector3.new(v2.X - 0.1, v2.Y + 0.2, v2.Z)
+        local colorSequence = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, bullet_tracer_color),
+            ColorSequenceKeypoint.new(1, bullet_tracer_color),
+        })
+        local Part = Instance.new("Part", Other.BeamPart)
+        Part.Size = Vector3.new(0, 0, 0)
+        Part.Massless = true
+        Part.Transparency = 1
+        Part.CanCollide = false
+        Part.Position = v1
+        Part.Anchored = true
+        local Attachment = Instance.new("Attachment", Part)
+        local Part2 = Instance.new("Part", Other.BeamPart)
+        Part2.Size = Vector3.new(0, 0, 0)
+        Part2.Transparency = 0
+        Part2.CanCollide = false
+        Part2.Position = v2
+        Part2.Anchored = true
+        Part2.Material = Enum.Material.ForceField
+        Part2.Color = Settings.ImpactColor
+        Part2.Massless = true
+        local Attachment2 = Instance.new("Attachment", Part2)
+        local Beam = Instance.new("Beam", Part)
+        Beam.FaceCamera = true
+        Beam.Color = colorSequence
+        Beam.Attachment0 = Attachment
+        Beam.Attachment1 = Attachment2
+        Beam.LightEmission = 6
+        Beam.LightInfluence = 1
+        Beam.Width0 = Settings.StartWidth
+        Beam.Width1 = Settings.EndWidth
+        Beam.Texture = "http://www.roblox.com/asset/?id=9150663556"
+        Beam.TextureSpeed = 2
+        Beam.TextureLength = 1
+        delay(Settings.Time, function()
+            Part:Destroy()
+            Part2:Destroy()
+        end)
+    end
+    
+    spawn(function()
+        while task.wait(0.5) do
+            gun = GetGun()
+            if gun then
+                LastAmmo = gun.Ammo.Value
+                gun.Ammo:GetPropertyChangedSignal("Value"):Connect(function()
+                    if BulletTracers and gun.Ammo.Value < LastAmmo then
+                        LastAmmo = gun.Ammo.Value
+                        funcs:Beam(gun.Handle.Position, Local.Mouse.hit.p)
+                    end
+                end)
+            end
+        end
+    end)
+
 TeleportTab:AddDropdown('SchoolDropdown', {
     Values = { 'None','Food', 'Roof', 'Secret Room' },
     Default = 1,
@@ -3241,6 +3330,21 @@ RunService.RenderStepped:Connect(function ()
             workspace.CurrentCamera.CFrame = workspace.CurrentCamera.CFrame:Lerp(zx, ruby.Aiming.Aimbot.Smoothing.Value, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut)
         end
     end
+    if ruby.Blatant.Exploits.AutoCashPick then
+        pcall(
+            function()
+                for _, v in pairs(Workspace.Ignored.Drop:GetChildren()) do
+                    if v.Name == "MoneyDrop" then
+                        local MoneyMagnitude =
+                            (v.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+                        if MoneyMagnitude < 25 then
+                            fireclickdetector(v.ClickDetector)
+                        end
+                    end
+                end
+            end
+        )
+    end
     if TargetBindEnabled and ruby.Aiming.Target.Enabled and TargetTarget.Character and TargetTarget.Character:FindFirstChild("HumanoidRootPart") then
         if ruby.Aiming.Target.LookAt then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position, Vector3.new(TargetTarget.Character.HumanoidRootPart.CFrame.X, game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position.Y, TargetTarget.Character.HumanoidRootPart.CFrame.Z))
@@ -3347,6 +3451,14 @@ RunService.Heartbeat:Connect(function ()
             end
         end)
     end
+    if ruby.Blatant.AntiAim.PredBreaker then
+        DesyncTypes[1] = LocalPlayer.Character.HumanoidRootPart.CFrame
+        DesyncTypes[2] = LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity
+        LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new(1, 1, 1) * 0
+        game:GetService("RunService").RenderStepped:Wait()
+        LocalPlayer.Character.HumanoidRootPart.CFrame = DesyncTypes[1]
+        LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = DesyncTypes[2]
+    end
     if ruby.Blatant.Exploits.AntiFlame then
         pcall(function()
             game.Players.LocalPlayer.Character.UpperTorso.FlamethrowerFireParticle:Destroy()
@@ -3374,6 +3486,11 @@ RunService.Heartbeat:Connect(function ()
                 LocalPlayer.Character.Humanoid:Destroy()
             end
         end
+    end
+    if ruby.Visuals.Local.BulletTracer.Enabled then
+        BulletTracers = true
+    else
+        BulletTracers = false
     end
     if ruby.Blatant.FakeLag.Enabled then
         repeat
