@@ -1558,7 +1558,7 @@ Toggles.ReachEnabled:OnChanged(function()
 end)
 
 ExploitsTab:AddToggle('AntiFlame', {
-    Text = 'Anti-Flame',
+    Text = 'Anti-Flame (Broken)',
     Default = false, 
     Tooltip = 'Become Unflammable', 
 })
@@ -1727,7 +1727,7 @@ end)
 AntiAimTab:AddToggle('PredBreaker', {
     Text = 'Prediction Breaker',
     Default = false, 
-    Tooltip = 'No Velocity', 
+    Tooltip = 'TURN "NO SLOWDOWN" OFF TO USE', 
 })
 
 Toggles.PredBreaker:OnChanged(function()
@@ -2958,7 +2958,7 @@ Options.FlySepedSlider:OnChanged(function()
 end)
 
 AnimationsTab:AddDropdown('RunAnimations', {
-    Values = { 'None','Rthro','Werewolf','Zombie','Ninja','Toy','Superhero','OldSchool','Cartoony','Stylish','Vampire' },
+    Values = { 'None','Rthro','Werewolf','Zombie','Ninja','Toy','Superhero','OldSchool','Cartoony','Stylish','Vampire','Bubbly','Robot','Astronaut','Pirate' },
     Default = 1,
     Multi = false, 
 
@@ -2988,12 +2988,18 @@ Options.RunAnimations:OnChanged(function()
             LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616140816"
         elseif Options.RunAnimations.Value == "Vampire" then
             LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1083462077"
+        elseif Options.JumpAnimations.Value == "Bubbly" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1018548665"
+        elseif Options.JumpAnimations.Value == "Robot" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=619522386"
+        elseif Options.JumpAnimations.Value == "Astronaut" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1090130630"
         end
     end)
 end)
 
 AnimationsTab:AddDropdown('JumpAnimations', {
-    Values = { 'None','Rthro','Werewolf','Zombie','Ninja','Toy','Superhero','OldSchool','Cartoony','Stylish','Vampire' },
+    Values = { 'None','Rthro','Werewolf','Zombie','Ninja','Toy','Superhero','OldSchool','Cartoony','Stylish','Vampire','Bubbly','Robot','Astronaut' },
     Default = 1,
     Multi = false, 
 
@@ -3023,12 +3029,18 @@ Options.JumpAnimations:OnChanged(function()
             LocalPlayer.Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616139451"
         elseif Options.JumpAnimations.Value == "Vampire" then
             LocalPlayer.Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1083455352"
+        elseif Options.JumpAnimations.Value == "Bubbly" then
+            LocalPlayer.Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1018553240"
+        elseif Options.JumpAnimations.Value == "Robot" then
+            LocalPlayer.Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=619522088"
+        elseif Options.JumpAnimations.Value == "Astronaut" then
+            LocalPlayer.Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1090132507"
         end
     end)
 end)
 
 AnimationsTab:AddDropdown('FallAnimations', {
-    Values = { 'None','Rthro','Werewolf','Zombie','Ninja','Toy','Superhero','OldSchool','Cartoony','Stylish','Vampire' },
+    Values = { 'None','Rthro','Werewolf','Zombie','Ninja','Toy','Superhero','OldSchool','Cartoony','Stylish','Vampire','Bubbly','Robot','Astronaut' },
     Default = 1,
     Multi = false, 
 
@@ -3058,6 +3070,12 @@ Options.FallAnimations:OnChanged(function()
             LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616134815"
         elseif Options.FallAnimations.Value == "Vampire" then
             LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1083443587"
+        elseif Options.FallAnimations.Value == "Bubbly" then
+            LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1018552770"
+        elseif Options.FallAnimations.Value == "Robot" then
+            LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=619521521"
+        elseif Options.FallAnimations.Value == "Astronaut" then
+            LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1090132063"
         end
     end)
 end)
@@ -3452,6 +3470,7 @@ RunService.Heartbeat:Connect(function ()
         end)
     end
     if ruby.Blatant.AntiAim.PredBreaker then
+        velocitywalk = true
         DesyncTypes[1] = LocalPlayer.Character.HumanoidRootPart.CFrame
         DesyncTypes[2] = LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity
         LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new(1, 1, 1) * 0
