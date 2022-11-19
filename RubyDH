@@ -2988,12 +2988,12 @@ Options.RunAnimations:OnChanged(function()
             LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616140816"
         elseif Options.RunAnimations.Value == "Vampire" then
             LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1083462077"
-        elseif Options.JumpAnimations.Value == "Bubbly" then
-            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1018548665"
-        elseif Options.JumpAnimations.Value == "Robot" then
-            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=619522386"
-        elseif Options.JumpAnimations.Value == "Astronaut" then
-            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1090130630"
+        elseif Options.RunAnimations.Value == "Bubbly" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=910025107"
+        elseif Options.RunAnimations.Value == "Robot" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616091570"
+        elseif Options.RunAnimations.Value == "Astronaut" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=891636393"
         end
     end)
 end)
@@ -3030,11 +3030,11 @@ Options.JumpAnimations:OnChanged(function()
         elseif Options.JumpAnimations.Value == "Vampire" then
             LocalPlayer.Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1083455352"
         elseif Options.JumpAnimations.Value == "Bubbly" then
-            LocalPlayer.Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1018553240"
+            LocalPlayer.Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=910016857"
         elseif Options.JumpAnimations.Value == "Robot" then
-            LocalPlayer.Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=619522088"
+            LocalPlayer.Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616090535"
         elseif Options.JumpAnimations.Value == "Astronaut" then
-            LocalPlayer.Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1090132507"
+            LocalPlayer.Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=891627522"
         end
     end)
 end)
@@ -3071,11 +3071,11 @@ Options.FallAnimations:OnChanged(function()
         elseif Options.FallAnimations.Value == "Vampire" then
             LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1083443587"
         elseif Options.FallAnimations.Value == "Bubbly" then
-            LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1018552770"
+            LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=910001910"
         elseif Options.FallAnimations.Value == "Robot" then
-            LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=619521521"
+            LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616087089"
         elseif Options.FallAnimations.Value == "Astronaut" then
-            LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1090132063"
+            LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=891617961"
         end
     end)
 end)
