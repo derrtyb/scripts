@@ -681,7 +681,6 @@ local ruby = {
             NoSlow = nil,
             JumpCooldown = nil,
             Reach = nil,
-            AntiFlame = nil,
             AutoCashPick = nil
         },
         AntiStomp = {
@@ -790,7 +789,6 @@ local AnimationsTab = Tabs.Misc:AddLeftGroupbox('Animations')
 local FunTab = Tabs.Misc:AddLeftGroupbox('Fun')
 
 
-AnimationsTab:AddLabel("Don't change anim while moving")
 local TeleportTab = Tabs.Misc:AddRightGroupbox('Teleports')
 local UnfairTab = Tabs.Misc:AddRightGroupbox('Unfair')
 
@@ -1393,7 +1391,7 @@ end)
 ExploitsTab:AddToggle('AntiFlingEnabled', {
     Text = 'Anti-Fling',
     Default = false, 
-    Tooltip = 'Enable Anti-Fling', 
+    Tooltip = 'Anchor in Place', 
 })
 
 Toggles.AntiFlingEnabled:OnChanged(function()
@@ -1420,18 +1418,8 @@ Toggles.ReachEnabled:OnChanged(function()
     ruby.Blatant.Exploits.Reach = Toggles.ReachEnabled.Value
 end)
 
-ExploitsTab:AddToggle('AntiFlame', {
-    Text = 'Anti-Flame (Broken)',
-    Default = false, 
-    Tooltip = 'Become Unflammable', 
-})
-
-Toggles.AntiFlame:OnChanged(function()
-    ruby.Blatant.Exploits.AntiFlame = Toggles.AntiFlame.Value
-end)
-
 ExploitsTab:AddToggle('AutoCashPick', {
-    Text = 'Auto-Pickup Cash',
+    Text = 'Cash Aura',
     Default = false, 
     Tooltip = 'Takes Cash Nearby', 
 })
@@ -2006,7 +1994,7 @@ FOVTag:AddSlider('FOVSLlider', {
     Default = 80,
     Min = 70,
     Max = 120,
-    Rounding = 2,
+    Rounding = 0,
 
     Compact = false,
 })
@@ -3159,6 +3147,7 @@ Options.FallAnimations:OnChanged(function()
         end
     end)
 end)
+AnimationsTab:AddLabel("don't change anim while moving")
 
 FunTab:AddButton('Invis Ball', function()
     local UserInputService = game:GetService("UserInputService")
@@ -4083,7 +4072,7 @@ FunTab:AddButton('Grav Gun (Works Sometimes)', function()
             color.BrickColor = BrickColor.new("Toothpaste")
             point.BrickColor = BrickColor.new("Toothpaste")
         end 
-        if (key=="x") then 
+        if asdads then 
         if (object==nil) then return end 
         local New = object:clone() 
         New.Parent = object.Parent 
@@ -4106,24 +4095,6 @@ FunTab:AddButton('Grav Gun (Works Sometimes)', function()
         BP:remove()
         object = nil
         objval.Value = nil
-        end 
-        if (key=="c") then 
-            local Cube = Instance.new("Part") 
-            Cube.Locked = true 
-            Cube.Size = Vector3.new(4,4,4) 
-            Cube.formFactor = 0 
-            Cube.TopSurface = 0 
-            Cube.BottomSurface = 0 
-            Cube.Name = "WeightedStorageCube" 
-            Cube.Parent = workspace 
-            Cube.CFrame = CFrame.new(mouse.Hit.p) + Vector3.new(0,2,0) 
-            for i = 0,5 do 
-                local Decal = Instance.new("Decal") 
-                Decal.Texture = "http://www.roblox.com/asset/?id=2662260" 
-                Decal.Face = i 
-                Decal.Name = "WeightedStorageCubeDecal" 
-                Decal.Parent = Cube 
-            end 
         end 
         if (key=="") then 
             if dist ~= 15 then 
@@ -4268,6 +4239,8 @@ FunTab:AddButton('Grav Gun (Works Sometimes)', function()
         end)
     end
 end)
+
+FunTab:AddLabel('q = pull, e = push, t = stable')
 
 FunTab:AddButton('Chat Spy', function()
     loadstring(game:HttpGet("https://pastebin.com/raw/nzXicwc1", true))()
@@ -4843,11 +4816,6 @@ RunService.Heartbeat:Connect(function ()
         LocalPlayer.Character.HumanoidRootPart.CFrame = DesyncTypes[1]
         LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = DesyncTypes[2]
     end
-    if ruby.Blatant.Exploits.AntiFlame then
-        pcall(function()
-            game.Players.LocalPlayer.Character.UpperTorso.FlamethrowerFireParticle:Destroy()
-        end)
-    end
     if ruby.Blatant.AntiAim.DesyncAntiLock then
         antilock = true
     else
@@ -4940,6 +4908,24 @@ local Red = {
     43290134,
 }
 
+function rubynames()
+	for _,Player in pairs(game:GetService('Players'):GetChildren()) do
+		if table.find(ModIDS, Player.UserId) then
+			if Player.Character then
+				if Player.Character.Parent.Name == 'Players' then
+					Player.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[⭐]' .. Player.DisplayName)
+				end
+			end
+		elseif
+			table.find(Red, Player.UserId) then
+			if Player.Character then
+				if Player.Character.Parent.Name == 'Players' then
+					Player.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[👑]' .. Player.DisplayName)
+				end
+			end
+        end
+    end
+end
 
 Library:SetWatermark(title_string)
 
