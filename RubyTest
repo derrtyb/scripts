@@ -4910,7 +4910,7 @@ local Red = {
     43290134,
 }
 
-function rubynames()
+task.spawn(function()
 	for _,Player in pairs(game:GetService('Players'):GetChildren()) do
 		if table.find(ModIDS, Player.UserId) then
 			if Player.Character then
@@ -4927,10 +4927,8 @@ function rubynames()
 			end
         end
     end
-end
+end)
 
-rubynames()
-return ModIDS, Red
 
 Library:SetWatermark(title_string)
 
