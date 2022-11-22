@@ -4929,9 +4929,8 @@ function rubynames()
     end
 end
 
-local success,err = pcall(rubynames)
+rubynames()
 return ModIDS, Red
-end
 
 Library:SetWatermark(title_string)
 
