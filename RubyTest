@@ -681,7 +681,6 @@ local ruby = {
             NoSlow = nil,
             JumpCooldown = nil,
             Reach = nil,
-            AntiFlame = nil,
             AutoCashPick = nil
         },
         AntiStomp = {
@@ -790,7 +789,6 @@ local AnimationsTab = Tabs.Misc:AddLeftGroupbox('Animations')
 local FunTab = Tabs.Misc:AddLeftGroupbox('Fun')
 
 
-AnimationsTab:AddLabel("Don't change anim while moving")
 local TeleportTab = Tabs.Misc:AddRightGroupbox('Teleports')
 local UnfairTab = Tabs.Misc:AddRightGroupbox('Unfair')
 
@@ -1393,7 +1391,7 @@ end)
 ExploitsTab:AddToggle('AntiFlingEnabled', {
     Text = 'Anti-Fling',
     Default = false, 
-    Tooltip = 'Enable Anti-Fling', 
+    Tooltip = 'Anchor in Place', 
 })
 
 Toggles.AntiFlingEnabled:OnChanged(function()
@@ -1420,18 +1418,8 @@ Toggles.ReachEnabled:OnChanged(function()
     ruby.Blatant.Exploits.Reach = Toggles.ReachEnabled.Value
 end)
 
-ExploitsTab:AddToggle('AntiFlame', {
-    Text = 'Anti-Flame (Broken)',
-    Default = false, 
-    Tooltip = 'Become Unflammable', 
-})
-
-Toggles.AntiFlame:OnChanged(function()
-    ruby.Blatant.Exploits.AntiFlame = Toggles.AntiFlame.Value
-end)
-
 ExploitsTab:AddToggle('AutoCashPick', {
-    Text = 'Auto-Pickup Cash',
+    Text = 'Cash Aura',
     Default = false, 
     Tooltip = 'Takes Cash Nearby', 
 })
@@ -1687,66 +1675,68 @@ Toggles.LayVis:OnChanged(function()
                     v.Anchored = false
                 end
 
-        game:GetService("RunService").heartbeat:Connect(
-                        function()
-                            if cframetpdesync == true then
-                                desync_stuff[1] = lplr.Character.HumanoidRootPart.CFrame
-                                local fakeCFrame = lplr.Character.HumanoidRootPart.CFrame
-                            if cframetpdesynctype == "Layvis" then
-                                    fakeCFrame = fakeCFrame * CFrame.new(0, -5, 0)
-                                    fakeCFrame = fakeCFrame * CFrame.Angles(1.55, 0, 0)
-                                    
-                                    if visualizemodellol == true then
-                                        r6_dummy.Parent = workspace
-                                        r6_dummy.HumanoidRootPart.Velocity = Vector3.new()
-                                        r6_dummy:SetPrimaryPartCFrame(fakeCFrame)
-                                    else
-                                        r6_dummy.Parent = nil
-                                    end
-                                    lplr.Character.HumanoidRootPart.CFrame = fakeCFrame
-                                game:GetService("RunService").RenderStepped:Wait()
-                                lplr.Character.HumanoidRootPart.CFrame = desync_stuff[1]
-                                else
-                                    if r6_dummy.Parent ~= nil then
-                                        r6_dummy.Parent = nil
-                                    end
-                                end
+local goofy = game:GetService("RunService").heartbeat:Connect(
+                function()
+                    if cframetpdesync == true then
+                        desync_stuff[1] = lplr.Character.HumanoidRootPart.CFrame
+                        local fakeCFrame = lplr.Character.HumanoidRootPart.CFrame
+                    if cframetpdesynctype == "Layvis" then
+                            fakeCFrame = fakeCFrame * CFrame.new(0, -5, 0)
+                            fakeCFrame = fakeCFrame * CFrame.Angles(1.55, 0, 0)
+                            
+                            if visualizemodellol == true then
+                                r6_dummy.Parent = workspace
+                                r6_dummy.HumanoidRootPart.Velocity = Vector3.new()
+                                r6_dummy:SetPrimaryPartCFrame(fakeCFrame)
+                            else
+                                r6_dummy.Parent = nil
                             end
-                        end)
-                        
-                        local oldIndex
-                    oldIndex =
-                        hookmetamethod(
-                        game,
-                        "__index",
-                        newcclosure(
-                            function(self, key)
-                                if not velocitywalk == true or enablehitpartdesync == true then
-                                    if not checkcaller() then
-                                        if
-                                            key == "CFrame" and cframetpdesync and lplr.Character and
-                                                lplr.Character:FindFirstChild("HumanoidRootPart") and
-                                                lplr.Character:FindFirstChild("Humanoid") and
-                                                lplr.Character:FindFirstChild("Humanoid").Health > 0
-                                         then
-                                            if self == lplr.Character.HumanoidRootPart then
-                                                return desync_stuff[1] or CFrame.new()
-                                            elseif self == lplr.Character.Head then
-                                                return desync_stuff[1] and
-                                                    desync_stuff[1] +
-                                                        Vector3.new(0, lplr.Character.HumanoidRootPart.Size / 2 + 0.5, 0) or
-                                                    CFrame.new()
-                                            end
-                                        end
-                                    end
-                                end
-                                return oldIndex(self, key)
+                            lplr.Character.HumanoidRootPart.CFrame = fakeCFrame
+                        game:GetService("RunService").RenderStepped:Wait()
+                        lplr.Character.HumanoidRootPart.CFrame = desync_stuff[1]
+                        else
+                            if r6_dummy.Parent ~= nil then
+                                r6_dummy.Parent = nil
                             end
-                        )
-                    )
-                else cframetpdesync = false
+                        end
+                    end
+                end)
+                
+    if cframetpdesync == false then
+        goofy:Disconnect()
+    end
+
+    local oldIndex
+    oldIndex =
+        hookmetamethod(
+        game,
+        "__index",
+        newcclosure(
+            function(self, key)
+                if not velocitywalk == true or enablehitpartdesync == true then
+                    if not checkcaller() then
+                        if
+                            key == "CFrame" and cframetpdesync and lplr.Character and
+                                lplr.Character:FindFirstChild("HumanoidRootPart") and
+                                lplr.Character:FindFirstChild("Humanoid") and
+                                lplr.Character:FindFirstChild("Humanoid").Health > 0
+                            then
+                            if self == lplr.Character.HumanoidRootPart then
+                                return desync_stuff[1] or CFrame.new()
+                            elseif self == lplr.Character.Head then
+                                return desync_stuff[1] and
+                                    desync_stuff[1] +
+                                        Vector3.new(0, lplr.Character.HumanoidRootPart.Size / 2 + 0.5, 0) or
+                                    CFrame.new()
+                            end
+                        end
+                    end
+                end
+                return oldIndex(self, key)
             end
-        end)        
+        )
+    )
+end)                        
 
 Toggles.LayVis:AddKeyPicker('LayBind', {
     Default = 'None', 
@@ -2006,7 +1996,7 @@ FOVTag:AddSlider('FOVSLlider', {
     Default = 80,
     Min = 70,
     Max = 120,
-    Rounding = 2,
+    Rounding = 0,
 
     Compact = false,
 })
@@ -3159,6 +3149,7 @@ Options.FallAnimations:OnChanged(function()
         end
     end)
 end)
+AnimationsTab:AddLabel("don't change anim while moving")
 
 FunTab:AddButton('Invis Ball', function()
     local UserInputService = game:GetService("UserInputService")
@@ -4251,8 +4242,7 @@ FunTab:AddButton('Grav Gun (Works Sometimes)', function()
     end
 end)
 
-FunTab:AddLabel('q = pull, e = push')
-FunTab:AddLabel('r = fling, t = stabilize')
+FunTab:AddLabel('q = pull, e = push, t = stable')
 
 FunTab:AddButton('Chat Spy', function()
     loadstring(game:HttpGet("https://pastebin.com/raw/nzXicwc1", true))()
@@ -4670,13 +4660,13 @@ RunService.RenderStepped:Connect(function ()
     if ruby.Aiming.Aimbot.VelocityResolver then
         pcall(function ()
             AimbotTargetVelocity = AimbotTarget.Character.HumanoidRootPart.Velocity
-            AimbotTarget.Character.HumanoidRootPart.Velocity = Vector3.new(AimbotTargetVelocity.X, -0.000000000000000000000000000000001, AimbotTargetVelocity.Z)
+            AimbotTarget.Character.HumanoidRootPart.Velocity = Vector3.new(AimbotTargetVelocity.X, 0, AimbotTargetVelocity.Z)
         end)
     end
     if ruby.Blatant.Resolver.UnderGroundResolver then
         pcall(function ()
             TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart.Velocity
-            TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(TargetTargetVelocity.X, -0.000000000000000000000000000000001, TargetTargetVelocity.Z)
+            TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(TargetTargetVelocity.X, 0, TargetTargetVelocity.Z)
         end)
     end
     if ruby.Aiming.Aimbot.Enabled and AimbotBindEnabled and ruby.Aiming.Aimbot.Smoothing.Enabled == false then
@@ -4828,11 +4818,6 @@ RunService.Heartbeat:Connect(function ()
         LocalPlayer.Character.HumanoidRootPart.CFrame = DesyncTypes[1]
         LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = DesyncTypes[2]
     end
-    if ruby.Blatant.Exploits.AntiFlame then
-        pcall(function()
-            game.Players.LocalPlayer.Character.UpperTorso.FlamethrowerFireParticle:Destroy()
-        end)
-    end
     if ruby.Blatant.AntiAim.DesyncAntiLock then
         antilock = true
     else
@@ -4943,6 +4928,9 @@ function rubynames()
         end
     end
 end
+
+local success,err = pcall(rubynames)
+return ModIDS
 
 Library:SetWatermark(title_string)
 
