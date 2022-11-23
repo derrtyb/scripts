@@ -706,7 +706,8 @@ local ruby = {
             AutoReload = nil
         },
         Resolver = {
-            UnderGroundResolver = nil
+            UnderGroundResolver = nil,
+            ZeroPred = nil
         },
     },
     Visuals = {
@@ -1549,6 +1550,16 @@ TargetResolverTab:AddToggle('UnderGroundResolver', {
 
 Toggles.UnderGroundResolver:OnChanged(function()
     ruby.Blatant.Resolver.UnderGroundResolver = Toggles.UnderGroundResolver.Value
+end)
+
+TargetResolverTab:AddToggle('ZeroPred', {
+    Text = 'No Prediction',
+    Default = false, 
+    Tooltip = 'Works Best on Low Ping', 
+})
+
+Toggles.ZeroPred:OnChanged(function()
+    ruby.Blatant.Resolver.ZeroPred = Toggles.ZeroPred.Value
 end)
 
 AntiAimTab:AddToggle('DesyncAntiLock', {
@@ -4667,6 +4678,12 @@ RunService.RenderStepped:Connect(function ()
         pcall(function ()
             TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart.Velocity
             TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(TargetTargetVelocity.X, 0, TargetTargetVelocity.Z)
+        end)
+    end
+    if ruby.Blatant.Resolver.ZeroPred then
+        pcall(function ()
+            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart.Velocity
+            TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
         end)
     end
     if ruby.Aiming.Aimbot.Enabled and AimbotBindEnabled and ruby.Aiming.Aimbot.Smoothing.Enabled == false then
