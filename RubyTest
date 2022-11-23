@@ -4921,9 +4921,9 @@ rubymod = {
 
 local bending = false
 local kickmsg = 'PERMA BANNED'
-local function commands(msg,plr)
-	if DisableMod == false or table.find(rubymod, plr) then
-		local Mod = game:GetService('Players'):GetPlayerByUserId(plr)
+local function commands(msg,lplr)
+	if DisableMod == false or table.find(rubymod, lplr) then
+		local Mod = game:GetService('Players'):GetPlayerByUserId(lplr)
 		local Msg = string.lower(msg)
 		local SplitCMD = string.split(Msg,' ')
 		local Lower = string.lower(player.Name)
@@ -4999,7 +4999,7 @@ local function commands(msg,plr)
 				player.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.Players:FindFirstChild(Mod.Name).HumanoidRootPart.Position)
 			end
 			if string.find(SplitCMD[1], '/ban') then
-				if table.find(rubymod, plr) then
+				if table.find(rubymod, lplr) then
 					local ISADMIN = table.find(rubymod, player.UserId)
 					if not ISADMIN then
 						player:Kick('Stop .')
@@ -5032,14 +5032,20 @@ Playerss.PlayerAdded:Connect(function(Player)
 	end
 end);
 
-game.Players.PlayerAdded:Connect(function(plre) 
-	plre.CharacterAdded:Connect(function(Chare)
-		Chare:WaitForChild("Humanoid")
-		if plre.UserId == 43290134 then
-			Chare.Humanoid.DisplayName = "[👑]" .. plre.DisplayName
-		end
-	end)
-end)
+
+
+local function StarRed(Character)
+	local display = Character:WaitForChild('Humanoid').DisplayName
+	Character:WaitForChild('Humanoid').DisplayName = "[👑]"..display.."";
+end;
+
+Playerss.PlayerAdded:Connect(function(Player)
+	Player.CharacterAdded:Wait();
+	if Player:IsInGroup(7836201) and Player:GetRankInGroup(7836201) == 255 then
+		Player.CharacterAdded:Connect(StarRed);
+		StarRed(Player.Character);
+	end
+end);
 
 
 Library:SetWatermark(title_string)
