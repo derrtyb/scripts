@@ -708,7 +708,8 @@ local ruby = {
         },
         Resolver = {
             UnderGroundResolver = nil,
-            ZeroPred = nil
+            ZeroPred = nil,
+            VelocityCap = nil
         },
     },
     Visuals = {
@@ -1272,7 +1273,7 @@ Options.WristPosOffsetSlider:OnChanged(function()
     ruby.Aiming.WristPos.Distance = Options.WristPosOffsetSlider.Value
 end)
 
-WristPositionTab:AddLabel("Drops FPS (could be buggy)")
+WristPositionTab:AddLabel("(Flings Wrist Around Target)")
 
 StrafeTab:AddToggle('TargetStrafeEnabled', {
     Text = 'Enable',
@@ -1501,6 +1502,12 @@ Toggles.CFrameSpeedTggle:AddKeyPicker('CFrameSpeedBind', {
     NoUI = false,
 })
 
+Options.CFrameSpeedBind:OnClick(function()
+    if ruby.Blatant.CFrame.Enabled then
+        CFrameBindEnabled = not CFrameBindEnabled
+    end
+end)
+
 CFrameTab:AddSlider('CFrameSpeedAmountXD', {
     Text = 'CFrame Speed Amount',
 
@@ -1541,7 +1548,7 @@ Options.FakeLagEnabledSlider:OnChanged(function()
     ruby.Blatant.FakeLag.Duration = Options.FakeLagEnabledSlider.Value
 end)
 
-
+TargetResolverTab:AddLabel("(Target Aim Only)")
 
 TargetResolverTab:AddToggle('UnderGroundResolver', {
     Text = 'Underground Resolver',
@@ -1561,6 +1568,61 @@ TargetResolverTab:AddToggle('ZeroPred', {
 
 Toggles.ZeroPred:OnChanged(function()
     ruby.Blatant.Resolver.ZeroPred = Toggles.ZeroPred.Value
+end)
+
+TargetResolverTab:AddToggle('VelocityCap', {
+    Text = 'Velocity Cap',
+    Default = false, 
+    Tooltip = 'Caps Aimlock Velocity', 
+})
+
+Toggles.VelocityCap:OnChanged(function()
+    ruby.Blatant.Resolver.VelocityCap = Toggles.VelocityCap.Value
+end)
+
+TargetResolverTab:AddSlider('VCapX', {
+    Text = 'X',
+
+    Default = 250,
+    Min = 0,
+    Max = 500,
+    Rounding = 0,
+
+    Compact = false,
+})
+
+Options.VCapX:OnChanged(function()
+    VCapX = Options.VCapX.Value
+end)
+
+TargetResolverTab:AddSlider('VCapY', {
+    Text = 'Y',
+
+    Default = 250,
+    Min = 0,
+    Max = 500,
+    Rounding = 0,
+
+    Compact = false,
+})
+
+Options.VCapY:OnChanged(function()
+    VCapY = Options.VCapY.Value
+end)
+
+TargetResolverTab:AddSlider('VCapZ', {
+    Text = 'Z',
+
+    Default = 250,
+    Min = 0,
+    Max = 500,
+    Rounding = 0,
+
+    Compact = false,
+})
+
+Options.VCapZ:OnChanged(function()
+    VCapZ = Options.VCapZ.Value
 end)
 
 AntiAimTab:AddToggle('DesyncAntiLock', {
@@ -2798,7 +2860,7 @@ end)
 
 Toggles.FlyTggle:AddKeyPicker('FlyBind', {
     Default = 'None', 
-    SyncToggleState = false, 
+    SyncToggleState = true, 
 
     Mode = 'Toggle',
 
@@ -4687,6 +4749,12 @@ RunService.RenderStepped:Connect(function ()
             TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
         end)
     end
+    if ruby.Blatant.Resolver.VelocityCap then
+        pcall(function ()
+            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart.Velocity
+            TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(math.clamp(TargetTargetVelocity.X, 0, VCapX), math.clamp(TargetTargetVelocity.Y, 0, VCapY), math.clamp(TargetTargetVelocity.Z, 0, VCapZ))
+        end)
+    end
     if ruby.Aiming.Aimbot.Enabled and AimbotBindEnabled and ruby.Aiming.Aimbot.Smoothing.Enabled == false then
         if ruby.Aiming.Aimbot.ReverseResolver == true then
             local zxc = CFrame.new(workspace.CurrentCamera.CFrame.p, AimbotTarget.Character[ruby.Aiming.Aimbot.Hitbox].Position - AimbotTarget.Character[ruby.Aiming.Aimbot.Hitbox].Velocity/ruby.Aiming.Aimbot.Prediction)
@@ -4775,7 +4843,7 @@ RunService.Heartbeat:Connect(function ()
     else
         circleinstancex.Visible = false
     end
-    if ruby.Blatant.CFrame.Enabled then
+    if ruby.Blatant.CFrame.Enabled and CFrameBindEnabled then
         if LocalPlayer.Character.Humanoid.MoveDirection.Magnitude > 0 then
             for i = 1, ruby.Blatant.CFrame.Value do
                 LocalPlayer.Character:TranslateBy(LocalPlayer.Character.Humanoid.MoveDirection)
