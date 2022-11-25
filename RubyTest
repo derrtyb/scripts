@@ -620,6 +620,7 @@ local ruby = {
                 Enabled = nil,
                 Value = nil
             },
+            WallCheck = nil,
             VelocityResolver = nil,
             ReverseResolver = nil,
             Alerts = nil
@@ -1492,7 +1493,7 @@ end)
 
 Toggles.CFrameSpeedTggle:AddKeyPicker('CFrameSpeedBind', {
     Default = 'None', 
-    SyncToggleState = true, 
+    SyncToggleState = false, 
 
     Mode = 'Toggle',
 
@@ -1751,7 +1752,7 @@ end)
 
 Toggles.LayVis:AddKeyPicker('LayBind', {
     Default = 'None', 
-    SyncToggleState = true, 
+    SyncToggleState = false, 
 
     Mode = 'Toggle',
 
@@ -2797,7 +2798,7 @@ end)
 
 Toggles.FlyTggle:AddKeyPicker('FlyBind', {
     Default = 'None', 
-    SyncToggleState = true, 
+    SyncToggleState = false, 
 
     Mode = 'Toggle',
 
