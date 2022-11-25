@@ -2852,7 +2852,7 @@ Toggles.FlyTggle:OnChanged(function()
                 end)
             end)
         end)
-    elseif Toggles.FlyTggle.Value == false and FlyLoop then
+    elseif Toggles.FlyTggle.Value == false and FlyLoop and not FlyBindEnabled then
         FlyLoop:Disconnect()
         LocalPlayer.Character.Humanoid:ChangeState("Landing")
     end
