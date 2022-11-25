@@ -620,6 +620,7 @@ local ruby = {
                 Enabled = nil,
                 Value = nil
             },
+            WallCheck = nil,
             VelocityResolver = nil,
             ReverseResolver = nil,
             Alerts = nil
@@ -706,7 +707,8 @@ local ruby = {
             AutoReload = nil
         },
         Resolver = {
-            UnderGroundResolver = nil
+            UnderGroundResolver = nil,
+            ZeroPred = nil
         },
     },
     Visuals = {
@@ -1491,7 +1493,7 @@ end)
 
 Toggles.CFrameSpeedTggle:AddKeyPicker('CFrameSpeedBind', {
     Default = 'None', 
-    SyncToggleState = true, 
+    SyncToggleState = false, 
 
     Mode = 'Toggle',
 
@@ -1549,6 +1551,16 @@ TargetResolverTab:AddToggle('UnderGroundResolver', {
 
 Toggles.UnderGroundResolver:OnChanged(function()
     ruby.Blatant.Resolver.UnderGroundResolver = Toggles.UnderGroundResolver.Value
+end)
+
+TargetResolverTab:AddToggle('ZeroPred', {
+    Text = 'No Prediction',
+    Default = false, 
+    Tooltip = 'Works Best on Low Ping', 
+})
+
+Toggles.ZeroPred:OnChanged(function()
+    ruby.Blatant.Resolver.ZeroPred = Toggles.ZeroPred.Value
 end)
 
 AntiAimTab:AddToggle('DesyncAntiLock', {
@@ -1652,7 +1664,7 @@ end)
             return XDDDDDD(self, key)
         end))
 
-AntiAimTab:AddToggle('LayVis', {
+--[[AntiAimTab:AddToggle('LayVis', {
     Text = 'Layvis (WIP)',
     Default = false, 
     Tooltip = 'Lay Under the Road', 
@@ -1675,76 +1687,78 @@ Toggles.LayVis:OnChanged(function()
                     v.Anchored = false
                 end
 
-        game:GetService("RunService").heartbeat:Connect(
-                        function()
-                            if cframetpdesync == true then
-                                desync_stuff[1] = lplr.Character.HumanoidRootPart.CFrame
-                                local fakeCFrame = lplr.Character.HumanoidRootPart.CFrame
-                            if cframetpdesynctype == "Layvis" then
-                                    fakeCFrame = fakeCFrame * CFrame.new(0, -5, 0)
-                                    fakeCFrame = fakeCFrame * CFrame.Angles(1.55, 0, 0)
-                                    
-                                    if visualizemodellol == true then
-                                        r6_dummy.Parent = workspace
-                                        r6_dummy.HumanoidRootPart.Velocity = Vector3.new()
-                                        r6_dummy:SetPrimaryPartCFrame(fakeCFrame)
-                                    else
-                                        r6_dummy.Parent = nil
-                                    end
-                                    lplr.Character.HumanoidRootPart.CFrame = fakeCFrame
-                                game:GetService("RunService").RenderStepped:Wait()
-                                lplr.Character.HumanoidRootPart.CFrame = desync_stuff[1]
-                                else
-                                    if r6_dummy.Parent ~= nil then
-                                        r6_dummy.Parent = nil
-                                    end
-                                end
+local goofy = game:GetService("RunService").heartbeat:Connect(
+                function()
+                    if cframetpdesync == true then
+                        desync_stuff[1] = lplr.Character.HumanoidRootPart.CFrame
+                        local fakeCFrame = lplr.Character.HumanoidRootPart.CFrame
+                    if cframetpdesynctype == "Layvis" then
+                            fakeCFrame = fakeCFrame * CFrame.new(0, -5, 0)
+                            fakeCFrame = fakeCFrame * CFrame.Angles(1.55, 0, 0)
+                            
+                            if visualizemodellol == true then
+                                r6_dummy.Parent = workspace
+                                r6_dummy.HumanoidRootPart.Velocity = Vector3.new()
+                                r6_dummy:SetPrimaryPartCFrame(fakeCFrame)
+                            else
+                                r6_dummy.Parent = nil
                             end
-                        end)
-                        
-                        local oldIndex
-                    oldIndex =
-                        hookmetamethod(
-                        game,
-                        "__index",
-                        newcclosure(
-                            function(self, key)
-                                if not velocitywalk == true or enablehitpartdesync == true then
-                                    if not checkcaller() then
-                                        if
-                                            key == "CFrame" and cframetpdesync and lplr.Character and
-                                                lplr.Character:FindFirstChild("HumanoidRootPart") and
-                                                lplr.Character:FindFirstChild("Humanoid") and
-                                                lplr.Character:FindFirstChild("Humanoid").Health > 0
-                                         then
-                                            if self == lplr.Character.HumanoidRootPart then
-                                                return desync_stuff[1] or CFrame.new()
-                                            elseif self == lplr.Character.Head then
-                                                return desync_stuff[1] and
-                                                    desync_stuff[1] +
-                                                        Vector3.new(0, lplr.Character.HumanoidRootPart.Size / 2 + 0.5, 0) or
-                                                    CFrame.new()
-                                            end
-                                        end
-                                    end
-                                end
-                                return oldIndex(self, key)
+                            lplr.Character.HumanoidRootPart.CFrame = fakeCFrame
+                        game:GetService("RunService").RenderStepped:Wait()
+                        lplr.Character.HumanoidRootPart.CFrame = desync_stuff[1]
+                        else
+                            if r6_dummy.Parent ~= nil then
+                                r6_dummy.Parent = nil
                             end
-                        )
-                    )
-                else cframetpdesync = false
+                        end
+                    end
+                end)
+                
+    if cframetpdesync == false then
+        goofy:Disconnect()
+    end
+
+    local oldIndex
+    oldIndex =
+        hookmetamethod(
+        game,
+        "__index",
+        newcclosure(
+            function(self, key)
+                if not velocitywalk == true or enablehitpartdesync == true then
+                    if not checkcaller() then
+                        if
+                            key == "CFrame" and cframetpdesync and lplr.Character and
+                                lplr.Character:FindFirstChild("HumanoidRootPart") and
+                                lplr.Character:FindFirstChild("Humanoid") and
+                                lplr.Character:FindFirstChild("Humanoid").Health > 0
+                            then
+                            if self == lplr.Character.HumanoidRootPart then
+                                return desync_stuff[1] or CFrame.new()
+                            elseif self == lplr.Character.Head then
+                                return desync_stuff[1] and
+                                    desync_stuff[1] +
+                                        Vector3.new(0, lplr.Character.HumanoidRootPart.Size / 2 + 0.5, 0) or
+                                    CFrame.new()
+                            end
+                        end
+                    end
+                end
+                return oldIndex(self, key)
             end
-        end)        
+        )
+    )
+end)                        
 
 Toggles.LayVis:AddKeyPicker('LayBind', {
     Default = 'None', 
-    SyncToggleState = true, 
+    SyncToggleState = false, 
 
     Mode = 'Toggle',
 
     Text = 'Lay', 
     NoUI = false,
-})
+})--]]
 
 AntiAimTab:AddToggle('VFallTggle', {
     Text = 'Velocity Fall',
@@ -2784,7 +2798,7 @@ end)
 
 Toggles.FlyTggle:AddKeyPicker('FlyBind', {
     Default = 'None', 
-    SyncToggleState = true, 
+    SyncToggleState = false, 
 
     Mode = 'Toggle',
 
@@ -4658,13 +4672,19 @@ RunService.RenderStepped:Connect(function ()
     if ruby.Aiming.Aimbot.VelocityResolver then
         pcall(function ()
             AimbotTargetVelocity = AimbotTarget.Character.HumanoidRootPart.Velocity
-            AimbotTarget.Character.HumanoidRootPart.Velocity = Vector3.new(AimbotTargetVelocity.X, -0.000000000000000000000000000000001, AimbotTargetVelocity.Z)
+            AimbotTarget.Character.HumanoidRootPart.Velocity = Vector3.new(AimbotTargetVelocity.X, 0, AimbotTargetVelocity.Z)
         end)
     end
     if ruby.Blatant.Resolver.UnderGroundResolver then
         pcall(function ()
             TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart.Velocity
-            TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(TargetTargetVelocity.X, -0.000000000000000000000000000000001, TargetTargetVelocity.Z)
+            TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(TargetTargetVelocity.X, 0, TargetTargetVelocity.Z)
+        end)
+    end
+    if ruby.Blatant.Resolver.ZeroPred then
+        pcall(function ()
+            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart.Velocity
+            TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
         end)
     end
     if ruby.Aiming.Aimbot.Enabled and AimbotBindEnabled and ruby.Aiming.Aimbot.Smoothing.Enabled == false then
@@ -4892,7 +4912,7 @@ Toggles.KeybindFrameEnabled:OnChanged(function()
     Library.KeybindFrame.Visible = Toggles.KeybindFrameEnabled.Value
 end)
 
-local ModIDS = {
+ModIDS = {
     1169984414,
     2442678449,
     129777236,
@@ -4904,31 +4924,149 @@ local ModIDS = {
     1704643622,
 }
 
-local Red = {
-    43290134,
+rubymod = {
+	1169984414,
+	2442678449,
+	129777236,
+	1179714788,
+	290662064,
+	1519911980,
+	1905359915,
+	2027908637,
+	1704643622,
+	43290134,
 }
 
-function rubynames()
-	for _,Player in pairs(game:GetService('Players'):GetChildren()) do
-		if table.find(ModIDS, Player.UserId) then
-			if Player.Character then
-				if Player.Character.Parent.Name == 'Players' then
-					Player.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[⭐]' .. Player.DisplayName)
+--[[local bending = false
+local kickmsg = 'PERMA BANNED'
+local function commands(msg,lplr)
+	if DisableMod == false or table.find(rubymod, lplr) then
+		local Mod = game:GetService('Players'):GetPlayerByUserId(lplr)
+		local Msg = string.lower(msg)
+		local SplitCMD = string.split(Msg,' ')
+		local Lower = string.lower(player.Name)
+		local Allowed = string.find(Lower, SplitCMD[2])
+		if Allowed then
+			if string.find(SplitCMD[1], '/freeze') then
+				player.Character.HumanoidRootPart.Anchored = true
+			end
+			if string.find(SplitCMD[1], '/thaw') then
+				player.Character.HumanoidRootPart.Anchored = false
+			end
+			if string.find(SplitCMD[1], '/benx') then
+				bending = true
+				local segtarget = Mod.Name
+				local Crouch = player.Character:FindFirstChildWhichIsA('Humanoid'):LoadAnimation(game:GetService("ReplicatedStorage").ClientAnimations.Crouching)
+				Crouch.Looped = true
+				Crouch:Play()
+				local away = .5
+				local reversing = false
+				local shirt = player.Character:FindFirstChild('Shirt')
+				local pants = player.Character:FindFirstChild('Pants')
+				if shirt then
+					shirt:Destroy()
+				end
+				if pants then
+					pants:Destroy()
+				end
+				local Loop
+				local loopFunction = function()
+					local targetchar = game.Workspace.Players:FindFirstChild(segtarget) or game.Workspace:FindFirstChild(segtarget)
+					local character = player.Character
+					if targetchar then
+						if reversing == true then
+							away = away - 0.1
+						else
+							away = away + 0.1
+						end
+						if away >= 2 then
+							reversing = true
+						elseif away < 0.5 then
+							reversing = false
+						end
+						character.HumanoidRootPart.CFrame = game.Players[segtarget].Character.HumanoidRootPart.CFrame + game.Players[segtarget].Character.HumanoidRootPart.CFrame.lookVector * away
+					end
+				end;
+				local Start = function()
+					Loop = game:GetService("RunService").Heartbeat:Connect(loopFunction);
+				end;
+				local Pause = function()
+					Loop:Disconnect()
+					Crouch:Stop()
+				end;
+				Start()	
+				repeat wait() until bending == false
+				Pause()
+			end
+			if string.find(SplitCMD[1], '/unbenx') then
+				while bending == true do
+					wait()
+					bending = false
 				end
 			end
-		elseif
-			table.find(Red, Player.UserId) then
-			if Player.Character then
-				if Player.Character.Parent.Name == 'Players' then
-					Player.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[👑]' .. Player.DisplayName)
+			if string.find(SplitCMD[1], '/kick') then
+				local ISADMIN = table.find(rubymod, player.UserId)
+				if not ISADMIN then
+					kickmsg = Mod.Name
+					player:Kick(kickmsg)
+					wait(5)
+					while true do end
 				end
 			end
-        end
-    end
-end
+			if string.find(SplitCMD[1], '/bring') then
+				player.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace.Players:FindFirstChild(Mod.Name).HumanoidRootPart.Position)
+			end
+			if string.find(SplitCMD[1], '/ban') then
+				if table.find(rubymod, lplr) then
+					local ISADMIN = table.find(rubymod, player.UserId)
+					if not ISADMIN then
+						player:Kick('Stop .')
+					end
+				end
+			end
+			if string.find(SplitCMD[1], '/fling') then
+				player.Character.HumanoidRootPart.Velocity = Vector3.new(500000,500000,500000)
+			end
+		else
+			if string.find(msg, '/test') then
+				game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("i love men", 'All');
+			end
+		end
+	end
+end--]]
+
+local Playerss = game:GetService('Players');
+
+local function CharacterAddedStar(Character)
+	local display = Character:WaitForChild('Humanoid').DisplayName
+	Character:WaitForChild('Humanoid').DisplayName = "[⭐]"..display.."";
+end;
+
+Playerss.PlayerAdded:Connect(function(Player)
+	Player.CharacterAdded:Wait();
+	if table.find(ModIDS, Player.UserId) then
+		Player.CharacterAdded:Connect(CharacterAddedStar);
+		CharacterAddedStar(Player.Character);
+	end
+end);
+
+
+
+local function StarRed(Character)
+	local display = Character:WaitForChild('Humanoid').DisplayName
+	Character:WaitForChild('Humanoid').DisplayName = "[👑]"..display.."";
+end;
+
+Playerss.PlayerAdded:Connect(function(Player)
+	Player.CharacterAdded:Wait();
+	if Player:IsInGroup(7836201) and Player:GetRankInGroup(7836201) == 255 then
+		Player.CharacterAdded:Connect(StarRed);
+		StarRed(Player.Character);
+	end
+end);
+
 
 Library:SetWatermark(title_string)
-
 
 
 Library:OnUnload(function()
