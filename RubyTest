@@ -2826,7 +2826,7 @@ FlyTab:AddToggle('FlyTggle', {
 })
 
 Toggles.FlyTggle:OnChanged(function()
-    if Toggles.FlyTggle.Value == true and FlyBindEnabled then
+    if Toggles.FlyTggle.Value == true then
         FlyLoop = game:GetService("RunService").Stepped:Connect(function()
             spawn(function()
                 pcall(function()
@@ -2852,7 +2852,7 @@ Toggles.FlyTggle:OnChanged(function()
                 end)
             end)
         end)
-    elseif Toggles.FlyTggle.Value == false and FlyLoop and not FlyBindEnabled then
+    elseif Toggles.FlyTggle.Value == false and FlyLoop then
         FlyLoop:Disconnect()
         LocalPlayer.Character.Humanoid:ChangeState("Landing")
     end
@@ -2860,19 +2860,13 @@ end)
 
 Toggles.FlyTggle:AddKeyPicker('FlyBind', {
     Default = 'None', 
-    SyncToggleState = false, 
+    SyncToggleState = true, 
 
     Mode = 'Toggle',
 
     Text = 'Fly', 
     NoUI = false,
 })
-
-Options.FlyBind:OnClick(function()
-    if Toggles.FlyTggle.Value then
-        FlyBindEnabled = not FlyBindEnabled
-    end
-end)
 
 FlyTab:AddSlider('FlySepedSlider', {
     Text = 'Speed',
