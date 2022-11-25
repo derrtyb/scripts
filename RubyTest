@@ -1273,7 +1273,7 @@ Options.WristPosOffsetSlider:OnChanged(function()
     ruby.Aiming.WristPos.Distance = Options.WristPosOffsetSlider.Value
 end)
 
-WristPositionTab:AddLabel("Drops FPS (could be buggy)")
+WristPositionTab:AddLabel("(Flings Wrist Around Target)")
 
 StrafeTab:AddToggle('TargetStrafeEnabled', {
     Text = 'Enable',
@@ -1502,6 +1502,12 @@ Toggles.CFrameSpeedTggle:AddKeyPicker('CFrameSpeedBind', {
     NoUI = false,
 })
 
+Options.CFrameSpeedBind:OnClick(function()
+    if ruby.Blatant.CFrame.Enabled then
+        CFrameBindEnabled = not CFrameBindEnabled
+    end
+end)
+
 CFrameTab:AddSlider('CFrameSpeedAmountXD', {
     Text = 'CFrame Speed Amount',
 
@@ -1542,7 +1548,7 @@ Options.FakeLagEnabledSlider:OnChanged(function()
     ruby.Blatant.FakeLag.Duration = Options.FakeLagEnabledSlider.Value
 end)
 
-
+TargetResolverTab:AddLabel("(Target Aim Only)")
 
 TargetResolverTab:AddToggle('UnderGroundResolver', {
     Text = 'Underground Resolver',
@@ -1565,7 +1571,7 @@ Toggles.ZeroPred:OnChanged(function()
 end)
 
 TargetResolverTab:AddToggle('VelocityCap', {
-    Text = 'Velocity Cap (WIP)',
+    Text = 'Velocity Cap',
     Default = false, 
     Tooltip = 'Caps Aimlock Velocity', 
 })
@@ -1574,7 +1580,7 @@ Toggles.VelocityCap:OnChanged(function()
     ruby.Blatant.Resolver.VelocityCap = Toggles.VelocityCap.Value
 end)
 
-AntiAimTab:AddSlider('VCapX', {
+TargetResolverTab:AddSlider('VCapX', {
     Text = 'X',
 
     Default = 250,
@@ -1589,7 +1595,7 @@ Options.VCapX:OnChanged(function()
     VCapX = Options.VCapX.Value
 end)
 
-AntiAimTab:AddSlider('VCapY', {
+TargetResolverTab:AddSlider('VCapY', {
     Text = 'Y',
 
     Default = 250,
@@ -1604,7 +1610,7 @@ Options.VCapY:OnChanged(function()
     VCapY = Options.VCapY.Value
 end)
 
-AntiAimTab:AddSlider('VCapZ', {
+TargetResolverTab:AddSlider('VCapZ', {
     Text = 'Z',
 
     Default = 250,
@@ -2820,7 +2826,7 @@ FlyTab:AddToggle('FlyTggle', {
 })
 
 Toggles.FlyTggle:OnChanged(function()
-    if Toggles.FlyTggle.Value == true then
+    if Toggles.FlyTggle.Value == true and FlyBindEnabled then
         FlyLoop = game:GetService("RunService").Stepped:Connect(function()
             spawn(function()
                 pcall(function()
@@ -2861,6 +2867,12 @@ Toggles.FlyTggle:AddKeyPicker('FlyBind', {
     Text = 'Fly', 
     NoUI = false,
 })
+
+Options.FlyBind:OnClick(function()
+    if Toggles.FlyTggle.Value then
+        FlyBindEnabled = not FlyBindEnabled
+    end
+end)
 
 FlyTab:AddSlider('FlySepedSlider', {
     Text = 'Speed',
@@ -4837,7 +4849,7 @@ RunService.Heartbeat:Connect(function ()
     else
         circleinstancex.Visible = false
     end
-    if ruby.Blatant.CFrame.Enabled then
+    if ruby.Blatant.CFrame.Enabled and CFrameBindEnabled then
         if LocalPlayer.Character.Humanoid.MoveDirection.Magnitude > 0 then
             for i = 1, ruby.Blatant.CFrame.Value do
                 LocalPlayer.Character:TranslateBy(LocalPlayer.Character.Humanoid.MoveDirection)
