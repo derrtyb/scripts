@@ -708,7 +708,8 @@ local ruby = {
         },
         Resolver = {
             UnderGroundResolver = nil,
-            ZeroPred = nil
+            ZeroPred = nil,
+            VelocityCap = nil
         },
     },
     Visuals = {
@@ -1561,6 +1562,61 @@ TargetResolverTab:AddToggle('ZeroPred', {
 
 Toggles.ZeroPred:OnChanged(function()
     ruby.Blatant.Resolver.ZeroPred = Toggles.ZeroPred.Value
+end)
+
+TargetResolverTab:AddToggle('VelocityCap', {
+    Text = 'Velocity Cap (WIP)',
+    Default = false, 
+    Tooltip = 'Caps Aimlock Velocity', 
+})
+
+Toggles.VelocityCap:OnChanged(function()
+    ruby.Blatant.Resolver.VelocityCap = Toggles.VelocityCap.Value
+end)
+
+AntiAimTab:AddSlider('VCapX', {
+    Text = 'X',
+
+    Default = 250,
+    Min = 0,
+    Max = 500,
+    Rounding = 0,
+
+    Compact = false,
+})
+
+Options.VCapX:OnChanged(function()
+    VCapX = Options.VCapX.Value
+end)
+
+AntiAimTab:AddSlider('VCapY', {
+    Text = 'Y',
+
+    Default = 250,
+    Min = 0,
+    Max = 500,
+    Rounding = 0,
+
+    Compact = false,
+})
+
+Options.VCapY:OnChanged(function()
+    VCapY = Options.VCapY.Value
+end)
+
+AntiAimTab:AddSlider('VCapZ', {
+    Text = 'Z',
+
+    Default = 250,
+    Min = 0,
+    Max = 500,
+    Rounding = 0,
+
+    Compact = false,
+})
+
+Options.VCapZ:OnChanged(function()
+    VCapZ = Options.VCapZ.Value
 end)
 
 AntiAimTab:AddToggle('DesyncAntiLock', {
@@ -4685,6 +4741,12 @@ RunService.RenderStepped:Connect(function ()
         pcall(function ()
             TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart.Velocity
             TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+        end)
+    end
+    if ruby.Blatant.Resolver.VelocityCap then
+        pcall(function ()
+            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart.Velocity
+            TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(math.clamp(TargetTargetVelocity.X, 0, VCapX), math.clamp(TargetTargetVelocity.Y, 0, VCapY), math.clamp(TargetTargetVelocity.Z, 0, VCapZ))
         end)
     end
     if ruby.Aiming.Aimbot.Enabled and AimbotBindEnabled and ruby.Aiming.Aimbot.Smoothing.Enabled == false then
