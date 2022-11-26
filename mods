@@ -10,20 +10,7 @@ ModIDS = {
     1704643622,
 }
 
-rubymod = {
-	1169984414,
-	2442678449,
-	129777236,
-	1179714788,
-	290662064,
-	1519911980,
-	1905359915,
-	2027908637,
-	1704643622,
-	43290134,
-}
-
-Red = {
+BoxingChampion = {
   43290134,
 }
 
@@ -36,7 +23,7 @@ function swagnames()
 				end
 			end
 		elseif
-			table.find(Red, Player.UserId) then
+			table.find(BoxingChampion, Player.UserId) then
 			if Player.Character then
 				if Player.Character.Parent.Name == 'Players' then
 					Player.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[👑]' .. Player.DisplayName)
@@ -46,7 +33,7 @@ function swagnames()
 			Player.Character then
 			if Player.Character.Parent.Name == 'Players' then
 				if not Player.Character.UpperTorso:FindFirstChild('OriginalSize') then
-					Player.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[☠]' .. Player.DisplayName)
+					Player.Character:FindFirstChildWhichIsA('Humanoid').DisplayName = ('[😎]' .. Player.DisplayName)
 				end
 			end
 		end
