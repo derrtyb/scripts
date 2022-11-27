@@ -1001,6 +1001,40 @@ Options.TargetPredictionTextbox:OnChanged(function()
     ruby.Aiming.Target.Prediction = Options.TargetPredictionTextbox.Value
 end)
 
+TargetTab:AddToggle('TargetTabFovTggle', {
+    Text = 'Draw FOV',
+    Default = false, 
+    Tooltip = 'Enable Target FOV', 
+})
+
+Toggles.TargetTabFovTggle:OnChanged(function()
+    TargetFOvEnabled = Toggles.TargetTabFovTggle.Value
+end)
+
+Toggles.TargetTabFovTggle:AddColorPicker('LocalHighxlxxxxxxxxxxightFillColorColorPicker', {
+    Default = Color3.fromRGB(255,0,0),
+    Title = 'Target FOV Color'
+})
+
+Options.LocalHighxlxxxxxxxxxxightFillColorColorPicker:OnChanged(function()
+    TargetFovClr = Options.LocalHighxlxxxxxxxxxxightFillColorColorPicker.Value
+end)
+
+TargetTab:AddSlider('AimbotFOVSxizex', {
+    Text = 'Target FOV',
+
+    Default = 5,
+    Min = 1,
+    Max = 5,
+    Rounding = 2,
+
+    Compact = false,
+})
+d
+Options.AimbotFOVSxizex:OnChanged(function()
+    TargetFOVSize = Options.AimbotFOVSxizex.Value*100
+end)
+
 TargetTab:AddDropdown('TargetHitboxDropdown', {
     Values = { 'Head', 'HumanoidRootPart', 'UpperTorso', 'LowerTorso' },
     Default = 2,
@@ -1115,40 +1149,6 @@ Options.HighlightOutLineColor:OnChanged(function()
     ruby.Aiming.Target.Highlight.OutlineColor = Options.HighlightOutLineColor.Value
 end)
 
-TargetTab:AddToggle('DotPARENTEnabedx', {
-    Text = 'Dot',
-    Default = false, 
-    Tooltip = 'Dot Enabled', 
-})
-
-Toggles.DotPARENTEnabedx:OnChanged(function()
-    ruby.Aiming.Target.Dot.Enabled = Toggles.DotPARENTEnabedx.Value
-end)
-
-Toggles.DotPARENTEnabedx:AddColorPicker('DotParentForColorxXD', {
-    Default = Color3.fromRGB(255,255,255),
-    Title = 'Dot Color'
-})
-
-Options.DotParentForColorxXD:OnChanged(function()
-    ruby.Aiming.Target.Dot.Color = Options.DotParentForColorxXD.Value
-end)
-
-TargetTab:AddSlider('TargetOffsetYSlider', {
-    Text = 'Target Offset (Y)',
-
-    Default = 0,
-    Min = -0.5,
-    Max = 0.5,
-    Rounding = 2,
-
-    Compact = false,
-})
-
-Options.TargetOffsetYSlider:OnChanged(function()
-    ruby.Aiming.Target.Offset.Y = Options.TargetOffsetYSlider.Value
-end)
-
 TargetTab:AddToggle('FakeHitboxTggle', {
     Text = 'Fake Hitbox',
     Default = false, 
@@ -1194,6 +1194,40 @@ TargetTab:AddSlider('TarggeetFakeHitboxSize', {
 
 Options.TarggeetFakeHitboxSize:OnChanged(function()
     ruby.Aiming.Target.FakeHitbox.Size = Options.TarggeetFakeHitboxSize.Value
+end)
+
+TargetTab:AddToggle('DotPARENTEnabedx', {
+    Text = 'Dot',
+    Default = false, 
+    Tooltip = 'Dot Enabled', 
+})
+
+Toggles.DotPARENTEnabedx:OnChanged(function()
+    ruby.Aiming.Target.Dot.Enabled = Toggles.DotPARENTEnabedx.Value
+end)
+
+Toggles.DotPARENTEnabedx:AddColorPicker('DotParentForColorxXD', {
+    Default = Color3.fromRGB(255,255,255),
+    Title = 'Dot Color'
+})
+
+Options.DotParentForColorxXD:OnChanged(function()
+    ruby.Aiming.Target.Dot.Color = Options.DotParentForColorxXD.Value
+end)
+
+TargetTab:AddSlider('TargetOffsetYSlider', {
+    Text = 'Target Offset (Y)',
+
+    Default = 0,
+    Min = -0.5,
+    Max = 0.5,
+    Rounding = 2,
+
+    Compact = false,
+})
+
+Options.TargetOffsetYSlider:OnChanged(function()
+    ruby.Aiming.Target.Offset.Y = Options.TargetOffsetYSlider.Value
 end)
 
 WristPositionTab:AddToggle('WristPosEnabledTggle', {
@@ -4501,7 +4535,7 @@ RunService.Stepped:Connect(function ()
             end)
         end
         if ruby.Aiming.Target.FakeHitbox.Enabled then
-            FakeHitboxPart.CFrame = CFrame.new(TargetTarget.Character.HumanoidRootPart.Position+(TargetTarget.Character.HumanoidRootPart.Velocity*ruby.Aiming.Target.Prediction))
+            FakeHitboxPart.CFrame = CFrame.new(TargetTarget.Character.HumanoidRootPart.Position+Vector3.new(0,ruby.Aiming.Target.Offset.Y,0)+(TargetTarget.Character.HumanoidRootPart.Velocity*ruby.Aiming.Target.Prediction))
             spawn(function ()
                 if ruby.Aiming.Target.FakeHitbox.Enabled == false then
                     FakeHitboxPart.CFrame = CFrame.new(0,9999,0)
