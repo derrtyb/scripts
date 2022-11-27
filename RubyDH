@@ -1150,6 +1150,25 @@ Options.HighlightOutLineColor:OnChanged(function()
     ruby.Aiming.Target.Highlight.OutlineColor = Options.HighlightOutLineColor.Value
 end)
 
+TargetTab:AddToggle('DotPARENTEnabedx', {
+    Text = 'Dot',
+    Default = false, 
+    Tooltip = 'Dot Enabled', 
+})
+
+Toggles.DotPARENTEnabedx:OnChanged(function()
+    ruby.Aiming.Target.Dot.Enabled = Toggles.DotPARENTEnabedx.Value
+end)
+
+Toggles.DotPARENTEnabedx:AddColorPicker('DotParentForColorxXD', {
+    Default = Color3.fromRGB(255,255,255),
+    Title = 'Dot Color'
+})
+
+Options.DotParentForColorxXD:OnChanged(function()
+    ruby.Aiming.Target.Dot.Color = Options.DotParentForColorxXD.Value
+end)
+
 TargetTab:AddToggle('FakeHitboxTggle', {
     Text = 'Fake Hitbox',
     Default = false, 
@@ -1195,40 +1214,6 @@ TargetTab:AddSlider('TarggeetFakeHitboxSize', {
 
 Options.TarggeetFakeHitboxSize:OnChanged(function()
     ruby.Aiming.Target.FakeHitbox.Size = Options.TarggeetFakeHitboxSize.Value
-end)
-
-TargetTab:AddToggle('DotPARENTEnabedx', {
-    Text = 'Dot',
-    Default = false, 
-    Tooltip = 'Dot Enabled', 
-})
-
-Toggles.DotPARENTEnabedx:OnChanged(function()
-    ruby.Aiming.Target.Dot.Enabled = Toggles.DotPARENTEnabedx.Value
-end)
-
-Toggles.DotPARENTEnabedx:AddColorPicker('DotParentForColorxXD', {
-    Default = Color3.fromRGB(255,255,255),
-    Title = 'Dot Color'
-})
-
-Options.DotParentForColorxXD:OnChanged(function()
-    ruby.Aiming.Target.Dot.Color = Options.DotParentForColorxXD.Value
-end)
-
-TargetTab:AddSlider('TargetOffsetYSlider', {
-    Text = 'Target Offset (Y)',
-
-    Default = 0,
-    Min = -0.5,
-    Max = 0.5,
-    Rounding = 2,
-
-    Compact = false,
-})
-
-Options.TargetOffsetYSlider:OnChanged(function()
-    ruby.Aiming.Target.Offset.Y = Options.TargetOffsetYSlider.Value
 end)
 
 WristPositionTab:AddToggle('WristPosEnabledTggle', {
@@ -1571,7 +1556,7 @@ Toggles.ZeroPred:OnChanged(function()
 end)
 
 TargetResolverTab:AddToggle('VelocityCap', {
-    Text = 'Velocity Cap (WIP)',
+    Text = 'Velocity Cap',
     Default = false, 
     Tooltip = 'Caps Aimlock Velocity', 
 })
@@ -1583,9 +1568,9 @@ end)
 TargetResolverTab:AddSlider('VCapX', {
     Text = 'X',
 
-    Default = 2000,
+    Default = 750,
     Min = 0,
-    Max = 2500,
+    Max = 1000,
     Rounding = 0,
 
     Compact = false,
@@ -1598,9 +1583,9 @@ end)
 TargetResolverTab:AddSlider('VCapY', {
     Text = 'Y',
 
-    Default = 2000,
+    Default = 750,
     Min = 0,
-    Max = 2500,
+    Max = 1000,
     Rounding = 0,
 
     Compact = false,
@@ -1613,9 +1598,9 @@ end)
 TargetResolverTab:AddSlider('VCapZ', {
     Text = 'Z',
 
-    Default = 2000,
+    Default = 750,
     Min = 0,
-    Max = 2500,
+    Max = 1000,
     Rounding = 0,
 
     Compact = false,
@@ -4523,7 +4508,7 @@ end)
 RunService.Stepped:Connect(function ()
     if ruby.Aiming.Target.Enabled and TargetBindEnabled and TargetTarget.Character then
         if ruby.Aiming.Target.Dot.Enabled then
-            DotParent.CFrame = CFrame.new(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Position+Vector3.new(0,ruby.Aiming.Target.Offset.Y,0)+(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Velocity*ruby.Aiming.Target.Prediction))
+            DotParent.CFrame = CFrame.new(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Position+(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Velocity*ruby.Aiming.Target.Prediction))
             task.spawn(function ()
                 newFrame.BackgroundColor3 = ruby.Aiming.Target.Dot.Color
             end)
@@ -4534,7 +4519,7 @@ RunService.Stepped:Connect(function ()
             end)
         end
         if ruby.Aiming.Target.FakeHitbox.Enabled then
-            FakeHitboxPart.CFrame = CFrame.new(TargetTarget.Character.HumanoidRootPart.Position+Vector3.new(0,ruby.Aiming.Target.Offset.Y,0)+(TargetTarget.Character.HumanoidRootPart.Velocity*ruby.Aiming.Target.Prediction))
+            FakeHitboxPart.CFrame = CFrame.new(TargetTarget.Character.HumanoidRootPart.Position+(TargetTarget.Character.HumanoidRootPart.Velocity*ruby.Aiming.Target.Prediction))
             spawn(function ()
                 if ruby.Aiming.Target.FakeHitbox.Enabled == false then
                     FakeHitboxPart.CFrame = CFrame.new(0,9999,0)
@@ -4568,7 +4553,7 @@ RunService.Stepped:Connect(function ()
             end)
         end
         if ruby.Aiming.Target.Tracer.Enabled then
-            local LineVec = workspace.CurrentCamera:WorldToViewportPoint(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Position+Vector3.new(0,ruby.Aiming.Target.Offset.Y,0)+(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Velocity*ruby.Aiming.Target.Prediction))
+            local LineVec = workspace.CurrentCamera:WorldToViewportPoint(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Position+(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Velocity*ruby.Aiming.Target.Prediction))
             local humanoidt = workspace.CurrentCamera:WorldToViewportPoint(game.Players.LocalPlayer.Character.UpperTorso.Position)
             local headt = workspace.CurrentCamera:WorldToViewportPoint(game.Players.LocalPlayer.Character.Head.Position)
             local lowert = workspace.CurrentCamera:WorldToViewportPoint(game.Players.LocalPlayer.Character.LowerTorso.Position)
@@ -4717,7 +4702,7 @@ setreadonly(mt, false)
 mt.__namecall = newcclosure(function(...)
     local args = {...}
     if ruby.Aiming.Target.Enabled and TargetBindEnabled and getnamecallmethod() == "FireServer" and args[2] == "UpdateMousePos" then
-        args[3] = TargetTarget.Character[ruby.Aiming.Target.Hitbox].Position+Vector3.new(0,ruby.Aiming.Target.Offset.Y,0)+(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Velocity*ruby.Aiming.Target.Prediction)
+        args[3] = TargetTarget.Character[ruby.Aiming.Target.Hitbox].Position+(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Velocity*ruby.Aiming.Target.Prediction)
         return old(unpack(args))
     end
     return old(...)
@@ -4745,7 +4730,7 @@ RunService.RenderStepped:Connect(function ()
     if ruby.Blatant.Resolver.VelocityCap then
         pcall(function ()
             TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart.Velocity
-            TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(math.clamp(TargetTargetVelocity.X, 0, VCapX), math.clamp(TargetTargetVelocity.Y, 0, VCapY), math.clamp(TargetTargetVelocity.Z, 0, VCapZ))
+            TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(math.clamp(TargetTargetVelocity.X, 0, VCapX).X, math.clamp(TargetTargetVelocity.Y, 0, VCapY).Y, math.clamp(TargetTargetVelocity.Z, 0, VCapZ).Z)
         end)
     end
     if ruby.Aiming.Aimbot.Enabled and AimbotBindEnabled and ruby.Aiming.Aimbot.Smoothing.Enabled == false then
