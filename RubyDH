@@ -1001,6 +1001,40 @@ Options.TargetPredictionTextbox:OnChanged(function()
     ruby.Aiming.Target.Prediction = Options.TargetPredictionTextbox.Value
 end)
 
+TargetTab:AddToggle('TargetTabFovTggle', {
+    Text = 'Draw FOV',
+    Default = false, 
+    Tooltip = 'Enable Target FOV', 
+})
+
+Toggles.TargetTabFovTggle:OnChanged(function()
+    TargetFOvEnabled = Toggles.TargetTabFovTggle.Value
+end)
+
+Toggles.TargetTabFovTggle:AddColorPicker('LocalHighxlxxxxxxxxxxightFillColorColorPicker', {
+    Default = Color3.fromRGB(255,0,0),
+    Title = 'Target FOV Color'
+})
+
+Options.LocalHighxlxxxxxxxxxxightFillColorColorPicker:OnChanged(function()
+    TargetFovClr = Options.LocalHighxlxxxxxxxxxxightFillColorColorPicker.Value
+end)
+
+TargetTab:AddSlider('AimbotFOVSxizex', {
+    Text = 'Target FOV',
+
+    Default = 5,
+    Min = 1,
+    Max = 5,
+    Rounding = 2,
+
+    Compact = false,
+})
+d
+Options.AimbotFOVSxizex:OnChanged(function()
+    TargetFOVSize = Options.AimbotFOVSxizex.Value*100
+end)
+
 TargetTab:AddDropdown('TargetHitboxDropdown', {
     Values = { 'Head', 'HumanoidRootPart', 'UpperTorso', 'LowerTorso' },
     Default = 2,
@@ -1169,7 +1203,7 @@ TargetTab:AddToggle('DotPARENTEnabedx', {
 })
 
 Toggles.DotPARENTEnabedx:OnChanged(function()
-    azure.Aiming.Target.Dot.Enabled = Toggles.DotPARENTEnabedx.Value
+    ruby.Aiming.Target.Dot.Enabled = Toggles.DotPARENTEnabedx.Value
 end)
 
 Toggles.DotPARENTEnabedx:AddColorPicker('DotParentForColorxXD', {
@@ -1178,7 +1212,7 @@ Toggles.DotPARENTEnabedx:AddColorPicker('DotParentForColorxXD', {
 })
 
 Options.DotParentForColorxXD:OnChanged(function()
-    azure.Aiming.Target.Dot.Color = Options.DotParentForColorxXD.Value
+    ruby.Aiming.Target.Dot.Color = Options.DotParentForColorxXD.Value
 end)
 
 TargetTab:AddSlider('TargetOffsetYSlider', {
@@ -1193,7 +1227,7 @@ TargetTab:AddSlider('TargetOffsetYSlider', {
 })
 
 Options.TargetOffsetYSlider:OnChanged(function()
-    azure.Aiming.Target.Offset.Y = Options.TargetOffsetYSlider.Value
+    ruby.Aiming.Target.Offset.Y = Options.TargetOffsetYSlider.Value
 end)
 
 WristPositionTab:AddToggle('WristPosEnabledTggle', {
