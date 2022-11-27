@@ -743,11 +743,10 @@ local LocalPlayerObjs = {
 
 local RunService = game:GetService("RunService")
 
-local repo = 'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
 
-local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
-local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
-local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/derrtyb/scripts/main/LinoriaLibEdit'))()
+local ThemeManager = loadstring(game:HttpGet('https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet('https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/addons/SaveManager.lua'))()
 
 local Window = Library:CreateWindow({
     Title = 'ruby | red.#7074',
@@ -906,9 +905,9 @@ Toggles.AimbotAlertsTggl:OnChanged(function()
 end)
 
 AimbotTab:AddToggle('AimbotVelocityResolverToggle', {
-    Text = 'Velocity Resolver',
+    Text = 'Underground Resolver',
     Default = false,
-    Tooltip = 'Enable Camlock Velocity Resolver',
+    Tooltip = 'Stops from shooting floor',
 })
 
 Toggles.AimbotVelocityResolverToggle:OnChanged(function()
@@ -995,45 +994,11 @@ TargetTab:AddInput('TargetPredictionTextbox', {
     Text = 'Prediction',
     Tooltip = 'Target Prediction',
 
-    Placeholder = 'Example = 0.165', 
+    Placeholder = 'Example = 0.125', 
 })
 
 Options.TargetPredictionTextbox:OnChanged(function()
     ruby.Aiming.Target.Prediction = Options.TargetPredictionTextbox.Value
-end)
-
-TargetTab:AddToggle('TargetTabFovTggle', {
-    Text = 'Draw FOV',
-    Default = false, 
-    Tooltip = 'Enable Target FOV', 
-})
-
-Toggles.TargetTabFovTggle:OnChanged(function()
-    TargetFOvEnabled = Toggles.TargetTabFovTggle.Value
-end)
-
-Toggles.TargetTabFovTggle:AddColorPicker('LocalHighxlxxxxxxxxxxightFillColorColorPicker', {
-    Default = Color3.fromRGB(255,0,0),
-    Title = 'Target FOV Color'
-})
-
-Options.LocalHighxlxxxxxxxxxxightFillColorColorPicker:OnChanged(function()
-    TargetFovClr = Options.LocalHighxlxxxxxxxxxxightFillColorColorPicker.Value
-end)
-
-TargetTab:AddSlider('AimbotFOVSxizex', {
-    Text = 'Target FOV',
-
-    Default = 5,
-    Min = 1,
-    Max = 5,
-    Rounding = 2,
-
-    Compact = false,
-})
-
-Options.AimbotFOVSxizex:OnChanged(function()
-    TargetFOVSize = Options.AimbotFOVSxizex.Value*100
 end)
 
 TargetTab:AddDropdown('TargetHitboxDropdown', {
@@ -1258,7 +1223,9 @@ Options.WristPosOffsetSlider:OnChanged(function()
     ruby.Aiming.WristPos.Distance = Options.WristPosOffsetSlider.Value
 end)
 
-WristPositionTab:AddLabel("(Flings Wrist Around Target)")
+WristPositionTab:AddLabel("(flings wrist around target)")
+WristPositionTab:AddLabel("(when wrist is broken some")
+WristPositionTab:AddLabel("anti aims will break)")
 
 StrafeTab:AddToggle('TargetStrafeEnabled', {
     Text = 'Enable',
@@ -1344,7 +1311,7 @@ Options.TargetStrafeHeightSlid:OnChanged(function()
     ruby.Aiming.TargetStrafe.Height = Options.TargetStrafeHeightSlid.Value
 end)
 
-StrafeTab:AddLabel("FPS Based")
+StrafeTab:AddLabel("(FPS based)")
 
 ExploitsTab:AddToggle('JumpCooldownTggle', {
     Text = 'No Jump Cooldown',
@@ -1880,8 +1847,8 @@ removehitboxTab:AddDropdown('RemovalDropdown', {
     Default = 1,
     Multi = false, 
 
-    Text = 'RemovalDropdown',
-    Tooltip = 'RemoveHitboxes',
+    Text = 'Type',
+    Tooltip = 'Remove Hitboxes',
 })
 
 Options.RemovalDropdown:OnChanged(function()
@@ -2137,7 +2104,7 @@ end)
 ESPTab:AddToggle('UnlockedTracerEnabled', {
     Text = 'Unlock Tracer',
     Default = false, 
-    Tooltip = 'Unlock Tracer Enabled', 
+    Tooltip = 'Connects Tracer to Mouse', 
 })
 
 Toggles.UnlockedTracerEnabled:OnChanged(function()
@@ -2502,7 +2469,7 @@ end)
 
 CrosshairTab:AddLabel('Middle'):AddColorPicker('CrosshairMiddle', {
     Default = Color3.fromRGB(255,255,255),
-    Title = 'Middle', 
+    Title = 'Middle Color', 
 })
 
 Options.CrosshairMiddle:OnChanged(function()
@@ -2691,7 +2658,7 @@ end)
         end
     end)
 
-BulletTab:AddLabel("(Recommended for Camlock)")
+BulletTab:AddLabel("(recommended for camlock)")
 
 TeleportTab:AddDropdown('SchoolDropdown', {
     Values = { 'None','Food', 'Roof', 'Secret Room' },
@@ -2865,7 +2832,7 @@ AnimationsTab:AddButton('Perm Animation Pack', function()
     repeat
         wait()
     until game:IsLoaded() and game.Players.LocalPlayer.Character:FindFirstChild("FULLY_LOADED_CHAR") and game.Players.LocalPlayer.PlayerGui.MainScreenGui:FindFirstChild("AnimationPack")
-    
+
     if game.ReplicatedStorage.ClientAnimations:FindFirstChild("Lean") then
         game.ReplicatedStorage.ClientAnimations.Lean:Destroy()
     end
@@ -3076,7 +3043,7 @@ AnimationsTab:AddButton('Perm Animation Pack', function()
         end)
     end
     AnimationPack(game.Players.LocalPlayer.Character)
-    game.Players.LocalPlayer.CharacterAdded:Connect(AnimationPack)    
+    game.Players.LocalPlayer.CharacterAdded:Connect(AnimationPack)  
 end)
 
 AnimationsTab:AddDropdown('RunAnimations', {
@@ -3201,7 +3168,7 @@ Options.FallAnimations:OnChanged(function()
         end
     end)
 end)
-AnimationsTab:AddLabel("don't change anim while moving")
+AnimationsTab:AddLabel("(dont change anim while moving)")
 
 FunTab:AddButton('Invis Ball', function()
     local UserInputService = game:GetService("UserInputService")
@@ -4930,7 +4897,7 @@ end)
 
 OtherGroupbox:AddToggle('RainbowModeXD', {
     Text = 'Rainbow Theme',
-    Default = true,
+    Default = false,
     Tooltip = 'Enable Rainbow Mode',
 })
 
