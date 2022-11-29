@@ -4393,11 +4393,14 @@ FunTab:AddToggle('SpamCall', {
 
 Toggles.SpamCall:OnChanged(function()
     ruby.Misc.SpamCall = Toggles.SpamCall.Value
-    while spamcall == true do
-        wait()
-        for i, v in pairs(game.Players:GetPlayers()) do
-            task.wait()
-            game.ReplicatedStorage.MainEvent:FireServer("PhoneCall", v.Name)
+    if Toggles.SpamCall.Value then
+        while Toggles.SpamCall.Value do
+            wait()
+            for i, v in pairs(game.Players:GetPlayers()) do
+                task.wait()
+                game.ReplicatedStorage.MainEvent:FireServer("PhoneCall", v.Name)
+            end
+            if Toggles.SpamCall.Value == false then break end
         end
     end
 end)
@@ -4998,10 +5001,6 @@ RunService.Heartbeat:Connect(function ()
     else
         PastedSources = false
     end
-    if ruby.Misc.SpamCall then
-        spamcall = true
-    else
-        spamcall = false
     if ruby.Blatant.AntiStomp.Enabled then
         if LocalPlayer.Character.Humanoid.Health <= 1 then
             if ruby.Blatant.AntiStomp.Type == "Remove Character" then
