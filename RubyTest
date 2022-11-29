@@ -4793,26 +4793,30 @@ end)
 RunService.RenderStepped:Connect(function ()
     if ruby.Aiming.Aimbot.VelocityResolver then
         pcall(function ()
-            AimbotTargetVelocity = AimbotTarget.Character.HumanoidRootPart.Velocity
-            AimbotTarget.Character.HumanoidRootPart.Velocity = Vector3.new(AimbotTargetVelocity.X, 0, AimbotTargetVelocity.Z)
+            local AimbotTargetVelocity = AimbotTarget.Character.HumanoidRootPart
+            AimbotTargetVelocity.Velocity = Vector3.new(AimbotTargetVelocity.Velocity.X, 0, AimbotTargetVelocity.Velocity.Z)
+            AimbotTargetVelocity.AssemblyLinearVelocity = Vector3.new(AimbotTargetVelocity.Velocity.X, 0, AimbotTargetVelocity.Velocity.Z)
         end)
     end
     if ruby.Blatant.Resolver.UnderGroundResolver then
         pcall(function ()
-            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart.Velocity
-            TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(TargetTargetVelocity.X, 0, TargetTargetVelocity.Z)
+            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
         end)
     end
     if ruby.Blatant.Resolver.ZeroPred then
         pcall(function ()
-            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart.Velocity
-            TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new(0, 0, 0)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(TargetTargetVelocity, TargetTargetVelocity, TargetTargetVelocity)
         end)
     end
     if ruby.Blatant.Resolver.VelocityCap then
         pcall(function ()
-            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart.Velocity
-            TargetTarget.Character.HumanoidRootPart.Velocity = Vector3.new(math.clamp(TargetTargetVelocity.X, 0, VCapX).X, math.clamp(TargetTargetVelocity.Y, 0, VCapY).Y, math.clamp(TargetTargetVelocity.Z, 0, VCapZ).Z)
+            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new(math.clamp(TargetTargetVelocity.Velocity.X, 0, VCapX).X, math.clamp(TargetTargetVelocity.Velocity.Y, 0, VCapY).Y, math.clamp(TargetTargetVelocity.Velocity.Z, 0, VCapZ).Z)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(math.clamp(TargetTargetVelocity.Velocity.X, 0, VCapX).X, math.clamp(TargetTargetVelocity.Velocity.Y, 0, VCapY).Y, math.clamp(TargetTargetVelocity.Velocity.Z, 0, VCapZ).Z)
         end)
     end
     if ruby.Aiming.Aimbot.Enabled and AimbotBindEnabled and ruby.Aiming.Aimbot.Smoothing.Enabled == false then
