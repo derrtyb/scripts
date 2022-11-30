@@ -69,7 +69,7 @@ LoadingText.BackgroundTransparency = 1.000
 LoadingText.Position = UDim2.new(0.0775623247, 0, 0.286810249, 0)
 LoadingText.Size = UDim2.new(0, 312, 0, 25)
 LoadingText.Font = Enum.Font.Code
-LoadingText.Text = "welcome"
+LoadingText.Text = "checking for updates.."
 LoadingText.TextColor3 = Color3.fromRGB(163, 163, 163)
 LoadingText.TextScaled = true
 LoadingText.TextSize = 14.000
@@ -1275,7 +1275,7 @@ end)
 
 WristPositionTab:AddLabel("(flings wrist around target)")
 WristPositionTab:AddLabel("(when wrist is broken some")
-WristPositionTab:AddLabel("anti aims will break)")
+WristPositionTab:AddLabel("anti aims will not work)")
 
 StrafeTab:AddToggle('TargetStrafeEnabled', {
     Text = 'Enable',
@@ -1936,13 +1936,7 @@ SpinbotTab:AddToggle('RotVelocitySpinbot', {
 })
 
 Toggles.RotVelocitySpinbot:OnChanged(function()
-    if Toggles.RotVelocitySpinbot.Value then
-        RotVelHook = RunService.Stepped:Connect(function ()
-            LocalPlayer.Character.HumanoidRootPart.RotVelocity = Vector3.new(Spinbot_X,Spinbot_Y,Spinbot_Z)
-        end)
-    elseif Toggles.RotVelocitySpinbot.Value == false and RotVelHook then
-        RotVelHook:Disconnect()
-    end
+    spinnybot = Toggles.RotVelocitySpinbot.Value
 end)
 
 SpinbotTab:AddSlider('SpinbotY', {
@@ -2950,7 +2944,7 @@ AnimationsTab:AddButton('Perm Animation Pack', function()
     repeat
         wait()
     until game:IsLoaded() and game.Players.LocalPlayer.Character:FindFirstChild("FULLY_LOADED_CHAR") and game.Players.LocalPlayer.PlayerGui.MainScreenGui:FindFirstChild("AnimationPack")
-
+    
     if game.ReplicatedStorage.ClientAnimations:FindFirstChild("Lean") then
         game.ReplicatedStorage.ClientAnimations.Lean:Destroy()
     end
@@ -3161,8 +3155,10 @@ AnimationsTab:AddButton('Perm Animation Pack', function()
         end)
     end
     AnimationPack(game.Players.LocalPlayer.Character)
-    game.Players.LocalPlayer.CharacterAdded:Connect(AnimationPack)  
+    game.Players.LocalPlayer.CharacterAdded:Connect(AnimationPack)
 end)
+
+
 
 AnimationsTab:AddDropdown('RunAnimations', {
     Values = { 'None','Rthro','Werewolf','Zombie','Ninja','Toy','Superhero','OldSchool','Cartoony','Stylish','Vampire','Bubbly','Robot','Astronaut', },
@@ -4937,6 +4933,10 @@ RunService.Heartbeat:Connect(function ()
             end
         end
     end
+    if Toggles.RotVelocitySpinbot.Value then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(Spinbot_Y), 0)        
+    end
     if ruby.Blatant.Exploits.JumpCooldown then
         LocalPlayer.Character.Humanoid.UseJumpPower = false
     else 
@@ -4951,6 +4951,11 @@ RunService.Heartbeat:Connect(function ()
         if LocalPlayer.Character.BodyEffects.Reload.Value == true then
             LocalPlayer.Character.BodyEffects.Reload.Value = false
         end
+    end
+    if Toggles.FlyTggle.Value then
+        FlyOn = true
+    else
+        FlyOn = false
     end
     if ruby.Blatant.Exploits.AutoStomp then
         game.ReplicatedStorage.MainEvent:FireServer("Stomp")
