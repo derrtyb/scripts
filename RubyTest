@@ -4952,11 +4952,6 @@ RunService.Heartbeat:Connect(function ()
             LocalPlayer.Character.BodyEffects.Reload.Value = false
         end
     end
-    if Toggles.FlyTggle.Value then
-        FlyOn = true
-    else
-        FlyOn = false
-    end
     if ruby.Blatant.Exploits.AutoStomp then
         game.ReplicatedStorage.MainEvent:FireServer("Stomp")
     end
