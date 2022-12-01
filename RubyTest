@@ -1507,7 +1507,7 @@ LockDetectorTab:AddButton('Lock Detector (f to use)', function()
         placemarker.CanCollide = false
         placemarker.Size = Vector3.new(0.1, 0.1, 0.1)
         placemarker.Transparency = 1
-        makemarker(placemarker, placemarker, Color3.fromRGB(255, 255, 255), 1, 0)
+        makemarker(placemarker, placemarker, Color3.fromRGB(0, 221, 255), 1, 0)
     
       game:GetService"RunService".Stepped:connect(function()
       if enableddd and Plr.Character then
