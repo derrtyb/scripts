@@ -1641,7 +1641,7 @@ Toggles.ZeroPred:OnChanged(function()
 end)
 
 TargetResolverTab:AddToggle('VelocityCap', {
-    Text = 'Velocity Cap',
+    Text = 'Velocity Cap (WIP)',
     Default = false, 
     Tooltip = 'Caps Aimlock Velocity', 
 })
