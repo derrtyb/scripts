@@ -4810,14 +4810,18 @@ mt.__namecall = newcclosure(function(...)
 end)
 
 RunService.RenderStepped:Connect(function ()
-    if ruby.Blatant.Resolver.ZeroPred then
-        ruby.Aiming.Target.Prediction = 0
-    end
     if ruby.Aiming.Aimbot.VelocityResolver then
         pcall(function ()
             local AimbotTargetVelocity = AimbotTarget.Character.HumanoidRootPart
             AimbotTargetVelocity.Velocity = Vector3.new(AimbotTargetVelocity.Velocity.X, 0, AimbotTargetVelocity.Velocity.Z)
             AimbotTargetVelocity.AssemblyLinearVelocity = Vector3.new(AimbotTargetVelocity.Velocity.X, 0, AimbotTargetVelocity.Velocity.Z)
+        end)
+    end
+    if ruby.Blatant.Resolver.VelocityCap then
+        pcall(function ()
+            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new((math.clamp(TargetTargetVelocity.Velocity.X, 0, VCapX)).X, (math.clamp(TargetTargetVelocity.Velocity.Y, 0, VCapY)).Y, (math.clamp(TargetTargetVelocity.Velocity.Z, 0, VCapZ)).Z)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new((math.clamp(TargetTargetVelocity.Velocity.X, 0, VCapX)).X, (math.clamp(TargetTargetVelocity.Velocity.Y, 0, VCapY)).Y, (math.clamp(TargetTargetVelocity.Velocity.Z, 0, VCapZ)).Z)
         end)
     end
     if ruby.Aiming.Aimbot.Enabled and AimbotBindEnabled and ruby.Aiming.Aimbot.Smoothing.Enabled == false then
@@ -4971,11 +4975,11 @@ RunService.Heartbeat:Connect(function ()
             TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
         end)
     end
-    if ruby.Blatant.Resolver.VelocityCap then
+    if ruby.Blatant.Resolver.ZeroPred then
         pcall(function ()
             local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-            TargetTargetVelocity.Velocity = Vector3.new((math.clamp(TargetTargetVelocity.Velocity.X, 0, VCapX)).X, (math.clamp(TargetTargetVelocity.Velocity.Y, 0, VCapY)).Y, (math.clamp(TargetTargetVelocity.Velocity.Z, 0, VCapZ)).Z)
-            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new((math.clamp(TargetTargetVelocity.Velocity.X, 0, VCapX)).X, (math.clamp(TargetTargetVelocity.Velocity.Y, 0, VCapY)).Y, (math.clamp(TargetTargetVelocity.Velocity.Z, 0, VCapZ)).Z)
+            TargetTargetVelocity.Velocity = Vector3.new(0, 0, 0)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
         end)
     end
     if ruby.Blatant.AntiAim.PredBreaker then
