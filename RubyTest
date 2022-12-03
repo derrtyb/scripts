@@ -4820,8 +4820,8 @@ RunService.RenderStepped:Connect(function ()
     if ruby.Blatant.Resolver.VelocityCap then
         pcall(function ()
             local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-            TargetTargetVelocity.Velocity = Vector3.new((math.clamp(TargetTargetVelocity.Velocity.X, 0, VCapX)).X, (math.clamp(TargetTargetVelocity.Velocity.Y, 0, VCapY)).Y, (math.clamp(TargetTargetVelocity.Velocity.Z, 0, VCapZ)).Z)
-            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new((math.clamp(TargetTargetVelocity.Velocity.X, 0, VCapX)).X, (math.clamp(TargetTargetVelocity.Velocity.Y, 0, VCapY)).Y, (math.clamp(TargetTargetVelocity.Velocity.Z, 0, VCapZ)).Z)
+            TargetTargetVelocity.Velocity = Vector3.new(math.clamp(TargetTargetVelocity.Velocity.X, -20000, VCapX).X, math.clamp(TargetTargetVelocity.Velocity.Y, -20000, VCapY).Y, math.clamp(TargetTargetVelocity.Velocity.Z, -20000, VCapZ).Z)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(math.clamp(TargetTargetVelocity.Velocity.X, -20000, VCapX).X, math.clamp(TargetTargetVelocity.Velocity.Y, -20000, VCapY).Y, math.clamp(TargetTargetVelocity.Velocity.Z, -20000, VCapZ).Z)
         end)
     end
     if ruby.Aiming.Aimbot.Enabled and AimbotBindEnabled and ruby.Aiming.Aimbot.Smoothing.Enabled == false then
