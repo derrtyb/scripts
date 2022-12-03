@@ -1507,7 +1507,7 @@ LockDetectorTab:AddButton('Lock Detector (f to use)', function()
         placemarker.CanCollide = false
         placemarker.Size = Vector3.new(0.1, 0.1, 0.1)
         placemarker.Transparency = 1
-        makemarker(placemarker, placemarker, Color3.fromRGB(255, 255, 255), 1, 0)
+        makemarker(placemarker, placemarker, Color3.fromRGB(0, 221, 255), 1, 0)
     
       game:GetService"RunService".Stepped:connect(function()
       if enableddd and Plr.Character then
@@ -1641,7 +1641,7 @@ Toggles.ZeroPred:OnChanged(function()
 end)
 
 TargetResolverTab:AddToggle('VelocityCap', {
-    Text = 'Velocity Cap',
+    Text = 'Velocity Cap (WIP)',
     Default = false, 
     Tooltip = 'Caps Aimlock Velocity', 
 })
@@ -4817,25 +4817,11 @@ RunService.RenderStepped:Connect(function ()
             AimbotTargetVelocity.AssemblyLinearVelocity = Vector3.new(AimbotTargetVelocity.Velocity.X, 0, AimbotTargetVelocity.Velocity.Z)
         end)
     end
-    if ruby.Blatant.Resolver.UnderGroundResolver then
-        pcall(function ()
-            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
-            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
-        end)
-    end
-    if ruby.Blatant.Resolver.ZeroPred then
-        pcall(function ()
-            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-            TargetTargetVelocity.Velocity = Vector3.new(0, 0, 0)
-            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(TargetTargetVelocity, TargetTargetVelocity, TargetTargetVelocity)
-        end)
-    end
     if ruby.Blatant.Resolver.VelocityCap then
         pcall(function ()
             local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-            TargetTargetVelocity.Velocity = Vector3.new(math.clamp(TargetTargetVelocity.Velocity.X, 0, VCapX).X, math.clamp(TargetTargetVelocity.Velocity.Y, 0, VCapY).Y, math.clamp(TargetTargetVelocity.Velocity.Z, 0, VCapZ).Z)
-            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(math.clamp(TargetTargetVelocity.Velocity.X, 0, VCapX).X, math.clamp(TargetTargetVelocity.Velocity.Y, 0, VCapY).Y, math.clamp(TargetTargetVelocity.Velocity.Z, 0, VCapZ).Z)
+            TargetTargetVelocity.Velocity = Vector3.new(math.clamp(TargetTargetVelocity.Velocity.X, -20000, VCapX).X, math.clamp(TargetTargetVelocity.Velocity.Y, -20000, VCapY).Y, math.clamp(TargetTargetVelocity.Velocity.Z, -20000, VCapZ).Z)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(math.clamp(TargetTargetVelocity.Velocity.X, -20000, VCapX).X, math.clamp(TargetTargetVelocity.Velocity.Y, -20000, VCapY).Y, math.clamp(TargetTargetVelocity.Velocity.Z, -20000, VCapZ).Z)
         end)
     end
     if ruby.Aiming.Aimbot.Enabled and AimbotBindEnabled and ruby.Aiming.Aimbot.Smoothing.Enabled == false then
@@ -4980,6 +4966,20 @@ RunService.Heartbeat:Connect(function ()
                     end
                 end
             end
+        end)
+    end
+    if ruby.Blatant.Resolver.UnderGroundResolver then
+        pcall(function ()
+            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
+        end)
+    end
+    if ruby.Blatant.Resolver.ZeroPred then
+        pcall(function ()
+            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new(0, 0, 0)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
         end)
     end
     if ruby.Blatant.AntiAim.PredBreaker then
