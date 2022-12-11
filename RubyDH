@@ -1160,7 +1160,7 @@ HealthBar.BorderSizePixel = 0
 HealthBar.Position = UDim2.new(-0.00336122862, 0, 0.164894029, 0)
 HealthBar.Size = UDim2.new(0, 130, 0, 19)
 
-UIGradienta_4.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(227, 159, 159)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(156, 88, 88))}
+UIGradienta_4.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(159, 227, 170)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(88, 156, 95))}
 UIGradienta_4.Rotation = 90
 UIGradienta_4.Parent = HealthBar
 
