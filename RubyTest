@@ -633,6 +633,7 @@ local ruby = {
             Prediction = nil,
             Hitbox = nil,
             Alerts = nil,
+            Randomize = nil,
             Tracer = {
                 Enabled = nil,
                 Color = nil,
@@ -646,6 +647,7 @@ local ruby = {
             },
             LookAt = nil,
             ViewAt = nil,
+            Stats = nil,
             FakeHitbox = {
                 Enabled = nil,
                 Color = nil,
@@ -779,7 +781,7 @@ local AntiStompTab = Tabs.Blatant:AddLeftGroupbox('Anti-Stomp')
 local FakeLagTab = Tabs.Blatant:AddRightGroupbox('Fake Lag')
 local AntiAimTab = Tabs.Blatant:AddRightGroupbox('Anti Aim')
 local SpinbotTab = Tabs.Blatant:AddLeftGroupbox('Spinbot')
-local removehitboxTab = Tabs.Blatant:AddRightGroupbox('Remove Hitbox')
+local removehitboxTab = Tabs.Blatant:AddRightGroupbox('Remove Bodyparts')
 
 local LocalTab = Tabs.Visuals:AddRightGroupbox('Character')
 local FOVTag = Tabs.Visuals:AddRightGroupbox('FOV')
@@ -870,7 +872,7 @@ end)
 AimbotTab:AddSlider('AimbotFOVSizex', {
     Text = 'Camlock FOV',
 
-    Default = 5,
+    Default = 1,
     Min = 1,
     Max = 5,
     Rounding = 2,
@@ -887,8 +889,8 @@ AimbotTab:AddDropdown('AimbotHitboxDropdownn', {
     Default = 2,
     Multi = false,
 
-    Text = 'Hitbox',
-    Tooltip = 'Camlock Hitbox',
+    Text = 'Hitpart',
+    Tooltip = 'Camlock Hitpart',
 })
 
 Options.AimbotHitboxDropdownn:OnChanged(function()
@@ -1002,25 +1004,6 @@ Options.TargetPredictionTextbox:OnChanged(function()
     ruby.Aiming.Target.Prediction = Options.TargetPredictionTextbox.Value
 end)
 
-TargetTab:AddToggle('TargetTabFovTggle', {
-    Text = 'Draw FOV',
-    Default = false, 
-    Tooltip = 'Enable Target FOV', 
-})
-
-Toggles.TargetTabFovTggle:OnChanged(function()
-    TargetFOvEnabled = Toggles.TargetTabFovTggle.Value
-end)
-
-Toggles.TargetTabFovTggle:AddColorPicker('LocalHighxlxxxxxxxxxxightFillColorColorPicker', {
-    Default = Color3.fromRGB(255,0,0),
-    Title = 'Target FOV Color'
-})
-
-Options.LocalHighxlxxxxxxxxxxightFillColorColorPicker:OnChanged(function()
-    TargetFovClr = Options.LocalHighxlxxxxxxxxxxightFillColorColorPicker.Value
-end)
-
 TargetTab:AddSlider('AimbotFOVSxizex', {
     Text = 'Target FOV',
 
@@ -1041,12 +1024,32 @@ TargetTab:AddDropdown('TargetHitboxDropdown', {
     Default = 2,
     Multi = false,
 
-    Text = 'Hitbox',
-    Tooltip = 'Target Hitbox',
+    Text = 'Hitpart',
+    Tooltip = 'Target Hitpart',
 })
 
 Options.TargetHitboxDropdown:OnChanged(function()
     ruby.Aiming.Target.Hitbox = Options.TargetHitboxDropdown.Value
+end)
+
+TargetTab:AddToggle('Randomize', {
+    Text = 'Randomize Hitparts',
+    Default = false,
+    Tooltip = 'Randomizes Hitparts',
+})
+
+Toggles.Randomize:OnChanged(function()
+    ruby.Aiming.Target.Randomize = Toggles.Randomize.Value
+end)
+
+game:GetService("RunService").Stepped:Connect(function()
+    if Toggles.Randomize.Value then
+        wait(0.6)
+        player_gayparts = {"Head","UpperTorso","LowerTorso","HumanoidRootPart","RightUpperLeg","RightLowerLeg","LeftUpperLeg","LeftLowerLeg","RightUpperArm","RightLowerArm","LeftLowerArm","LeftUpperArm"}
+        ruby.Aiming.Target.Hitbox = player_gayparts[math.random(1,#player_gayparts)]
+    else
+        ruby.Aiming.Target.Hitbox = Options.TargetHitboxDropdown.Value
+    end
 end)
 
 TargetTab:AddToggle('TargetAlertsTggl', {
@@ -1077,6 +1080,126 @@ TargetTab:AddToggle('TargetViewAtTggle', {
 
 Toggles.TargetViewAtTggle:OnChanged(function()
     ruby.Aiming.Target.ViewAt = Toggles.TargetViewAtTggle.Value
+end)
+
+TargetTab:AddToggle('Stats', {
+    Text = 'Stats',
+    Default = false,
+    Tooltip = 'Enable Target GUI',
+})
+
+Toggles.Stats:OnChanged(function()
+    ruby.Aiming.Target.Stats = Toggles.Stats.Value
+end)
+
+local Ruby_TargetStats = Instance.new("ScreenGui")
+local Background = Instance.new("Frame")
+local Picture = Instance.new("ImageLabel")
+local Top = Instance.new("Frame")
+local UIGradienta = Instance.new("UIGradient")
+local UIGradienta_2 = Instance.new("UIGradient")
+local HealthBarBackground = Instance.new("Frame")
+local UIGradienta_3 = Instance.new("UIGradient")
+local HealthBar = Instance.new("Frame")
+local UIGradienta_4 = Instance.new("UIGradient")
+local NameOfTarget = Instance.new("TextLabel")
+
+spawn(function()
+Ruby_TargetStats.Name = "Ruby_TargetStats"
+Ruby_TargetStats.Parent = game.CoreGui
+Ruby_TargetStats.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Background.Name = "Background"
+Background.Parent = Ruby_TargetStats
+Background.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Background.BorderSizePixel = 0
+Background.Position = UDim2.new(0.388957828, 0, 0.700122297, 0)
+Background.Size = UDim2.new(0, 358, 0, 71)
+Background.Visible = false
+
+Picture.Name = "Picture"
+Picture.Parent = Background
+Picture.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Picture.BorderSizePixel = 0
+Picture.Position = UDim2.new(0.0279329624, 0, 0.0704225376, 0)
+Picture.Size = UDim2.new(0, 59, 0, 59)
+Picture.Transparency = 1
+Picture.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+
+Top.Name = "Top"
+Top.Parent = Background
+Top.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Top.BorderSizePixel = 0
+Top.Position = UDim2.new(0, 0, -0.101449274, 0)
+Top.Size = UDim2.new(0, 358, 0, 7)
+
+UIGradienta.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(254, 254, 254)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(36, 36, 36))}
+UIGradienta.Rotation = 90
+UIGradienta.Parent = Top
+
+UIGradienta_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(52, 52, 52)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))}
+UIGradienta_2.Rotation = 90
+UIGradienta_2.Parent = Background
+
+HealthBarBackground.Name = "HealthBarBackground"
+HealthBarBackground.Parent = Background
+HealthBarBackground.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+HealthBarBackground.BorderSizePixel = 0
+HealthBarBackground.Position = UDim2.new(0.215083793, 0, 0.348234326, 0)
+HealthBarBackground.Size = UDim2.new(0, 270, 0, 19)
+HealthBarBackground.Transparency = 1
+
+UIGradienta_3.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(58, 58, 58)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(30, 30, 30))}
+UIGradienta_3.Rotation = 90
+UIGradienta_3.Parent = HealthBarBackground
+
+HealthBar.Name = "HealthBar"
+HealthBar.Parent = HealthBarBackground
+HealthBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+HealthBar.BorderSizePixel = 0
+HealthBar.Position = UDim2.new(-0.00336122862, 0, 0.164894029, 0)
+HealthBar.Size = UDim2.new(0, 130, 0, 19)
+
+UIGradienta_4.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(227, 159, 159)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(156, 88, 88))}
+UIGradienta_4.Rotation = 90
+UIGradienta_4.Parent = HealthBar
+
+NameOfTarget.Name = "NameOfTarget"
+NameOfTarget.Parent = Background
+NameOfTarget.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+NameOfTarget.BackgroundTransparency = 1.000
+NameOfTarget.Position = UDim2.new(0.220670387, 0, 0.0704225376, 0)
+NameOfTarget.Size = UDim2.new(0, 268, 0, 19)
+NameOfTarget.Font = Enum.Font.Code
+NameOfTarget.TextColor3 = Color3.fromRGB(255, 255, 255)
+NameOfTarget.TextScaled = true
+NameOfTarget.TextSize = 14.000
+NameOfTarget.TextStrokeTransparency = 0.000
+NameOfTarget.TextWrapped = true
+end)
+
+local IsAlive = function(GetPlayer)
+    return GetPlayer and GetPlayer.Character and GetPlayer.Character:FindFirstChild("HumanoidRootPart") ~= nil and GetPlayer.Character:FindFirstChild("Humanoid") ~= nil and GetPlayer.Character:FindFirstChild("Head") ~= nil and true or false
+end
+
+spawn(function()
+    while wait() do
+        if ruby.Aiming.Target.Stats and ruby.Aiming.Target.Enabled and TargetBindEnabled then
+            if TargetTarget and IsAlive(TargetTarget) then
+                Background.Visible = true
+                NameOfTarget.Text = tostring(TargetTarget.Character.Humanoid.DisplayName).." ("..tostring(TargetTarget.Name)..")"
+                Picture.Image  = "rbxthumb://type=AvatarHeadShot&id=" ..TargetTarget.UserId.. "&w=420&h=420"
+                HealthBar:TweenSize(UDim2.new(TargetTarget.Character.Humanoid.Health / TargetTarget.Character.Humanoid.MaxHealth, 0, 1, 0), "In", "Linear", 0.25)
+                spawn(function()
+                    if ruby.Aiming.Target.Stats == false then
+                        Background.Visible = false
+                    end
+                end)
+            end
+        else
+            Background.Visible = false
+        end
+    end
 end)
 
 TargetTab:AddToggle('PingbasedTggle', {
@@ -1722,7 +1845,7 @@ end)
 AntiAimTab:AddToggle('PredBreaker', {
     Text = 'Prediction Breaker',
     Default = false, 
-    Tooltip = 'TURN "NO SLOWDOWN" OFF TO USE', 
+    Tooltip = 'MAKE SURE "NO SLOWDOWN" IS OFF', 
 })
 
 Toggles.PredBreaker:OnChanged(function()
@@ -1960,7 +2083,7 @@ removehitboxTab:AddDropdown('RemovalDropdown', {
     Multi = false, 
 
     Text = 'Type',
-    Tooltip = 'Remove Hitboxes',
+    Tooltip = 'Remove Bodyparts',
 })
 
 Options.RemovalDropdown:OnChanged(function()
@@ -4901,16 +5024,6 @@ RunService.Heartbeat:Connect(function ()
         circleinstance.Color = AimbotFOVClr
     else
         circleinstance.Visible = false
-    end
-    if TargetFOvEnabled then
-        circleinstancex.Position = Vector2.new(game.Players.LocalPlayer:GetMouse().X, game.Players.LocalPlayer:GetMouse().Y + game:GetService("GuiService"):GetGuiInset().Y)
-        circleinstancex.Visible = true
-        circleinstancex.Thickness = 2
-        circleinstancex.Radius = TargetFOVSize
-        circleinstancex.NumSides = 60
-        circleinstancex.Color = TargetFovClr
-    else
-        circleinstancex.Visible = false
     end
     if ruby.Blatant.CFrame.Enabled and CFrameBindEnabled then
         if LocalPlayer.Character.Humanoid.MoveDirection.Magnitude > 0 then
