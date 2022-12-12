@@ -551,7 +551,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
                 end
 
                 if taffy_esp.Toolsshow.enable then
-                      local Equipped = v.Character:FindFirstChildOfClass("Tool") and v.Character:FindFirstChildOfClass("Tool").Name or "None"
+                      local Equipped = v.Character:FindFirstChildOfClass("Tool") and v.Character:FindFirstChildOfClass("Tool").Name or ""
                     toolshow.Text = Equipped
                     toolshow.Position = Vector2.new(workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).X, workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).Y + 30)
                     toolshow.Color = getgenv().taffy_esp.Toolsshow.color
@@ -779,7 +779,7 @@ local FlyTab = Tabs.Blatant:AddRightGroupbox('Fly')
 local CFrameTab = Tabs.Blatant:AddRightGroupbox('CFrame')
 local AntiStompTab = Tabs.Blatant:AddLeftGroupbox('Anti-Stomp')
 local FakeLagTab = Tabs.Blatant:AddRightGroupbox('Fake Lag')
-local AntiAimTab = Tabs.Blatant:AddRightGroupbox('Anti Aim')
+local AntiAimTab = Tabs.Blatant:AddRightGroupbox('Anti Aim (use one at a time)')
 local SpinbotTab = Tabs.Blatant:AddLeftGroupbox('Spinbot')
 local removehitboxTab = Tabs.Blatant:AddRightGroupbox('Remove Bodyparts')
 
@@ -1035,7 +1035,7 @@ end)
 TargetTab:AddToggle('Randomize', {
     Text = 'Randomize Hitparts',
     Default = false,
-    Tooltip = 'Randomizes Hitparts',
+    Tooltip = 'will make you miss shots',
 })
 
 Toggles.Randomize:OnChanged(function()
@@ -1045,7 +1045,7 @@ end)
 game:GetService("RunService").Stepped:Connect(function()
     if Toggles.Randomize.Value then
         wait(0.6)
-        player_gayparts = {"Head","UpperTorso","LowerTorso","HumanoidRootPart","RightUpperLeg","RightLowerLeg","LeftUpperLeg","LeftLowerLeg","RightUpperArm","RightLowerArm","LeftLowerArm","LeftUpperArm"}
+        player_gayparts = {"Head","UpperTorso","LowerTorso","RightUpperLeg","RightLowerLeg","LeftUpperLeg","LeftLowerLeg","RightUpperArm","RightLowerArm","LeftLowerArm","LeftUpperArm"}
         ruby.Aiming.Target.Hitbox = player_gayparts[math.random(1,#player_gayparts)]
     else
         ruby.Aiming.Target.Hitbox = Options.TargetHitboxDropdown.Value
@@ -1101,6 +1101,8 @@ local UIGradienta_2 = Instance.new("UIGradient")
 local HealthBarBackground = Instance.new("Frame")
 local UIGradienta_3 = Instance.new("UIGradient")
 local HealthBar = Instance.new("Frame")
+local HealthText = Instance.new("TextLabel")
+local HealthIcon = Instance.new("ImageButton")
 local UIGradienta_4 = Instance.new("UIGradient")
 local NameOfTarget = Instance.new("TextLabel")
 
@@ -1133,7 +1135,7 @@ Top.BorderSizePixel = 0
 Top.Position = UDim2.new(0, 0, -0.101449274, 0)
 Top.Size = UDim2.new(0, 358, 0, 7)
 
-UIGradienta.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(254, 254, 254)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(36, 36, 36))}
+UIGradienta.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(15, 15, 15)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(93, 93, 93))}
 UIGradienta.Rotation = 90
 UIGradienta.Parent = Top
 
@@ -1157,8 +1159,29 @@ HealthBar.Name = "HealthBar"
 HealthBar.Parent = HealthBarBackground
 HealthBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 HealthBar.BorderSizePixel = 0
-HealthBar.Position = UDim2.new(-0.00336122862, 0, 0.164894029, 0)
+HealthBar.Position = UDim2.new(-0.00336000000, 0.05, 0.164894029, 0)
 HealthBar.Size = UDim2.new(0, 130, 0, 19)
+
+HealthText.Name = "HealthText"
+HealthText.Parent = HealthBar
+HealthText.BackgroundColor3 = Color3.fromRGB(118, 118, 118)
+HealthText.BackgroundTransparency = 1.000
+HealthText.Size = UDim2.new(0, 170, 0, 22)
+HealthText.Font = Enum.Font.Roboto
+HealthText.Text = "100"
+HealthText.TextColor3 = Color3.fromRGB(255, 255, 255)
+HealthText.TextSize = 20.000
+HealthText.TextXAlignment = Enum.TextXAlignment.Right
+
+HealthIcon.Name = "HealthIcon"
+HealthIcon.Parent = HealthBar
+HealthIcon.BackgroundTransparency = 1.000
+HealthIcon.Position = UDim2.new(0.0900000036, -0.05, 0.119999997, 0)
+HealthIcon.Size = UDim2.new(0, 15, 0, 15)
+HealthIcon.ZIndex = 2
+HealthIcon.Image = "rbxassetid://3926305904"
+HealthIcon.ImageRectOffset = Vector2.new(964, 444)
+HealthIcon.ImageRectSize = Vector2.new(36, 36)
 
 UIGradienta_4.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(159, 227, 170)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(88, 156, 95))}
 UIGradienta_4.Rotation = 90
@@ -1178,6 +1201,12 @@ NameOfTarget.TextStrokeTransparency = 0.000
 NameOfTarget.TextWrapped = true
 end)
 
+local Rubyyy = {
+    Round = function(num, numDecimalPlaces)
+        return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
+    end
+}
+
 local IsAlive = function(GetPlayer)
     return GetPlayer and GetPlayer.Character and GetPlayer.Character:FindFirstChild("HumanoidRootPart") ~= nil and GetPlayer.Character:FindFirstChild("Humanoid") ~= nil and GetPlayer.Character:FindFirstChild("Head") ~= nil and true or false
 end
@@ -1187,9 +1216,11 @@ spawn(function()
         if ruby.Aiming.Target.Stats and ruby.Aiming.Target.Enabled and TargetBindEnabled then
             if TargetTarget and IsAlive(TargetTarget) then
                 Background.Visible = true
+                local NewHealth = TargetTarget.Character.Humanoid.Health / TargetTarget.Character.Humanoid.MaxHealth
                 NameOfTarget.Text = tostring(TargetTarget.Character.Humanoid.DisplayName).." ("..tostring(TargetTarget.Name)..")"
                 Picture.Image  = "rbxthumb://type=AvatarHeadShot&id=" ..TargetTarget.UserId.. "&w=420&h=420"
                 HealthBar:TweenSize(UDim2.new(TargetTarget.Character.Humanoid.Health / TargetTarget.Character.Humanoid.MaxHealth, 0, 1, 0), "In", "Linear", 0.25)
+                HealthText.Text = (Rubyyy.Round(NewHealth * 100, 2)) .. "/" .. (Rubyyy.Round(TargetTarget.Character.Humanoid.MaxHealth * 1, 2))
                 spawn(function()
                     if ruby.Aiming.Target.Stats == false then
                         Background.Visible = false
@@ -1205,7 +1236,7 @@ end)
 TargetTab:AddToggle('PingbasedTggle', {
     Text = 'Ping Based',
     Default = false, 
-    Tooltip = 'recommended on 100 ping', 
+    Tooltip = 'recommended on 100+ ping', 
 })
 
 Toggles.PingbasedTggle:OnChanged(function()
@@ -1527,7 +1558,7 @@ Toggles.AntiFlingEnabled:OnChanged(function()
 end)
 
 ExploitsTab:AddToggle('AntiBagEnabledx', {
-    Text = 'Anti-Bag (dont use with anti)',
+    Text = 'Anti-Bag (dont use with antis)',
     Default = false, 
     Tooltip = 'Enable Anti-Bag', 
 })
@@ -1819,9 +1850,9 @@ Options.VCapZ:OnChanged(function()
 end)
 
 AntiAimTab:AddToggle('DesyncAntiLock', {
-    Text = 'Anti Lock',
+    Text = 'Anti Lock (flings closeby)',
     Default = false, 
-    Tooltip = 'Might fling others nearby', 
+    Tooltip = 'looks blatant on other screens', 
 })
 
 Toggles.DesyncAntiLock:OnChanged(function()
@@ -1853,7 +1884,7 @@ Toggles.PredBreaker:OnChanged(function()
 end)
 
 AntiAimTab:AddToggle('DesyncUnhittable', {
-    Text = 'Spin Desync',
+    Text = 'Spin Desync (also flings)',
     Default = false, 
     Tooltip = 'Stand still to use', 
 })
