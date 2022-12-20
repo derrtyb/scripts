@@ -3390,7 +3390,7 @@ Options.JumpAnimations:OnChanged(function()
 end)
 
 AnimationsTab:AddDropdown('FallAnimations', {
-    Values = { 'None','Rthro','Werewolf','Zombie','Ninja','Toy','Superhero','OldSchool','Cartoony','Stylish','Vampire','Bubbly','Robot','Astronaut' },
+    Values = { 'None','Rthro','Werewolf','Zombie','Ninja','Toy','Superhero','OldSchool','Cartoony','Stylish','Vampire','Bubbly','Robot','Astronaut','Mage' },
     Default = 1,
     Multi = false, 
 
@@ -3426,6 +3426,8 @@ Options.FallAnimations:OnChanged(function()
             LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616087089"
         elseif Options.FallAnimations.Value == "Astronaut" then
             LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=891617961"
+        elseif Options.FallAnimations.Value == "Mage" then
+            LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=707829716"
         end
     end)
 end)
