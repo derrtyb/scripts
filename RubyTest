@@ -2,6 +2,8 @@ repeat
     wait()
 until game:IsLoaded()
 
+game:GetService("CorePackages").Packages:Destroy()
+
 local rubyLoader = Instance.new("ScreenGui")
 local BackFrame = Instance.new("Frame")
 local UICorner = Instance.new("UICorner")
@@ -1940,8 +1942,6 @@ end)
                     if key == "CFrame" and PastedSources == true and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and LocalPlayer.Character:FindFirstChild("Humanoid") and LocalPlayer.Character:FindFirstChild("Humanoid").Health > 0 then
                         if self == LocalPlayer.Character.HumanoidRootPart then
                             return DesyncTypes[1] or CFrame.new()
-                        elseif self == LocalPlayer.Character.Head then
-                            return DesyncTypes[1] and DesyncTypes[1] + Vector3.new(0, LocalPlayer.Character.HumanoidRootPart.Size / 2 + 0.5, 0) or CFrame.new()
                         end
                     end
                 end
@@ -2527,9 +2527,9 @@ end)
 WorldTab:AddSlider('FogEndSlider', {
     Text = 'Fog End',
 
-    Default = 500,
+    Default = 750,
     Min = 1,
-    Max = 500,
+    Max = 1000,
     Rounding = 1,
 
     Compact = false,
@@ -2638,8 +2638,6 @@ ColorCorrection.Contrast = Options.Contrast.Value
 end)
 
 
-
-
 CrosshairTab:AddToggle('CrosshairEnabledTop', {
     Text = 'Top',
     Default = true, 
@@ -2654,8 +2652,7 @@ Toggles.CrosshairEnabledTop:AddColorPicker('CrosshairTopColor', {
     Default = Color3.fromRGB(255,255,255),
 })
 
-Options.CrosshairTopColor:OnChanged(function()
-    
+Options.CrosshairTopColor:OnChanged(function() 
     if RainbowCrossHairMode then
     else
         LocalPlayer.PlayerGui.MainScreenGui.Aim.Top.BackgroundColor3 = Options.CrosshairTopColor.Value
