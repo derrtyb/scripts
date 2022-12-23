@@ -1047,7 +1047,7 @@ end)
 game:GetService("RunService").Stepped:Connect(function()
     if Toggles.Randomize.Value then
         wait(0.6)
-        player_gayparts = {"Head","UpperTorso","LowerTorso","RightUpperLeg","LeftUpperLeg","RightUpperArm","RightLowerArm","LeftLowerArm","LeftUpperArm"}
+        player_gayparts = {"Head","UpperTorso","LowerTorso","RightUpperArm","RightLowerArm","LeftLowerArm","LeftUpperArm"}
         ruby.Aiming.Target.Hitbox = player_gayparts[math.random(1,#player_gayparts)]
     else
         ruby.Aiming.Target.Hitbox = Options.TargetHitboxDropdown.Value
