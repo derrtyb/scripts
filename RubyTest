@@ -4565,7 +4565,32 @@ RunService.Stepped:Connect(function ()
                 end
             end)
         end
-    end
+        if ruby.Aiming.Target.FakeHitbox.Enabled then
+            FakeHitboxPart.CFrame = CFrame.new(TargetTarget.Character.HumanoidRootPart.Position+Vector3.new(0,ruby.Aiming.Target.Offset.Y,0)+(TargetTarget.Character.HumanoidRootPart.Velocity*ruby.Aiming.Target.Prediction))
+            spawn(function ()
+                if ruby.Aiming.Target.FakeHitbox.Enabled == false then
+                    FakeHitboxPart.CFrame = CFrame.new(0,9999,0)
+                end
+            end)
+            task.spawn(function ()
+                FakeHitboxPart.CanCollide = false
+                FakeHitboxPart.Anchored = true
+                FakeHitboxPart.Color = ruby.Aiming.Target.FakeHitbox.Color
+                FakeHitboxPart.Size = Vector3.new(1*ruby.Aiming.Target.FakeHitbox.Size,1*ruby.Aiming.Target.FakeHitbox.Size,1*ruby.Aiming.Target.FakeHitbox.Size)
+                if ruby.Aiming.Target.FakeHitbox.Material == "Neon" then
+                    FakeHitboxPart.Transparency = 0
+                    FakeHitboxPart.Material = "Neon"
+                end
+                if ruby.Aiming.Target.FakeHitbox.Material == "ForceField" then
+                    FakeHitboxPart.Transparency = 0
+                    FakeHitboxPart.Material = "ForceField"
+                end
+                if ruby.Aiming.Target.FakeHitbox.Material == "Plastic" then
+                    FakeHitboxPart.Transparency = 0.75
+                    FakeHitboxPart.Material = "Plastic"
+                end
+            end)
+        end
         if ruby.Aiming.Target.ViewAt then
             workspace.CurrentCamera.CameraSubject = TargetTarget.Character.Humanoid
             spawn(function ()
@@ -4630,6 +4655,7 @@ RunService.Stepped:Connect(function ()
                     targetstraferangepart.CFrame = CFrame.new(0,9999,0)
                 end
             end)
+        end
     else
         TracerLine.Visible = false
         HLTarget.Parent = game.CoreGui
