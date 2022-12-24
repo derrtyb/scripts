@@ -642,6 +642,7 @@ local ruby = {
                 From = nil,
             },
             PingBased = nil,
+            AutoPred = nil,
             Highlight = {
                 Enabled = nil,
                 FillColor = nil,
@@ -787,7 +788,6 @@ local removehitboxTab = Tabs.Blatant:AddRightGroupbox('Remove Bodyparts')
 
 local LocalTab = Tabs.Visuals:AddRightGroupbox('Character')
 local FOVTag = Tabs.Visuals:AddRightGroupbox('FOV')
-local CrosshairTab = Tabs.Visuals:AddRightGroupbox('Crosshair')
 local ESPTab = Tabs.Visuals:AddLeftGroupbox('ESP')
 local WorldTab = Tabs.Visuals:AddLeftGroupbox('World')
 local BulletTab = Tabs.Visuals:AddRightGroupbox('Bullet Tracer')
@@ -1245,6 +1245,15 @@ Toggles.PingbasedTggle:OnChanged(function()
     ruby.Aiming.Target.PingBased = Toggles.PingbasedTggle.Value
 end)
 
+TargetTab:AddToggle('AutoPred', {
+    Text = 'Auto Pred',
+    Default = false, 
+    Tooltip = 'best on low ping', 
+})
+
+Toggles.AutoPred:OnChanged(function()
+    ruby.Aiming.Target.AutoPred = Toggles.AutoPred.Value
+end)
 
 TargetTab:AddToggle('TracerEnabledTracerTarget', {
     Text = 'Tracers',
@@ -1306,52 +1315,6 @@ Options.HighlightOutLineColor:OnChanged(function()
     ruby.Aiming.Target.Highlight.OutlineColor = Options.HighlightOutLineColor.Value
 end)
 
-TargetTab:AddToggle('FakeHitboxTggle', {
-    Text = 'Fake Hitbox',
-    Default = false, 
-    Tooltip = 'Fake Hitbox Enabled', 
-})
-
-Toggles.FakeHitboxTggle:OnChanged(function()
-    ruby.Aiming.Target.FakeHitbox.Enabled = Toggles.FakeHitboxTggle.Value
-end)
-
-Toggles.FakeHitboxTggle:AddColorPicker('FakeHitboxColor', {
-    Default = Color3.fromRGB(255,255,255),
-    Title = 'Fake Hitbox Color'
-})
-
-Options.FakeHitboxColor:OnChanged(function()
-    ruby.Aiming.Target.FakeHitbox.Color = Options.FakeHitboxColor.Value
-end)
-
-TargetTab:AddDropdown('TargetFakeHitboxMaterial', {
-    Values = { 'Neon', 'ForceField', 'Plastic' },
-    Default = 1,
-    Multi = false, 
-
-    Text = 'Fake Hitbox Material',
-    Tooltip = 'Fake Hitbox Material',
-})
-
-Options.TargetFakeHitboxMaterial:OnChanged(function()
-    ruby.Aiming.Target.FakeHitbox.Material = Options.TargetFakeHitboxMaterial.Value
-end)
-
-TargetTab:AddSlider('TarggeetFakeHitboxSize', {
-    Text = 'Fake Hitbox Size',
-
-    Default = 5,
-    Min = 1,
-    Max = 20,
-    Rounding = 2,
-
-    Compact = false,
-})
-
-Options.TarggeetFakeHitboxSize:OnChanged(function()
-    ruby.Aiming.Target.FakeHitbox.Size = Options.TarggeetFakeHitboxSize.Value
-end)
 
 TargetTab:AddToggle('DotPARENTEnabedx', {
     Text = 'Dot',
@@ -2635,169 +2598,6 @@ WorldTab:AddSlider('Contrast', {
 Options.Contrast:OnChanged(function()
     local ColorCorrection = game.Lighting:FindFirstChildOfClass("ColorCorrectionEffect") or Instance.new("ColorCorrectionEffect")
 ColorCorrection.Contrast = Options.Contrast.Value
-end)
-
-
-CrosshairTab:AddToggle('CrosshairEnabledTop', {
-    Text = 'Top',
-    Default = true, 
-    Tooltip = 'Top Enabled', 
-})
-
-Toggles.CrosshairEnabledTop:OnChanged(function()
-    LocalPlayer.PlayerGui.MainScreenGui.Aim.Top.Visible = Toggles.CrosshairEnabledTop.Value
-end)
-
-Toggles.CrosshairEnabledTop:AddColorPicker('CrosshairTopColor', {
-    Default = Color3.fromRGB(255,255,255),
-})
-
-Options.CrosshairTopColor:OnChanged(function() 
-    if RainbowCrossHairMode then
-    else
-        LocalPlayer.PlayerGui.MainScreenGui.Aim.Top.BackgroundColor3 = Options.CrosshairTopColor.Value
-    end
-end)
-
-CrosshairTab:AddToggle('CrosshairEnabledDown', {
-    Text = 'Bottom',
-    Default = true, 
-    Tooltip = 'Bottom Enabled', 
-})
-
-Toggles.CrosshairEnabledDown:OnChanged(function()
-    LocalPlayer.PlayerGui.MainScreenGui.Aim.Bottom.Visible = Toggles.CrosshairEnabledDown.Value
-end)
-
-Toggles.CrosshairEnabledDown:AddColorPicker('CrosshairBottomXd', {
-    Default = Color3.fromRGB(255,255,255),
-})
-
-Options.CrosshairBottomXd:OnChanged(function()
-   
-    if RainbowCrossHairMode then
-    else
-        LocalPlayer.PlayerGui.MainScreenGui.Aim.Bottom.BackgroundColor3 = Options.CrosshairBottomXd.Value
-    end
-end)
-
-CrosshairTab:AddToggle('CrosshairEnabledLeft', {
-    Text = 'Left',
-    Default = true, 
-    Tooltip = 'Left Enabled', 
-})
-
-Toggles.CrosshairEnabledLeft:OnChanged(function()
-    LocalPlayer.PlayerGui.MainScreenGui.Aim.Left.Visible = Toggles.CrosshairEnabledLeft.Value
-end)
-
-Toggles.CrosshairEnabledLeft:AddColorPicker('CrosshairLeftColor', {
-    Default = Color3.fromRGB(255,255,255),
-})
-
-Options.CrosshairLeftColor:OnChanged(function()
-    if RainbowCrossHairMode then
-    else
-        LocalPlayer.PlayerGui.MainScreenGui.Aim.Left.BackgroundColor3 = Options.CrosshairLeftColor.Value
-    end
-end)
-
-CrosshairTab:AddToggle('CrosshairEnabledRight', {
-    Text = 'Right',
-    Default = true, 
-    Tooltip = 'Right Enabled', 
-})
-
-Toggles.CrosshairEnabledRight:OnChanged(function()
-    LocalPlayer.PlayerGui.MainScreenGui.Aim.Right.Visible = Toggles.CrosshairEnabledRight.Value
-end)
-
-Toggles.CrosshairEnabledRight:AddColorPicker('CrosshairRightColor', {
-    Default = Color3.fromRGB(255,255,255),
-})
-
-Options.CrosshairRightColor:OnChanged(function()
-    if RainbowCrossHairMode then
-    else
-        LocalPlayer.PlayerGui.MainScreenGui.Aim.Right.BackgroundColor3 = Options.CrosshairRightColor.Value
-    end
-end)
-
-CrosshairTab:AddLabel('Middle'):AddColorPicker('CrosshairMiddle', {
-    Default = Color3.fromRGB(255,255,255),
-    Title = 'Middle Color', 
-})
-
-Options.CrosshairMiddle:OnChanged(function()
-    
-    if RainbowCrossHairMode then
-    else
-        LocalPlayer.PlayerGui.MainScreenGui.Aim.BackgroundColor3 = Options.CrosshairMiddle.Value
-    end
-end)
-
-CrosshairTab:AddToggle('RainbowCrosshair', {
-    Text = 'Rainbow Crosshair',
-    Default = false, 
-    Tooltip = 'Rainbow Crosshair Enabled', 
-})
-
-Toggles.RainbowCrosshair:OnChanged(function()
-    RainbowCrossHairMode = Toggles.RainbowCrosshair.Value
-    if Toggles.RainbowCrosshair.Value then
-        while Toggles.RainbowCrosshair.Value do
-            wait()
-            for i = 0,255,10 do
-             wait()
-                 game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.BackgroundColor3 = Color3.new(255/255,i/255,0/255)
-                game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Top.BackgroundColor3 = Color3.new(255/255,i/255,0/255)
-                game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Bottom.BackgroundColor3 = Color3.new(255/255,i/255,0/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Right.BackgroundColor3 = Color3.new(255/255,i/255,0/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Left.BackgroundColor3 = Color3.new(255/255,i/255,0/255)
-            end
-            for i = 255,0,-10 do
-                wait()
-                    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.BackgroundColor3 = Color3.new(i/255,255/255,0/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Top.BackgroundColor3 = Color3.new(i/255,255/255,0/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Bottom.BackgroundColor3 = Color3.new(i/255,255/255,0/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Right.BackgroundColor3 =  Color3.new(i/255,255/255,0/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Left.BackgroundColor3 = Color3.new(i/255,255/255,0/255)
-            end
-            for i = 0,255,10 do
-               wait()
-                   game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.BackgroundColor3 = Color3.new(0/255,255/255,i/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Top.BackgroundColor3 = Color3.new(0/255,255/255,i/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Bottom.BackgroundColor3 = Color3.new(0/255,255/255,i/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Right.BackgroundColor3 = Color3.new(0/255,255/255,i/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Left.BackgroundColor3 =  Color3.new(0/255,255/255,i/255)
-            end
-            for i = 255,0,-10 do
-                wait()
-                    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.BackgroundColor3 = Color3.new(0/255,i/255,255/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Top.BackgroundColor3 = Color3.new(0/255,i/255,255/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Bottom.BackgroundColor3 = Color3.new(0/255,i/255,255/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Right.BackgroundColor3 = Color3.new(0/255,i/255,255/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Left.BackgroundColor3 =  Color3.new(0/255,i/255,255/255)
-            end
-            for i = 0,255,10 do
-                wait()
-                    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.BackgroundColor3 = Color3.new(i/255,0/255,255/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Top.BackgroundColor3 = Color3.new(i/255,0/255,255/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Bottom.BackgroundColor3 = Color3.new(i/255,0/255,255/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Right.BackgroundColor3 = Color3.new(i/255,0/255,255/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Left.BackgroundColor3 =  Color3.new(i/255,0/255,255/255)
-            end
-            for i = 255,0,-10 do
-                wait()
-                    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.BackgroundColor3 = Color3.new(255/255,0/255,i/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Top.BackgroundColor3 = Color3.new(255/255,0/255,i/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Bottom.BackgroundColor3 = Color3.new(255/255,0/255,i/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Right.BackgroundColor3 = Color3.new(255/255,0/255,i/255)
-    game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.Aim.Left.BackgroundColor3 =  Color3.new(255/255,0/255,i/255)
-            end
-            if Toggles.RainbowCrosshair.Value == false then break end
-        end
-    end
 end)
 
 BulletTab:AddToggle('BulletTracer', {
@@ -4765,32 +4565,7 @@ RunService.Stepped:Connect(function ()
                 end
             end)
         end
-        if ruby.Aiming.Target.FakeHitbox.Enabled then
-            FakeHitboxPart.CFrame = CFrame.new(TargetTarget.Character.HumanoidRootPart.Position+Vector3.new(0,ruby.Aiming.Target.Offset.Y,0)+(TargetTarget.Character.HumanoidRootPart.Velocity*ruby.Aiming.Target.Prediction))
-            spawn(function ()
-                if ruby.Aiming.Target.FakeHitbox.Enabled == false then
-                    FakeHitboxPart.CFrame = CFrame.new(0,9999,0)
-                end
-            end)
-            task.spawn(function ()
-                FakeHitboxPart.CanCollide = false
-                FakeHitboxPart.Anchored = true
-                FakeHitboxPart.Color = ruby.Aiming.Target.FakeHitbox.Color
-                FakeHitboxPart.Size = Vector3.new(1*ruby.Aiming.Target.FakeHitbox.Size,1*ruby.Aiming.Target.FakeHitbox.Size,1*ruby.Aiming.Target.FakeHitbox.Size)
-                if ruby.Aiming.Target.FakeHitbox.Material == "Neon" then
-                    FakeHitboxPart.Transparency = 0
-                    FakeHitboxPart.Material = "Neon"
-                end
-                if ruby.Aiming.Target.FakeHitbox.Material == "ForceField" then
-                    FakeHitboxPart.Transparency = 0
-                    FakeHitboxPart.Material = "ForceField"
-                end
-                if ruby.Aiming.Target.FakeHitbox.Material == "Plastic" then
-                    FakeHitboxPart.Transparency = 0.75
-                    FakeHitboxPart.Material = "Plastic"
-                end
-            end)
-        end
+    end
         if ruby.Aiming.Target.ViewAt then
             workspace.CurrentCamera.CameraSubject = TargetTarget.Character.Humanoid
             spawn(function ()
@@ -4855,7 +4630,6 @@ RunService.Stepped:Connect(function ()
                     targetstraferangepart.CFrame = CFrame.new(0,9999,0)
                 end
             end)
-        end
     else
         TracerLine.Visible = false
         HLTarget.Parent = game.CoreGui
@@ -4988,6 +4762,14 @@ RunService.RenderStepped:Connect(function ()
             local zx = CFrame.new(workspace.CurrentCamera.CFrame.p, AimbotTarget.Character[ruby.Aiming.Aimbot.Hitbox].Position + AimbotTarget.Character[ruby.Aiming.Aimbot.Hitbox].Velocity/ruby.Aiming.Aimbot.Prediction)
             workspace.CurrentCamera.CFrame = workspace.CurrentCamera.CFrame:Lerp(zx, ruby.Aiming.Aimbot.Smoothing.Value, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut)
         end
+    end
+    if ruby.Aiming.Target.AutoPred then
+        local PingStats = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString()
+        local Value = tostring(PingStats)
+        local PingValue = Value:split(" ")
+        local PingNumber = tonumber(PingValue[1])
+    
+        ruby.Aiming.Target.Prediction = PingNumber / 1000 + 0.037
     end
     if ruby.Blatant.Exploits.AutoCashPick then
         pcall(
