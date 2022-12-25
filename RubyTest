@@ -1251,9 +1251,9 @@ Toggles.PingbasedTggle:OnChanged(function()
 end)
 
 TargetTab:AddToggle('AutoPred', {
-    Text = 'Auto Pred',
+    Text = 'Auto Pred (stable ping only)',
     Default = false, 
-    Tooltip = 'best on low ping', 
+    Tooltip = 'more accurate auto prediction', 
 })
 
 Toggles.AutoPred:OnChanged(function()
@@ -1806,18 +1806,18 @@ Options.VCapZ:OnChanged(function()
     VCapZ = Options.VCapZ.Value
 end)
 
---[[LegitTab:AddToggle('UnlockTDeath', {
-    Text = 'Unlock After Kill (WIP)',
+LegitTab:AddToggle('UnlockTDeath', {
+    Text = 'Unlock After Kill',
     Default = false, 
     Tooltip = 'Unlocks camlock and target aim after kill', 
 })
 
 Toggles.UnlockTDeath:OnChanged(function()
     ruby.Aiming.Legit.UnlockTDeath = Toggles.UnlockTDeath.Value
-end)--]]
+end)
 
 LegitTab:AddToggle('NoGroundShots', {
-    Text = 'No Floor Shots (Testing)',
+    Text = 'No Floor Shots',
     Default = false, 
     Tooltip = 'Underground resolver, but with airshot prediction', 
 })
@@ -4569,7 +4569,7 @@ RunService.Stepped:Connect(function ()
         if ruby.Aiming.Legit.UnlockTDeath then
             if v.Character ~= nil and v.Character:FindFirstChild("Humanoid") then
                 if v.Character.BodyEffects['K.O'].Value == true and v.Character:FindFirstChild("Humanoid") then
-                    AimbotBindEnabled = false
+                    Options.AimbotKeyPickerXD:SetValue(false)
                 end
             end
         end
@@ -4589,7 +4589,7 @@ RunService.Stepped:Connect(function ()
         if ruby.Aiming.Legit.UnlockTDeath then
             if v.Character ~= nil and v.Character:FindFirstChild("Humanoid") then
                 if v.Character.BodyEffects['K.O'].Value == true and v.Character:FindFirstChild("Humanoid") then
-                    TargetBindEnabled = false
+                    Options.TargetKeyPickerXD:SetValue(false)
                 end
             end
         end
@@ -4784,6 +4784,29 @@ mt.__namecall = newcclosure(function(...)
 end)
 
 RunService.RenderStepped:Connect(function ()
+    if ruby.Blatant.Resolver.UnderGroundResolver then
+        pcall(function ()
+            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
+        end)
+    end
+    if ruby.Aiming.Legit.NoGroundShots then
+        pcall(function ()
+            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+        if TargetTargetVelocity.Velocity.Y < 0 then
+            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
+            end
+        end)
+    end
+    if ruby.Blatant.Resolver.ZeroPred then
+        pcall(function ()
+            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new(0, 0, 0)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+        end)
+    end
     if ruby.Aiming.Aimbot.VelocityResolver then
         pcall(function ()
             local AimbotTargetVelocity = AimbotTarget.Character.HumanoidRootPart
@@ -4946,29 +4969,6 @@ RunService.Heartbeat:Connect(function ()
                     end
                 end
             end
-        end)
-    end
-    if ruby.Blatant.Resolver.UnderGroundResolver then
-        pcall(function ()
-            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
-            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
-        end)
-    end
-    if ruby.Aiming.Legit.NoGroundShots then
-        pcall(function ()
-            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-        if TargetTargetVelocity.Velocity.Y < 0 then
-            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
-            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
-            end
-        end)
-    end
-    if ruby.Blatant.Resolver.ZeroPred then
-        pcall(function ()
-            local TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-            TargetTargetVelocity.Velocity = Vector3.new(0, 0, 0)
-            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
         end)
     end
     if ruby.Blatant.AntiAim.PredBreaker then
