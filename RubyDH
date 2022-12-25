@@ -181,12 +181,18 @@ sound:Play()
     script.Parent:TweenSize(UDim2.new(0, 165,0, 26))
     script.Parent.Parent.Parent.LoadingText.Text = "bypassing anticheat"
     assert(getrawmetatable)
-    grm = getrawmetatable(game)
-    setreadonly(grm, false)
-    old = grm.__namecall
-    grm.__namecall = newcclosure(function(self, ...)
+    gmt = getrawmetatable(game)
+    setreadonly(gmt, false)
+    old = gmt.__namecall
+    gmt.__namecall = newcclosure(function(self, ...)
         local args = {...}
-        if tostring(args[1]) == "TeleportDetect" then
+        if tostring(args[1]) == "BreathingHAMON" then
+            return
+        elseif tostring(args[1]) == "TeleportDetect" then
+            return
+        elseif tostring(args[1]) == "JJARC" then
+            return
+        elseif tostring(args[1]) == "TakePoisonDamage" then
             return
         elseif tostring(args[1]) == "CHECKER_1" then
             return
@@ -206,8 +212,17 @@ sound:Play()
             return
         elseif tostring(args[1]) == "BR_KICKPC" then
             return
-        elseif tostring(args[1]) == "BR_KICKMOBILE" then
+        elseif tostring(args[1]) == "FORCEFIELD" then
             return
+        elseif tostring(args[1]) == "Christmas_Sock" then
+            return
+        elseif tostring(args[1]) == "VirusCough" then
+            return
+        elseif tostring(args[1]) == "Symbiote" then
+            return
+        elseif tostring(args[1]) == "Symbioted" then
+            return 
+         
         end
         return old(self, ...)
     end)
@@ -2838,48 +2853,49 @@ FlyTab:AddToggle('FlyTggle', {
     Tooltip = 'Enable Fly',
 })
 
-Toggles.FlyTggle:OnChanged(function()
-    if Toggles.FlyTggle.Value == true then
-        FlyLoop = game:GetService("RunService").Stepped:Connect(function()
-            spawn(function()
-                pcall(function()
-                    local speed = FlySpeed
-                    local velocity = Vector3.new(0, 1, 0)
-                    local UserInputService = game:GetService("UserInputService")
+FlyLoop = game:GetService("RunService").Stepped:Connect(function()
+    if Toggles.FlyTggle.Value == true and FlyBindd then
+    spawn(function()
+    pcall(function()
+        local speed = FlySpeed
+        local velocity = Vector3.new(0, 1, 0)
+        local UserInputService = game:GetService("UserInputService")
 
-                    if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-                        velocity = velocity + (workspace.CurrentCamera.CoordinateFrame.lookVector * speed)
-                    end
-                    if UserInputService:IsKeyDown(Enum.KeyCode.A) then
-                        velocity = velocity + (workspace.CurrentCamera.CoordinateFrame.rightVector * -speed)
-                    end
-                    if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-                        velocity = velocity + (workspace.CurrentCamera.CoordinateFrame.lookVector * -speed)
-                    end
-                    if UserInputService:IsKeyDown(Enum.KeyCode.D) then
-                        velocity = velocity + (workspace.CurrentCamera.CoordinateFrame.rightVector * speed)
-                    end
-                    
-                    LocalPlayer.Character.HumanoidRootPart.Velocity = velocity
-                    LocalPlayer.Character.Humanoid:ChangeState("Freefall")
-                end)
+        if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+            velocity = velocity + (workspace.CurrentCamera.CoordinateFrame.lookVector * speed)
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+            velocity = velocity + (workspace.CurrentCamera.CoordinateFrame.rightVector * -speed)
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+            velocity = velocity + (workspace.CurrentCamera.CoordinateFrame.lookVector * -speed)
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+            velocity = velocity + (workspace.CurrentCamera.CoordinateFrame.rightVector * speed)
+        end
+                
+                LocalPlayer.Character.HumanoidRootPart.Velocity = velocity
+                LocalPlayer.Character.Humanoid:ChangeState("Freefall")
             end)
         end)
-    elseif Toggles.FlyTggle.Value == false and FlyLoop then
-        FlyLoop:Disconnect()
-        LocalPlayer.Character.Humanoid:ChangeState("Landing")
     end
 end)
 
 Toggles.FlyTggle:AddKeyPicker('FlyBind', {
     Default = 'None', 
-    SyncToggleState = true, 
+    SyncToggleState = false, 
 
     Mode = 'Toggle',
 
     Text = 'Fly', 
     NoUI = false,
 })
+
+Options.FlyBind:OnClick(function()
+    if Toggles.FlyTggle.Value == true then
+        FlyBindd = not FlyBindd
+    end
+end)
 
 FlyTab:AddSlider('FlySepedSlider', {
     Text = 'Speed',
@@ -4547,9 +4563,9 @@ local newUiCornor = Instance.new("UICorner", newFrame)
 task.spawn(function ()
     newBillboard.Name = "ruby_billboarddot"
     newBillboard.Adornee = DotParent
-    newBillboard.Size = UDim2.new(0.5, 0, 0.5, 0)
+    newBillboard.Size = UDim2.new(0.85, 0, 0.85, 0)
     newBillboard.AlwaysOnTop = true
-    newFrame.Size = UDim2.new(0.5, 0, 0.5, 0)
+    newFrame.Size = UDim2.new(0.85, 0, 0.85, 0)
     newFrame.BackgroundTransparency = 0
     newUiCornor.CornerRadius = UDim.new(50, 50)
     DotParent.CanCollide = false
@@ -4626,6 +4642,10 @@ RunService.Stepped:Connect(function ()
                     workspace.CurrentCamera.CameraSubject = LocalPlayer.Character.Humanoid
                 end
             end)
+        end
+        if Toggles.FlyTggle.Value == false and FlyLoop and not FlyBindd then
+            FlyLoop:Disconnect()
+            LocalPlayer.Character.Humanoid:ChangeState("Landing")
         end
         if ruby.Aiming.Target.Tracer.Enabled then
             local LineVec = workspace.CurrentCamera:WorldToViewportPoint(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Position+Vector3.new(0,ruby.Aiming.Target.Offset.Y,0)+(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Velocity*ruby.Aiming.Target.Prediction))
