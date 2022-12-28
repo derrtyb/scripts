@@ -2517,9 +2517,9 @@ end)
 WorldTab:AddSlider('FogEndSlider', {
     Text = 'Fog End',
 
-    Default = 750,
+    Default = 1000,
     Min = 1,
-    Max = 1000,
+    Max = 3500,
     Rounding = 1,
 
     Compact = false,
@@ -4807,39 +4807,6 @@ local TargetTargetVelocity
 local AimbotTargetVelocity
 
 RunService.RenderStepped:Connect(function ()
-    if ruby.Blatant.Resolver.UnderGroundResolver then
-        pcall(function ()
-            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
-        end)
-    end
-    if ruby.Aiming.Legit.NoGroundShots then
-        pcall(function ()
-            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-        if TargetTargetVelocity.Velocity.Y < 0 then
-            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
-            end
-        end)
-    end
-    if ruby.Blatant.Resolver.ZeroPred then
-        pcall(function ()
-            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-            TargetTargetVelocity.Velocity = Vector3.new(0, 0, 0)
-            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
-        end)
-    end
-    if ruby.Aiming.Aimbot.VelocityResolver then
-        pcall(function ()
-            AimbotTargetVelocity = AimbotTarget.Character.HumanoidRootPart
-            AimbotTargetVelocity.Velocity = Vector3.new(AimbotTargetVelocity.Velocity.X, 0, AimbotTargetVelocity.Velocity.Z)
-        end)
-    end
-    if ruby.Blatant.Resolver.VelocityCap then
-        pcall(function ()
-            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-            TargetTargetVelocity.Velocity = Vector3.new(math.clamp(TargetTargetVelocity.Velocity.X, -20000, VCapX).X, math.clamp(TargetTargetVelocity.Velocity.Y, -20000, VCapY).Y, math.clamp(TargetTargetVelocity.Velocity.Z, -20000, VCapZ).Z)
-        end)
-    end
     if ruby.Aiming.Aimbot.Enabled and AimbotBindEnabled and ruby.Aiming.Aimbot.Smoothing.Enabled == false then
         if ruby.Aiming.Aimbot.ReverseResolver == true then
             local zxc = CFrame.new(workspace.CurrentCamera.CFrame.p, AimbotTarget.Character[ruby.Aiming.Aimbot.Hitbox].Position - AimbotTarget.Character[ruby.Aiming.Aimbot.Hitbox].Velocity/ruby.Aiming.Aimbot.Prediction)
@@ -4949,6 +4916,39 @@ RunService.Heartbeat:Connect(function ()
     else
         desync = false
         ruby.Visuals.Local.Chams = false
+    end
+    if ruby.Blatant.Resolver.UnderGroundResolver then
+        pcall(function ()
+            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
+        end)
+    end
+    if ruby.Aiming.Legit.NoGroundShots then
+        pcall(function ()
+            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+        if TargetTargetVelocity.Velocity.Y < 0 then
+            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
+            end
+        end)
+    end
+    if ruby.Blatant.Resolver.ZeroPred then
+        pcall(function ()
+            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new(0, 0, 0)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+        end)
+    end
+    if ruby.Aiming.Aimbot.VelocityResolver then
+        pcall(function ()
+            AimbotTargetVelocity = AimbotTarget.Character.HumanoidRootPart
+            AimbotTargetVelocity.Velocity = Vector3.new(AimbotTargetVelocity.Velocity.X, 0, AimbotTargetVelocity.Velocity.Z)
+        end)
+    end
+    if ruby.Blatant.Resolver.VelocityCap then
+        pcall(function ()
+            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new(math.clamp(TargetTargetVelocity.Velocity.X, -20000, VCapX).X, math.clamp(TargetTargetVelocity.Velocity.Y, -20000, VCapY).Y, math.clamp(TargetTargetVelocity.Velocity.Z, -20000, VCapZ).Z)
+        end)
     end
     if ruby.Blatant.Exploits.NoSlow then
         wait()
@@ -5075,7 +5075,7 @@ end)
 
 OtherGroupbox:AddToggle('KeybindFrameEnabled', {
     Text = 'Keybind List',
-    Default = true,
+    Default = false,
     Tooltip = 'Keybind List Enabled',
 })
 
