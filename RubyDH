@@ -1064,7 +1064,7 @@ Toggles.Randomize:OnChanged(function()
     ruby.Aiming.Target.Randomize = Toggles.Randomize.Value
 end)
 
-game:GetService("RunService").Stepped:Connect(function()
+game:GetService("RunService").Heartbeat:Connect(function()
     if Toggles.Randomize.Value then
         wait(0.6)
         player_gayparts = {"Head","UpperTorso","LowerTorso","RightUpperArm","RightLowerArm","LeftLowerArm","LeftUpperArm"}
@@ -2517,7 +2517,7 @@ end)
 WorldTab:AddSlider('FogEndSlider', {
     Text = 'Fog End',
 
-    Default = 1000,
+    Default = 750,
     Min = 1,
     Max = 3500,
     Rounding = 1,
