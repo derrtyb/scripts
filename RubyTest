@@ -4926,9 +4926,7 @@ RunService.Heartbeat:Connect(function ()
     if ruby.Aiming.Legit.NoGroundShots then
         pcall(function ()
             TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-        if TargetTargetVelocity.Velocity.Y < 0 then
-            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
-            end
+            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, math.clamp(TargetTargetVelocity.Velocity.Y, 0, 9999), TargetTargetVelocity.Velocity.Z)
         end)
     end
     if ruby.Blatant.Resolver.ZeroPred then
