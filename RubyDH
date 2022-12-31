@@ -2599,7 +2599,7 @@ end)
 WorldTab:AddSlider('Saturation', {
     Text = 'Saturation',
 
-    Default = 0,
+    Default = 0.1,
     Min = 0,
     Max = 10,
     Rounding = 1,
@@ -2614,10 +2614,10 @@ end)
 WorldTab:AddSlider('Contrast', {
     Text = 'Contrast',
 
-    Default = 0,
+    Default = 0.05,
     Min = 0,
     Max = 10,
-    Rounding = 1,
+    Rounding = 2,
 
     Compact = false,
 })
