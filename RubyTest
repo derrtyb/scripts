@@ -736,6 +736,7 @@ local ruby = {
         },
         Resolver = {
             UnderGroundResolver = nil,
+            ResolverType = nil,
             ZeroPred = nil,
             VelocityCap = nil
         },
@@ -1065,7 +1066,7 @@ Toggles.Randomize:OnChanged(function()
 end)
 
 game:GetService("RunService").Heartbeat:Connect(function()
-    if Toggles.Randomize.Value then
+    if Toggles.Randomize.Value and TargetBindEnabled and TargetTarget.Character then
         wait(0.6)
         player_gayparts = {"Head","UpperTorso","LowerTorso","RightUpperArm","RightLowerArm","LeftLowerArm","LeftUpperArm"}
         ruby.Aiming.Target.Hitbox = player_gayparts[math.random(1,#player_gayparts)]
@@ -1746,16 +1747,6 @@ end)
 
 TargetResolverTab:AddLabel("(Target Aim Only)")
 
-TargetResolverTab:AddToggle('UnderGroundResolver', {
-    Text = 'Basic Resolver',
-    Default = false, 
-    Tooltip = 'Resolves Basic Anti-Lock', 
-})
-
-Toggles.UnderGroundResolver:OnChanged(function()
-    ruby.Blatant.Resolver.UnderGroundResolver = Toggles.UnderGroundResolver.Value
-end)
-
 TargetResolverTab:AddToggle('ZeroPred', {
     Text = 'No Prediction',
     Default = false, 
@@ -1766,59 +1757,27 @@ Toggles.ZeroPred:OnChanged(function()
     ruby.Blatant.Resolver.ZeroPred = Toggles.ZeroPred.Value
 end)
 
-TargetResolverTab:AddToggle('VelocityCap', {
-    Text = 'Velocity Cap (WIP)',
+TargetResolverTab:AddToggle('UnderGroundResolver', {
+    Text = 'UnderGround/Sky Resolver',
     Default = false, 
-    Tooltip = 'Caps Aimlock Velocity', 
+    Tooltip = 'Resolves Basic Anti-Lock', 
 })
 
-Toggles.VelocityCap:OnChanged(function()
-    ruby.Blatant.Resolver.VelocityCap = Toggles.VelocityCap.Value
+Toggles.UnderGroundResolver:OnChanged(function()
+    ruby.Blatant.Resolver.UnderGroundResolver = Toggles.UnderGroundResolver.Value
 end)
 
-TargetResolverTab:AddSlider('VCapX', {
-    Text = 'X',
+TargetResolverTab:AddDropdown('ResolverDropdown', {
+    Values = { 'Stronger (Flings)', 'Normal (Legit)' },
+    Default = 1,
+    Multi = false, 
 
-    Default = 750,
-    Min = 0,
-    Max = 1000,
-    Rounding = 0,
-
-    Compact = false,
+    Text = 'Type',
+    Tooltip = 'Normal does not fling you when carrying someone',
 })
 
-Options.VCapX:OnChanged(function()
-    VCapX = Options.VCapX.Value
-end)
-
-TargetResolverTab:AddSlider('VCapY', {
-    Text = 'Y',
-
-    Default = 750,
-    Min = 0,
-    Max = 1000,
-    Rounding = 0,
-
-    Compact = false,
-})
-
-Options.VCapY:OnChanged(function()
-    VCapY = Options.VCapY.Value
-end)
-
-TargetResolverTab:AddSlider('VCapZ', {
-    Text = 'Z',
-
-    Default = 750,
-    Min = 0,
-    Max = 1000,
-    Rounding = 0,
-
-    Compact = false,
-})
-
-Options.VCapZ:OnChanged(function()
-    VCapZ = Options.VCapZ.Value
+Options.ResolverDropdown:OnChanged(function()
+    ruby.Blatant.Resolver.ResolverType = Options.ResolverDropdown.Value
 end)
 
 LegitTab:AddToggle('UnlockTDeath', {
@@ -2542,9 +2501,9 @@ Options.FogColorColorPicker:OnChanged(function()
 end)
 
 WorldTab:AddToggle('RainbowFogColor', {
-    Text = 'Rainbow Outdoor',
+    Text = 'Rainbow Fog',
     Default = false, 
-    Tooltip = 'Rainbow Outdoor Ambient Enabled', 
+    Tooltip = 'Rainbow Fog Enabled', 
 })
 
 Toggles.RainbowFogColor:OnChanged(function()
@@ -2599,7 +2558,7 @@ end)
 WorldTab:AddSlider('Saturation', {
     Text = 'Saturation',
 
-    Default = 0,
+    Default = 0.1,
     Min = 0,
     Max = 10,
     Rounding = 1,
@@ -2614,10 +2573,10 @@ end)
 WorldTab:AddSlider('Contrast', {
     Text = 'Contrast',
 
-    Default = 0,
+    Default = 0.05,
     Min = 0,
     Max = 10,
-    Rounding = 1,
+    Rounding = 2,
 
     Compact = false,
 })
@@ -4917,7 +4876,14 @@ RunService.Heartbeat:Connect(function ()
         desync = false
         ruby.Visuals.Local.Chams = false
     end
-    if ruby.Blatant.Resolver.UnderGroundResolver then
+    if ruby.Blatant.Resolver.UnderGroundResolver and ruby.Blatant.Resolver.ResolverType == "Stronger (Flings)" then
+        pcall(function ()
+            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
+        end)
+    end
+    if ruby.Blatant.Resolver.UnderGroundResolver and ruby.Blatant.Resolver.ResolverType == "Normal (Legit)" then
         pcall(function ()
             TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
             TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
@@ -4940,12 +4906,6 @@ RunService.Heartbeat:Connect(function ()
         pcall(function ()
             AimbotTargetVelocity = AimbotTarget.Character.HumanoidRootPart
             AimbotTargetVelocity.Velocity = Vector3.new(AimbotTargetVelocity.Velocity.X, 0, AimbotTargetVelocity.Velocity.Z)
-        end)
-    end
-    if ruby.Blatant.Resolver.VelocityCap then
-        pcall(function ()
-            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
-            TargetTargetVelocity.Velocity = Vector3.new(math.clamp(TargetTargetVelocity.Velocity.X, -20000, VCapX).X, math.clamp(TargetTargetVelocity.Velocity.Y, -20000, VCapY).Y, math.clamp(TargetTargetVelocity.Velocity.Z, -20000, VCapZ).Z)
         end)
     end
     if ruby.Blatant.Exploits.NoSlow then
