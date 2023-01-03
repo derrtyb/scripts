@@ -1768,12 +1768,12 @@ Toggles.UnderGroundResolver:OnChanged(function()
 end)
 
 TargetResolverTab:AddDropdown('ResolverDropdown', {
-    Values = { 'Stronger (Flings)', 'Normal (Legit)' },
+    Values = { 'Stronger (Flings)', 'Weak (No Fling)' },
     Default = 1,
     Multi = false, 
 
     Text = 'Type',
-    Tooltip = 'Normal does not fling you when carrying someone',
+    Tooltip = 'Stronger will fling you when carrying someone',
 })
 
 Options.ResolverDropdown:OnChanged(function()
@@ -1980,13 +1980,19 @@ local r6_dummy = game:GetObjects("rbxassetid://9474737816")[1]
 
 Toggles.LayVis:AddKeyPicker('LayBind', {
     Default = 'None', 
-    SyncToggleState = true, 
+    SyncToggleState = false, 
 
     Mode = 'Toggle',
 
     Text = 'Invis', 
     NoUI = false,
 })
+
+Options.LayBind:OnClick(function()
+    if ruby.Blatant.AntiAim.LayVis then
+        LayVisBind = not LayVisBind
+    end
+end)
 
 AntiAimTab:AddToggle('VFallTggle', {
     Text = 'Velocity Fall',
@@ -2835,6 +2841,10 @@ FlyLoop = game:GetService("RunService").Stepped:Connect(function()
                 
                 LocalPlayer.Character.HumanoidRootPart.Velocity = velocity
                 LocalPlayer.Character.Humanoid:ChangeState("Freefall")
+        if Toggles.FlyTggle.Value == false and FlyLoop and not FlyBindd then
+            FlyLoop:Disconnect()
+            LocalPlayer.Character.Humanoid:ChangeState("Landing")
+        end
             end)
         end)
     end
@@ -3092,7 +3102,7 @@ end)
 
 
 AnimationsTab:AddDropdown('RunAnimations', {
-    Values = { 'None','Rthro','Werewolf','Zombie','Ninja','Toy','Superhero','OldSchool','Cartoony','Stylish','Vampire','Bubbly','Robot','Astronaut', },
+    Values = { 'None','Rthro','Werewolf','Zombie','Ninja','Toy','Superhero','OldSchool','Cartoony','Stylish','Vampire','Bubbly','Robot','Astronaut','Mage','Patrol','Confident','Popstar','Cowboy','Ghost','Sneaky','Princess' },
     Default = 1,
     Multi = false, 
 
@@ -3128,6 +3138,22 @@ Options.RunAnimations:OnChanged(function()
             LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616091570"
         elseif Options.RunAnimations.Value == "Astronaut" then
             LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=891636393"
+        elseif Options.RunAnimations.Value == "Mage" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=707861613"
+        elseif Options.RunAnimations.Value == "Patrol" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1150967949"
+        elseif Options.RunAnimations.Value == "Confident" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1070001516"
+        elseif Options.RunAnimations.Value == "Popstar" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1212980348"
+        elseif Options.RunAnimations.Value == "Cowboy" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1014401683"
+        elseif Options.RunAnimations.Value == "Ghost" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616013216"
+        elseif Options.RunAnimations.Value == "Sneaky" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1132494274"
+        elseif Options.RunAnimations.Value == "Princess" then
+            LocalPlayer.Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=941015281"
         end
     end)
 end)
@@ -3212,6 +3238,80 @@ Options.FallAnimations:OnChanged(function()
             LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=891617961"
         elseif Options.FallAnimations.Value == "Mage" then
             LocalPlayer.Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=707829716"
+        end
+    end)
+end)
+
+AnimationsTab:AddDropdown('IdleAnimations', {
+    Values = { 'None','Rthro','Werewolf','Zombie','Ninja','Toy','Superhero','Cartoony','Stylish','Vampire','Bubbly','Robot','Astronaut','Mage','Patrol','Confident','Popstar','Cowboy','Ghost','Sneaky','Princess' },
+    Default = 1,
+    Multi = false, 
+
+    Text = 'Idle',
+})
+
+Options.IdleAnimations:OnChanged(function()
+    ChangeIdleAnimHook = game:GetService("RunService").Stepped:Connect(function ()
+        if Options.IdleAnimations.Value == "None" then
+        elseif Options.IdleAnimations.Value == "Rthro" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=2510196951"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=2510197257"
+        elseif Options.IdleAnimations.Value == "Werewolf" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1083195517"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1083214717"
+        elseif Options.IdleAnimations.Value == "Zombie" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616158929"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616160636"
+        elseif Options.IdleAnimations.Value == "Ninja" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=656117400"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=656118341"
+        elseif Options.IdleAnimations.Value == "Toy" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=782841498"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=782845736"
+        elseif Options.IdleAnimations.Value == "Superhero" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616111295"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616113536"
+        elseif Options.IdleAnimations.Value == "Cartoony" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=742637544"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=742638445"
+        elseif Options.IdleAnimations.Value == "Stylish" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616136790"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616138447"
+        elseif Options.IdleAnimations.Value == "Vampire" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1083445855"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1083450166"
+        elseif Options.IdleAnimations.Value == "Bubbly" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=910004836"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=910009958"
+        elseif Options.IdleAnimations.Value == "Robot" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616088211"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616089559"
+        elseif Options.IdleAnimations.Value == "Astronaut" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=891621366"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=891633237"
+        elseif Options.IdleAnimations.Value == "Mage" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=707742142"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=707855907"
+        elseif Options.IdleAnimations.Value == "Patrol" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1149612882"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1150842221"
+        elseif Options.IdleAnimations.Value == "Confident" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1069977950"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1069987858"
+        elseif Options.IdleAnimations.Value == "Popstar" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1212900985"
+        elseif Options.IdleAnimations.Value == "Cowboy" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1014390418"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1014398616"
+        elseif Options.IdleAnimations.Value == "Ghost" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616006778"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616008087"
+        elseif Options.IdleAnimations.Value == "Sneaky" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1132473842"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1132477671"
+        elseif Options.IdleAnimations.Value == "Princess" then
+            LocalPlayer.Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=941003647"
+            LocalPlayer.Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=941013098"
         end
     end)
 end)
@@ -4602,10 +4702,6 @@ RunService.Stepped:Connect(function ()
                 end
             end)
         end
-        if Toggles.FlyTggle.Value == false and FlyLoop and not FlyBindd then
-            FlyLoop:Disconnect()
-            LocalPlayer.Character.Humanoid:ChangeState("Landing")
-        end
         if ruby.Aiming.Target.Tracer.Enabled then
             local LineVec = workspace.CurrentCamera:WorldToViewportPoint(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Position+Vector3.new(0,ruby.Aiming.Target.Offset.Y,0)+(TargetTarget.Character[ruby.Aiming.Target.Hitbox].Velocity*ruby.Aiming.Target.Prediction))
             local humanoidt = workspace.CurrentCamera:WorldToViewportPoint(game.Players.LocalPlayer.Character.UpperTorso.Position)
@@ -4868,7 +4964,7 @@ RunService.Heartbeat:Connect(function ()
     else 
         LocalPlayer.Character.Humanoid.UseJumpPower = true
     end
-    if Toggles.LayVis.Value then
+    if Toggles.LayVis.Value and LayVisBind then
         wait()
         desync = true
         ruby.Visuals.Local.Chams = true
@@ -4883,7 +4979,7 @@ RunService.Heartbeat:Connect(function ()
             TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
         end)
     end
-    if ruby.Blatant.Resolver.UnderGroundResolver and ruby.Blatant.Resolver.ResolverType == "Normal (Legit)" then
+    if ruby.Blatant.Resolver.UnderGroundResolver and ruby.Blatant.Resolver.ResolverType == "Weak (No Fling)" then
         pcall(function ()
             TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
             TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
