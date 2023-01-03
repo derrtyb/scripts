@@ -1648,6 +1648,11 @@ LockDetectorTab:AddLabel('shoot, if the dot looks')
 LockDetectorTab:AddLabel('"locked on" to a player,')
 LockDetectorTab:AddLabel('then person = locking)')
 
+LockDetectorTab:AddButton('Execute VinGUI', function()
+    hookfunction(game.Players.LocalPlayer.IsInGroup, function() return true end)
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nosssa/NossLock/main/VinGUI"))()
+end)
+
 AntiStompTab:AddButton('Force Reset', function()
     for L_170_forvar0, L_171_forvar1 in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
         if L_171_forvar1:IsA("BasePart") then
@@ -4889,21 +4894,6 @@ RunService.RenderStepped:Connect(function ()
     
         ruby.Aiming.Target.Prediction = PingNumber / 1000 + 0.037
     end
-    if ruby.Blatant.Exploits.AutoCashPick then
-        pcall(
-            function()
-                for _, v in pairs(Workspace.Ignored.Drop:GetChildren()) do
-                    if v.Name == "MoneyDrop" then
-                        local MoneyMagnitude =
-                            (v.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
-                        if MoneyMagnitude < 25 then
-                            fireclickdetector(v.ClickDetector)
-                        end
-                    end
-                end
-            end
-        )
-    end
     if TargetBindEnabled and ruby.Aiming.Target.Enabled and TargetTarget.Character and TargetTarget.Character:FindFirstChild("HumanoidRootPart") then
         if ruby.Aiming.Target.LookAt then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position, Vector3.new(TargetTarget.Character.HumanoidRootPart.CFrame.X, game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position.Y, TargetTarget.Character.HumanoidRootPart.CFrame.Z))
@@ -5060,6 +5050,21 @@ RunService.Heartbeat:Connect(function ()
         game:GetService("RunService").RenderStepped:Wait()
         LocalPlayer.Character.HumanoidRootPart.CFrame = DesyncTypes[1]
         LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = DesyncTypes[2]
+    end
+    if ruby.Blatant.Exploits.AutoCashPick then
+        pcall(
+            function()
+                for _, v in pairs(Workspace.Ignored.Drop:GetChildren()) do
+                    if v.Name == "MoneyDrop" then
+                        local MoneyMagnitude =
+                            (v.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+                        if MoneyMagnitude < 25 then
+                            fireclickdetector(v.ClickDetector)
+                        end
+                    end
+                end
+            end
+        )
     end
     if ruby.Blatant.AntiAim.DesyncAntiLock then
         antilock = true
