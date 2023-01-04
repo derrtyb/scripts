@@ -5004,13 +5004,8 @@ RunService.Heartbeat:Connect(function ()
             LocalPlayer.Character.BodyEffects.Reload.Value = false
         end
     end
-    if LocalPlayer.Character.Humanoid.Health <= 1 and ruby.Blatant.AntiStomp.Enabled == false then
+    if LocalPlayer.Character.Humanoid.Health < 2 and ruby.Blatant.AntiStomp.Enabled == false then
         return lplr.Character.HumanoidRootPart.CFrame or CFrame.new()
-    elseif self == lplr.Character.Head then
-        return desync_stuff[1] and
-        lplr.Character.HumanoidRootPart.CFrame +
-            Vector3.new(0, lplr.Character.HumanoidRootPart.Size / 2 + 0.5, 0) or
-        CFrame.new()
     end
     if ruby.Blatant.Exploits.AutoStomp then
         game.ReplicatedStorage.MainEvent:FireServer("Stomp")
