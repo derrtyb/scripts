@@ -723,6 +723,7 @@ local ruby = {
         AntiAim = {
             SemiLegit = nil,
             DesyncAntiLock = nil,
+            ReverseAnti = nil,
             DesyncUnhittable = nil,
             LayVis = nil,
             NoPred = nil,
@@ -1841,17 +1842,34 @@ Toggles.DesyncAntiLock:OnChanged(function()
 end)
 
 local antilock = nil
+local reverseanti = nil
 local noob = game:GetService("RunService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local lol = LocalPlayer:GetMouse()
 
 noob.heartbeat:Connect(function()
     if antilock == true then 
-    local abc = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
-    game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(1,1,1) * (2^16)
-    noob.RenderStepped:Wait()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = abc
+        local abc = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(1,1,1) * (2^16)
+        noob.RenderStepped:Wait()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = abc
+    end
+    if reverseanti == true then
+        local abcd = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(abcd.X,abcd.Y,abcd.Z)*-1
+        noob.RenderStepped:Wait()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = abcd
     end 
+end)
+
+AntiAimTab:AddToggle('ReverseAnti', {
+    Text = 'Reverse Anti',
+    Default = false, 
+    Tooltip = 'looks blatant on other screens', 
+})
+
+Toggles.ReverseAnti:OnChanged(function()
+    ruby.Blatant.AntiAim.ReverseAnti = Toggles.ReverseAnti.Value
 end)
 
 AntiAimTab:AddToggle('PredBreaker', {
@@ -5116,6 +5134,11 @@ RunService.Heartbeat:Connect(function ()
         antilock = true
     else
         antilock = false
+    end
+    if ruby.Blatant.AntiAim.ReverseAnti then
+        reverseanti = true
+    else
+        reverseanti = false
     end
     if ruby.Blatant.AntiAim.DesyncUnhittable then
         PastedSources = true
