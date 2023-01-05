@@ -5241,15 +5241,23 @@ local UserData = game:HttpGet("https://users.roblox.com/v1/users/" .. victim, tr
 local decodedData = game:GetService("HttpService"):JSONDecode(UserData)
 local emoji = "crown" -- crown/star/check/none
 
-if emoji == "none" then 
-    elseif emoji == "crown" then
-    vict.Character.Humanoid.DisplayName = ('[👑]'.. decodedData.displayName)
-	elseif emoji == "star" then
-    vict.Character.Humanoid.DisplayName = ('[⭐]'.. decodedData.displayName)
-    elseif emoji == "check" then
-    vict.Character.Humanoid.DisplayName = ('[☑️]'.. decodedData.displayName)
+function RedStar()
+    if emoji == "none" then 
+        elseif emoji == "crown" then
+        vict.Character.Humanoid.DisplayName = ('[👑]'.. decodedData.displayName)
+        elseif emoji == "star" then
+        vict.Character.Humanoid.DisplayName = ('[⭐]'.. decodedData.displayName)
+        elseif emoji == "check" then
+        vict.Character.Humanoid.DisplayName = ('[☑️]'.. decodedData.displayName)
+    end
 end
 
+RedStar()
+
+vict.Character.Humanoid.Died:Connect(function()
+    wait(15)
+    RedStar() 
+end)
 
 function AimbotGetTarget()
     local distance = AimbotFOVSize
