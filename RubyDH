@@ -737,6 +737,8 @@ local ruby = {
         Resolver = {
             UnderGroundResolver = nil,
             ResolverType = nil,
+            ResolverTest = nil,
+            ResolverTestType = nil,
             ZeroPred = nil,
             VelocityCap = nil
         },
@@ -818,7 +820,7 @@ local FunTab = Tabs.Misc:AddLeftGroupbox('Fun')
 
 local TeleportTab = Tabs.Misc:AddRightGroupbox('Teleports')
 local UnfairTab = Tabs.Misc:AddRightGroupbox('Unfair')
-local LockDetectorTab = Tabs.Misc:AddRightGroupbox('Lock Detector')
+local LockDetectorTab = Tabs.Misc:AddRightGroupbox('Lock Detectors')
 
 local OtherGroupbox = Tabs["UI Settings"]:AddRightGroupbox('Other')
 
@@ -1580,7 +1582,7 @@ Toggles.NoclipEnabled:OnChanged(function()
     end
 end)
 
-LockDetectorTab:AddButton('Lock Detector (f to use)', function()
+LockDetectorTab:AddButton('Dot (f to toggle)', function()
     local placemarker = Instance.new("Part", game.Workspace)
     local Plr
     local enableddd = false
@@ -1785,6 +1787,29 @@ Options.ResolverDropdown:OnChanged(function()
     ruby.Blatant.Resolver.ResolverType = Options.ResolverDropdown.Value
 end)
 
+TargetResolverTab:AddToggle('ResolverTest', {
+    Text = 'Resolver v2 (TESTING)',
+    Default = false, 
+    Tooltip = 'Resolves using different methods', 
+})
+
+Toggles.ResolverTest:OnChanged(function()
+    ruby.Blatant.Resolver.ResolverTest = Toggles.ResolverTest.Value
+end)
+
+TargetResolverTab:AddDropdown('ResolverTestDropdown', {
+    Values = { 'RenderStepped', 'Stepped' },
+    Default = 1,
+    Multi = false, 
+
+    Text = 'Type',
+    Tooltip = 'Causes more fps drops than regular resolving',
+})
+
+Options.ResolverTestDropdown:OnChanged(function()
+    ruby.Blatant.Resolver.ResolverTestType = Options.ResolverTestDropdown.Value
+end)
+
 LegitTab:AddToggle('UnlockTDeath', {
     Text = 'Unlock After Kill',
     Default = false, 
@@ -1798,7 +1823,7 @@ end)
 LegitTab:AddToggle('NoGroundShots', {
     Text = 'No Floor Shots',
     Default = false, 
-    Tooltip = 'Underground resolver, but with airshot prediction', 
+    Tooltip = 'Turn other resolvers off when using this', 
 })
 
 Toggles.NoGroundShots:OnChanged(function()
@@ -2778,11 +2803,11 @@ Options.UphillTps:OnChanged(function()
 end)
 
 TeleportTab:AddDropdown('DownhillTps', {
-    Values = { 'None','Guns','Armor','Admin Base' },
+    Values = { 'None','Guns','Armor','Playground Store','Admin Base' },
     Default = 1,
     Multi = false, 
 
-    Text = 'Downhill',
+    Text = 'Downhill/Admin Base',
     Tooltip = 'Downhill Tps',
 })
 
@@ -2792,6 +2817,8 @@ Options.DownhillTps:OnChanged(function()
         LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-581.334473, 8.31477833, -736.237427, -0.00332057965, -4.02167544e-08, -0.999994516, -5.74397596e-08, 1, -4.00262437e-08, 0.999994516, 5.73065329e-08, -0.00332057965)
     elseif Options.DownhillTps.Value == "Armor" then
         LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-604.672913, 10.3496885, -788.588745, -0.0184768867, -9.57051682e-09, 0.999829292, -3.11832942e-08, 1, 8.99588226e-09, -0.999829292, -3.10117549e-08, -0.0184768867)
+    elseif Options.DownhillTps.Value == "Playground Store" then
+        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-211, 22, -822)
     elseif Options.DownhillTps.Value == "Admin Base" then
         LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-797.611328, -39.6492157, -886.291382, 0.0349296406, -6.03186034e-09, 0.999389768, -1.15090231e-08, 1, 6.43779474e-09, -0.999389768, -1.17268701e-08, 0.0349296406)
     end
@@ -3321,6 +3348,16 @@ Options.IdleAnimations:OnChanged(function()
     end)
 end)
 AnimationsTab:AddLabel("(dont change anim while moving)")
+
+FunTab:AddButton('Buy Bag', function()
+local LS = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+local clickdetector = game:GetService("Workspace").Ignored.Shop["[BrownBag] - $26"].ClickDetector
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Ignored.Shop["[BrownBag] - $26"].Head.CFrame
+    wait(0.2)
+    fireclickdetector(clickdetector)
+    wait(0.5)
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = LS
+end)
 
 FunTab:AddButton('Invis Ball', function()
     local UserInputService = game:GetService("UserInputService")
@@ -4422,7 +4459,7 @@ end)
 FunTab:AddToggle('SpamCall', {
     Text = 'Spam Call All',
     Default = false,
-    Tooltip = 'Calls Everyone',
+    Tooltip = 'more effective if you spam equip phone',
 })
 
 Toggles.SpamCall:OnChanged(function()
@@ -4645,6 +4682,13 @@ end)
 
 
 RunService.Stepped:Connect(function ()
+    if ruby.Blatant.Resolver.ResolverTest and ruby.Aiming.Target.Enabled and TargetBindEnabled and ruby.Blatant.Resolver.ResolverTestType == "Stepped" then
+        pcall(function ()
+            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new(0, 0, 0)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+        end)
+    end
     if ruby.Aiming.Aimbot.Enabled and AimbotBindEnabled and AimbotTarget.Character then
         if ruby.Aiming.Legit.UnlockTDeath then
             if AimbotTarget.Character ~= nil and AimbotTarget.Character.Humanoid then
@@ -4867,6 +4911,13 @@ local TargetTargetVelocity
 local AimbotTargetVelocity
 
 RunService.RenderStepped:Connect(function ()
+    if ruby.Blatant.Resolver.ResolverTest and ruby.Aiming.Target.Enabled and TargetBindEnabled and ruby.Blatant.Resolver.ResolverTestType == "RenderStepped" then
+        pcall(function ()
+            TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
+            TargetTargetVelocity.Velocity = Vector3.new(0, 0, 0)
+            TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+        end)
+    end
     if ruby.Aiming.Aimbot.Enabled and AimbotBindEnabled and ruby.Aiming.Aimbot.Smoothing.Enabled == false then
         if ruby.Aiming.Aimbot.ReverseResolver == true then
             local zxc = CFrame.new(workspace.CurrentCamera.CFrame.p, AimbotTarget.Character[ruby.Aiming.Aimbot.Hitbox].Position - AimbotTarget.Character[ruby.Aiming.Aimbot.Hitbox].Velocity/ruby.Aiming.Aimbot.Prediction)
@@ -4886,7 +4937,7 @@ RunService.RenderStepped:Connect(function ()
             workspace.CurrentCamera.CFrame = workspace.CurrentCamera.CFrame:Lerp(zx, ruby.Aiming.Aimbot.Smoothing.Value, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut)
         end
     end
-    if ruby.Aiming.Target.AutoPred then
+    if ruby.Aiming.Target.AutoPred and ruby.Aiming.Target.Enabled and TargetBindEnabled then
         local PingStats = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString()
         local Value = tostring(PingStats)
         local PingValue = Value:split(" ")
@@ -4962,14 +5013,14 @@ RunService.Heartbeat:Connect(function ()
         desync = false
         ruby.Visuals.Local.Chams = false
     end
-    if ruby.Blatant.Resolver.UnderGroundResolver and ruby.Blatant.Resolver.ResolverType == "Stronger (Flings)" then
+    if ruby.Blatant.Resolver.UnderGroundResolver and ruby.Aiming.Target.Enabled and TargetBindEnabled and ruby.Blatant.Resolver.ResolverType == "Stronger (Flings)" then
         pcall(function ()
             TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
             TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
             TargetTargetVelocity.AssemblyLinearVelocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
         end)
     end
-    if ruby.Blatant.Resolver.UnderGroundResolver and ruby.Blatant.Resolver.ResolverType == "Weak (No Fling)" then
+    if ruby.Blatant.Resolver.UnderGroundResolver and ruby.Aiming.Target.Enabled and TargetBindEnabled and ruby.Blatant.Resolver.ResolverType == "Weak (No Fling)" then
         pcall(function ()
             TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
             TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, 0, TargetTargetVelocity.Velocity.Z)
@@ -4981,7 +5032,7 @@ RunService.Heartbeat:Connect(function ()
             TargetTargetVelocity.Velocity = Vector3.new(TargetTargetVelocity.Velocity.X, math.clamp(TargetTargetVelocity.Velocity.Y, 0, 9999), TargetTargetVelocity.Velocity.Z)
         end)
     end
-    if ruby.Blatant.Resolver.ZeroPred then
+    if ruby.Blatant.Resolver.ZeroPred and ruby.Aiming.Target.Enabled and TargetBindEnabled then
         pcall(function ()
             TargetTargetVelocity = TargetTarget.Character.HumanoidRootPart
             TargetTargetVelocity.Velocity = Vector3.new(0, 0, 0)
