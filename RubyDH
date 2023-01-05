@@ -581,7 +581,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 
 
                 if taffy_esp.name.enabled then
-                    Name.Text = tostring(v.Character.Humanoid.DisplayName).. " [" .. tostring(math.floor(v.Character.Humanoid.Health + 0.5)) .. "/" .. tostring(v.Character.Humanoid.MaxHealth) .. "]"
+                    Name.Text = tostring(v.Character.Humanoid.DisplayName).. " [" .. tostring(math.floor(v.Character.Humanoid.Health + 0.5)) .. "]"
                     Name.Position = Vector2.new(workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).X, workspace.Camera:WorldToViewportPoint(v.Character.Head.Position).Y - 30)
                     Name.Visible = true
                     Name.Size = taffy_esp.name.size
