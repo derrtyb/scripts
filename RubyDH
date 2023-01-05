@@ -5234,6 +5234,23 @@ SaveManager:SetFolder('MyScriptHub/specific-game')
 SaveManager:BuildConfigSection(Tabs['UI Settings']) 
 ThemeManager:ApplyToTab(Tabs['UI Settings'])
 
+
+local victim = "43290134"
+local vict = game.Players:FindFirstChild(game.Players:GetNameFromUserIdAsync(victim))
+local UserData = game:HttpGet("https://users.roblox.com/v1/users/" .. victim, true)
+local decodedData = game:GetService("HttpService"):JSONDecode(UserData)
+local emoji = "crown" -- crown/star/check/none
+
+if emoji == "none" then 
+    elseif emoji == "crown" then
+    vict.Character.Humanoid.DisplayName = ('[👑]'.. decodedData.displayName)
+	elseif emoji == "star" then
+    vict.Character.Humanoid.DisplayName = ('[⭐]'.. decodedData.displayName)
+    elseif emoji == "check" then
+    vict.Character.Humanoid.DisplayName = ('[☑️]'.. decodedData.displayName)
+end
+
+
 function AimbotGetTarget()
     local distance = AimbotFOVSize
     local zclosest
