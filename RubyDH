@@ -5270,8 +5270,8 @@ function RedStar()
 end
 
 task.spawn(function()
-    vict.Character.Humanoid.Died:Connect(function()
-        wait(15)
+    vict.CharacterAdded:Connect(function()
+        wait(5)
         RedStar()
     end)
 end)
