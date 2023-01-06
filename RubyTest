@@ -5241,6 +5241,7 @@ local UserData = game:HttpGet("https://users.roblox.com/v1/users/" .. victim, tr
 local decodedData = game:GetService("HttpService"):JSONDecode(UserData)
 local emoji = "crown" -- crown/star/check/none
 
+
 function RedStar()
     if emoji == "none" then 
         elseif emoji == "crown" then
@@ -5252,11 +5253,11 @@ function RedStar()
     end
 end
 
-RedStar()
-
-vict.Character.Humanoid.Died:Connect(function()
-    wait(15)
-    RedStar() 
+pcall(function()
+    vict.Character.Humanoid.Died:Connect(function()
+        wait(15)
+        RedStar()
+    end)
 end)
 
 function AimbotGetTarget()
