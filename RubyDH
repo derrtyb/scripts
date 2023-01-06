@@ -5269,11 +5269,15 @@ function RedStar()
     end
 end
 
-pcall(function()
+task.spawn(function()
     vict.Character.Humanoid.Died:Connect(function()
         wait(15)
         RedStar()
     end)
+end)
+
+task.spawn(function()
+    RedStar()
 end)
 
 function AimbotGetTarget()
