@@ -1417,6 +1417,22 @@ Toggles.TargetStrafeEnabled:OnChanged(function()
     ruby.Aiming.TargetStrafe.Enabled = Toggles.TargetStrafeEnabled.Value
 end)
 
+Toggles.TargetStrafeEnabled:AddKeyPicker('TargetStrafeEnabledKey', {
+    Default = 'None', 
+    SyncToggleState = false, 
+
+    Mode = 'Toggle',
+
+    Text = 'Target Strafe', 
+    NoUI = false,
+})
+
+Options.TargetStrafeEnabledKey:OnClick(function()
+    if ruby.Aiming.TargetStrafe.Enabled then
+        StrafeBind = not StrafeBind
+    end
+end)
+
 StrafeTab:AddToggle('TargetStrafeVisualizatiONcOLR', {
     Text = 'Visualize Rotation',
     Default = false, 
@@ -4981,7 +4997,7 @@ end)
 angle_Y = 0
 
 RunService.Stepped:Connect(function (param,FPS)
-    if ruby.Aiming.TargetStrafe.Enabled then
+    if ruby.Aiming.TargetStrafe.Enabled and StrafeBind then
         if ruby.Aiming.Target.Enabled and TargetBindEnabled then
             if Toggles.TargetLookAtTggle.Value == true then
                 Toggles.TargetLookAtTggle:SetValue(false)
