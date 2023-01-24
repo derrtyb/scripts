@@ -235,23 +235,18 @@ Heartbeat:Connect(function()
     end
 end) 
 
-local hrp
-local noob = game:GetService("RunService")
 local lplr = game.Players.LocalPlayer
 local resolver
+local AoriHRP
 
 local function AddResolver()
     pcall(function()
-        for i,v in pairs(game.Players:GetChildren()) do
-            if v ~= game.Players.LocalPlayer then
-                hrp = v.Character.HumanoidRootPart
-                hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
-            end
-        end
+        AoriHRP = Aorinject.Selected.Character.HumanoidRootPart
+        AoriHRP.Velocity = Vector3.new(AoriHRP.Velocity.X, 0, AoriHRP.Velocity.Z)
     end)
 end
 
-resolver = noob.Heartbeat:Connect(AddResolver)
+resolver = Heartbeat:Connect(AddResolver)
 
 --// executes resolver again on respawn
 
@@ -259,7 +254,7 @@ task.spawn(function()
 	lplr.CharacterAdded:Connect(function()
 		resolver:Disconnect()
 		wait(5)
-		resolver = noob.Heartbeat:Connect(AddResolver)
+		resolver = Heartbeat:Connect(AddResolver)
 	end)
 end)
 
