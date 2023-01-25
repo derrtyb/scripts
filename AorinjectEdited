@@ -242,7 +242,7 @@ local AoriHRP
 local function AddResolver()
     pcall(function()
         AoriHRP = Aorinject.Selected.Character.HumanoidRootPart
-        AoriHRP.Velocity = Vector3.new(AoriHRP.Velocity.X, 0, AoriHRP.Velocity.Z)
+        AoriHRP.Velocity = Vector3.new(AoriHRP.Velocity.X, math.clamp(AoriHRP.Velocity.Y, 0, 50), AoriHRP.Velocity.Z)
     end)
 end
 
