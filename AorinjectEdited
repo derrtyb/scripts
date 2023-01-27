@@ -17,7 +17,7 @@ getgenv().AntiDetect = true
 getgenv().loaded = false
 getgenv().AorinjectSettings = {
     SilentAim = true,
-    Prediction = 0.1281,
+    Prediction = 0.1242,
 }
 Drawing = Drawing
 mousemoverel = mousemoverel
