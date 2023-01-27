@@ -1,4 +1,5 @@
 getgenv().keybind = "q"
+getgenv().silentkeybind = nil
 getgenv().prediction = 0.1258
 getgenv().ballistics = 0.35
 getgenv().smoothness = 11
@@ -12,6 +13,7 @@ getgenv().UnlockWhenPlayerDies = false
 getgenv().TracerRadius = false
 getgenv().GrabbedCheck = true
 getgenv().KoCheck = true
+getgenv().AntiDetect = true
 getgenv().loaded = false
 getgenv().AorinjectSettings = {
     SilentAim = true,
@@ -71,12 +73,13 @@ end
 local aori, aoricammisc, aorisilmisc = nil, nil, nil
 local smoothnessstatus, notifstatus, unlockwhendeadstatus, unlockwhenlocalplayerknockedstatus, tracewhentargetradiusstatus, fovcirclestatus, silentfovcirclestatus  = "false", "false", "false", "false", "false", "false", "false"
 local smoothnessvalue, predictionvalue, silpredictionvalue = "Default", "Default", "Default"
-local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus = "true", "true", "true", "true"
+local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus = "true", "true", "true", "true", "true"
 local aorinjectstatus = "Not Loaded"
 local silpredictionstatus, silentaimstatus = "Enabled", "Enabled"
 local fovvalue = "60"
 local silentfovvalue = "40"
 local keybindvalue = "q"
+local silentkeybindvalue = "None"
 
 getgenv().Aorinject = {
     Enabled = true,
@@ -305,6 +308,11 @@ function Aorinject.Check()
     end
     if getgenv().KoCheck then
         if KOd then
+            return false
+        end
+    end
+    if getgenv().AntiDetect then
+        if math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > 29 or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y) > 29 or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > 29 then
             return false
         end
     end
@@ -633,6 +641,8 @@ aorinjectbase([[
                                         [4] K.O Check []] ..silkodcheckstatus ..[[]
                                         [5] Change FOV Radius []] ..silentfovvalue ..[[]
                                         [6] Show FOV Circle []] ..silentfovcirclestatus ..[[]
+                                        [7] Unlock when anti lock is detected []] ..antidetectstatus ..[[]
+                                        [8] Silent Aim Toggle Key []] ..silentkeybindvalue ..[[]
                                 
                                         [X] Go back to main menu
 ]])
@@ -643,6 +653,27 @@ end
 function aoriresponse()
     if aori == "1" and getgenv().loaded == false then
         Mouse.KeyDown:Connect(function(KeyPressed)
+            if KeyPressed == string.lower(getgenv().silentkeybind) then
+                pcall(function()
+                    if getgenv().AorinjectSettings.SilentAim == true then
+                        getgenv().AorinjectSettings.SilentAim = false
+                        silentaimstatus = "Disabled"
+                        game.StarterGui:SetCore("SendNotification", {
+                            Title = "Silent Aim",
+                            Text = "OFF",
+                            Duration = 1
+                        })
+                    elseif getgenv().AorinjectSettings.SilentAim == false then
+                        getgenv().AorinjectSettings.SilentAim = true
+                        silentaimstatus = "Enabled"
+                        game.StarterGui:SetCore("SendNotification", {
+                            Title = "Silent Aim",
+                            Text = "ON",
+                            Duration = 1
+                        })
+                    end
+                end)
+            end
             if KeyPressed == string.lower(getgenv().keybind) then
                 pcall(function()
                     if Locking == false then
@@ -866,6 +897,22 @@ function aorisilmiscresponse()
         end
         rconsoleclear()
         aorisilmiscs()()
+    elseif aorisilmisc == "7" then
+        if getgenv().AntiDetect == true then
+            getgenv().AntiDetect = false
+            antidetectstatus = "false"
+        elseif getgenv().AntiDetect == false then
+            getgenv().AntiDetect = true
+            antidetectstatus = "true"
+        end
+        rconsoleclear()
+        aorisilmiscs()
+    elseif aorisilmisc == "8" then
+        rconsoleprint("Keybind: ")
+        silentkeybindvalue = rconsoleinput("")
+        getgenv().silentkeybind = silentkeybindvalue
+        rconsoleclear()
+        aorisilmiscs()
     elseif aorisilmisc == "X" or aorisilmisc == "x" then
         rconsoleclear()
         aorimain()
