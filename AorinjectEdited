@@ -76,6 +76,7 @@ local smoothnessvalue, predictionvalue, silpredictionvalue = "Default", "Default
 local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus = "true", "true", "true", "true", "true"
 local aorinjectstatus = "Not Loaded"
 local silpredictionstatus, silentaimstatus = "Enabled", "Enabled"
+local silresolverstatus = "Enabled"
 local fovvalue = "60"
 local silentfovvalue = "40"
 local keybindvalue = "q"
@@ -567,7 +568,7 @@ aorinjectbase([[
                                                                          888P                                 
                                                                        .J88"                            
 
-        Made by delusional#7743 & aori#0001 / discord.gg/aorinject
+        Made by delusional#7743 & aori#0001 / discord.gg/aorinject | Edited by red.#7074
 
 
                                 [1] Load Aorinject []] ..aorinjectstatus ..[[]
@@ -634,6 +635,7 @@ aorinjectbase([[
                                             [Silent-Aim Settings]        888P                                 
                                                                        .J88"                            
 
+                                            No Floor Shots []] ..silresolverstatus ..[[]                               
                                         [0] Enable / Disable Silent-Aim []] ..silentaimstatus ..[[]
                                         [1] Prediction Value []] ..silpredictionvalue ..[[]
                                         [2] Prediction []] ..silpredictionstatus ..[[]
