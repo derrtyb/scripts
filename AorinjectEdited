@@ -312,7 +312,7 @@ function Aorinject.Check()
         end
     end
     if getgenv().AntiDetect then
-        if math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > 29 or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y) > 29 or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > 29 then
+        if math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > 29 or Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y > 29 or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > 29 then
             return false
         end
     end
