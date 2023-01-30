@@ -83,6 +83,7 @@ local fovvalue = "60"
 local silentfovvalue = "40"
 local keybindvalue = "q"
 local silentkeybindvalue = "None"
+local antilockdetected = nil
 
 getgenv().Aorinject = {
     Enabled = true,
@@ -254,9 +255,9 @@ local function AddResolver()
     pcall(function()
         AoriHRP = Aorinject.Selected.Character.HumanoidRootPart
         AoriHRP.Velocity = Vector3.new(AoriHRP.Velocity.X, math.clamp(AoriHRP.Velocity.Y, 0, 50), AoriHRP.Velocity.Z)
-        if Locking then
+        if Locking and antilockdetected then
             AoriCamHRP = Enemy.HumanoidRootPart
-            AoriCamHRP.Velocity = Vector3.new(AoriCamHRP.Velocity.X, math.clamp(AoriCamHRP.Velocity.Y, 0, 50), AoriCamHRP.Velocity.Z)
+            AoriCamHRP.Velocity = Vector3.new(0, 0, 0)
         end
     end)
 end
@@ -537,8 +538,9 @@ end
 RunService.Stepped:Connect(function()
     if Locking and Enemy ~= nil and getgenv().CamAntiDetect then
         if math.abs(Enemy.HumanoidRootPart.Velocity.X) > 99 or Enemy.HumanoidRootPart.Velocity.Y > 99 or math.abs(Enemy.HumanoidRootPart.Velocity.Z) > 99 then
-            Locking = false
-            Render_Lock:Disconnect()
+            antilockdetected = true
+        else
+            antilockdetected = false
         end
     end
     if getgenv().UnlockWhenTargetDies then
@@ -611,7 +613,7 @@ aorinjectbase([[
                                         [1] Notifications []] ..notifstatus ..[[]
                                         [2] Smoothness []] ..smoothnessstatus ..[[]
                                         [3] Smoothness Value []] ..smoothnessvalue ..[[]
-                                        [4] Unlock when Anti Lock is Detected []] ..camantidetectstatus ..[[]
+                                        [4] Desync Resolver []] ..camantidetectstatus ..[[]
                                         [5] Prediction Value []] ..predictionvalue ..[[]
                                         [6] Unlock When Target Dies []] ..unlockwhendeadstatus ..[[]
                                         [7] Unlock When You Die []] ..unlockwhenlocalplayerknockedstatus ..[[]
