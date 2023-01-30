@@ -1992,8 +1992,8 @@ local r6_dummy = game:GetObjects("rbxassetid://9474737816")[1]
                 desync_stuff[1] = lplr.Character.HumanoidRootPart.CFrame
                 local fakeCFrame = lplr.Character.HumanoidRootPart.CFrame
             if cframetpdesynctype == "Layvis" then
-                    fakeCFrame = fakeCFrame * CFrame.new(0, -5, 0)
-                    fakeCFrame = fakeCFrame * CFrame.Angles(1.55, 0, 0)
+                    fakeCFrame = fakeCFrame * CFrame.new(0, -7, 0)
+                    --[[fakeCFrame = fakeCFrame * CFrame.Angles(1.55, 0, 0)--]]
                     if visualizemodellol == true then
                         r6_dummy.Parent = workspace
                         r6_dummy.HumanoidRootPart.Velocity = Vector3.new()
