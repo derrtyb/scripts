@@ -575,7 +575,6 @@ aorinjectbase([[
                                 [2] Camlock Settings
                                 [3] Silent-Aim Settings
 
-                                [X] Exit
 ]])
 aori = rconsoleinput("")
 aoriresponse()
@@ -714,8 +713,6 @@ function aoriresponse()
 ]])
         aori = rconsoleinput("")
         aoriresponse()
-    elseif aori == "X" or aori == "x" then
-        game.Players.LocalPlayer:Kick("AorInject Kick")
     elseif aori == "2" then
         rconsoleclear()
         aoricammiscs()
