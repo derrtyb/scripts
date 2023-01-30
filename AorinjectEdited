@@ -241,8 +241,8 @@ Heartbeat:Connect(function()
     Aorinject.UpdateFOV()
     Aorinject.GetClosestPlayerToCursor()
     if Aorinject.Selected and Aorinject.Selected ~= game.Players.LocalPlayer and Aorinject.Selected.Character:WaitForChild("BodyEffects")["K.O"].Value == false and Aorinject.Selected.Character:FindFirstChild("GRABBING_CONSTRAINT") == false then
-        Aorinject.SelectedPart.Velocity = Vector3.new(Aorinject.SelectedPart.Velocity.X, 0, Aorinject.SelectedPart.Velocity.Z)
-        Aorinject.SelectedPart.AssemblyLinearVelocity = Vector3.new(Aorinject.SelectedPart.Velocity.X, 0, Aorinject.SelectedPart.Velocity.Z)
+        Aorinject.SelectedPart.Velocity = Vector3.new(Aorinject.SelectedPart.Velocity.X, math.clamp(Aorinject.SelectedPart.Velocity.Y, 0, 50), Aorinject.SelectedPart.Velocity.Z)
+        Aorinject.SelectedPart.AssemblyLinearVelocity = Vector3.new(Aorinject.SelectedPart.Velocity.X, math.clamp(Aorinject.SelectedPart.Velocity.Y, 0, 50), Aorinject.SelectedPart.Velocity.Z)
     end
 end) 
 
