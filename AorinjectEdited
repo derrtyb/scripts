@@ -247,11 +247,16 @@ end)
 local lplr = game.Players.LocalPlayer
 local resolver
 local AoriHRP
+local AoriCamHRP
 
 local function AddResolver()
     pcall(function()
         AoriHRP = Aorinject.Selected.Character.HumanoidRootPart
         AoriHRP.Velocity = Vector3.new(AoriHRP.Velocity.X, math.clamp(AoriHRP.Velocity.Y, 0, 50), AoriHRP.Velocity.Z)
+        if Locking then
+            AoriCamHRP = Enemy.HumanoidRootPart
+            AoriCamHRP.Velocity = Vector3.new(AoriCamHRP.Velocity.X, math.clamp(AoriCamHRP.Velocity.Y, 0, 50), AoriCamHRP.Velocity.Z)
+        end
     end)
 end
 
@@ -343,8 +348,7 @@ function Aimbot()
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 and getgenv().CamUndergroundResolver then
                                     local hrp = Enemy.HumanoidRootPart
-                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
-                                    hrp.AssemblyLinearVelocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
+                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
                                 end
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 then
@@ -364,8 +368,7 @@ function Aimbot()
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 and getgenv().CamUndergroundResolver then
                                 local hrp = Enemy.HumanoidRootPart
-                                hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
-                                hrp.AssemblyLinearVelocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
+                                hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
                             end
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 then
@@ -395,8 +398,7 @@ function Aimbot()
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 and getgenv().CamUndergroundResolver then
                                     local hrp = Enemy.HumanoidRootPart
-                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
-                                    hrp.AssemblyLinearVelocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
+                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
                                 end
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 then
@@ -416,8 +418,7 @@ function Aimbot()
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 and getgenv().CamUndergroundResolver then
                                 local hrp = Enemy.HumanoidRootPart
-                                hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
-                                hrp.AssemblyLinearVelocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
+                                hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
                             end
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 then
@@ -447,8 +448,7 @@ function Aimbot()
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 and getgenv().CamUndergroundResolver then
                                     local hrp = Enemy.HumanoidRootPart
-                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
-                                    hrp.AssemblyLinearVelocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
+                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
                                 end
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 then
@@ -466,8 +466,7 @@ function Aimbot()
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 and getgenv().CamUndergroundResolver then
                                 local hrp = Enemy.HumanoidRootPart
-                                hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
-                                hrp.AssemblyLinearVelocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
+                                hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
                             end
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 then
@@ -495,8 +494,7 @@ function Aimbot()
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 and getgenv().CamUndergroundResolver then
                                     local hrp = Enemy.HumanoidRootPart
-                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
-                                    hrp.AssemblyLinearVelocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
+                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
                                 end
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 then
@@ -514,8 +512,7 @@ function Aimbot()
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 and getgenv().CamUndergroundResolver then
                                 local hrp = Enemy.HumanoidRootPart
-                                hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
-                                hrp.AssemblyLinearVelocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
+                                hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
                             end
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 then
