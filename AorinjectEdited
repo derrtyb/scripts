@@ -14,6 +14,7 @@ getgenv().TracerRadius = false
 getgenv().GrabbedCheck = true
 getgenv().KoCheck = true
 getgenv().AntiDetect = true
+getgenv().CamAntiDetect = false
 getgenv().CamlockPriority = false
 getgenv().loaded = false
 getgenv().AorinjectSettings = {
@@ -74,7 +75,7 @@ end
 local aori, aoricammisc, aorisilmisc = nil, nil, nil
 local smoothnessstatus, notifstatus, unlockwhendeadstatus, unlockwhenlocalplayerknockedstatus, tracewhentargetradiusstatus, fovcirclestatus, silentfovcirclestatus  = "false", "false", "false", "false", "false", "false", "false"
 local smoothnessvalue, predictionvalue, silpredictionvalue = "Default", "Default", "Default"
-local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus, camlockprioritystatus = "true", "true", "true", "true", "true", "false"
+local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus, camlockprioritystatus, camantidetectstatus = "true", "true", "true", "true", "true", "false", "false"
 local aorinjectstatus = "Not Loaded"
 local silpredictionstatus, silentaimstatus = "Enabled", "Enabled"
 local silresolverstatus = "Enabled"
@@ -534,6 +535,12 @@ function Aimbot()
 end
 
 RunService.Stepped:Connect(function()
+    if Locking and Enemy ~= nil and getgenv().CamAntiDetect then
+        if math.abs(Enemy.HumanoidRootPart.Velocity.X) > 99 or Enemy.HumanoidRootPart.Velocity.Y > 99 or math.abs(Enemy.HumanoidRootPart.Velocity.Z) > 99 then
+            Locking = false
+            Render_Lock:Disconnect()
+        end
+    end
     if getgenv().UnlockWhenTargetDies then
         if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] then
             if Enemy.BodyEffects['K.O'].Value == true and Enemy[Settings.Humanoid] then
@@ -604,7 +611,7 @@ aorinjectbase([[
                                         [1] Notifications []] ..notifstatus ..[[]
                                         [2] Smoothness []] ..smoothnessstatus ..[[]
                                         [3] Smoothness Value []] ..smoothnessvalue ..[[]
-                                        [4] Prediction []] ..predictionstatus ..[[]
+                                        [4] Unlock when Anti Lock is Detected []] ..camantidetectstatus ..[[]
                                         [5] Prediction Value []] ..predictionvalue ..[[]
                                         [6] Unlock When Target Dies []] ..unlockwhendeadstatus ..[[]
                                         [7] Unlock When You Die []] ..unlockwhenlocalplayerknockedstatus ..[[]
@@ -758,12 +765,12 @@ function aoricammiscresponse()
         rconsoleclear()
         aoricammiscs()
     elseif aoricammisc == "4" then
-        if getgenv().PredictionState == true then
-            getgenv().PredictionState = false
-            predictionstatus = "false"
-        elseif getgenv().PredictionState == false then
-            getgenv().PredictionState = true
-            predictionstatus = "true"
+        if getgenv().CamAntiDetect == true then
+            getgenv().CamAntiDetect  = false
+            camantidetectstatus = "false"
+        elseif getgenv().CamAntiDetect  == false then
+            getgenv().CamAntiDetect  = true
+            camantidetectstatus = "true"
         end
         rconsoleclear()
         aoricammiscs()
