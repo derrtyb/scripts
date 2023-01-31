@@ -648,14 +648,13 @@ aorinjectbase([[
                                             No Floor Shots []] ..silresolverstatus ..[[]                               
                                         [0] Enable / Disable Silent-Aim []] ..silentaimstatus ..[[]
                                         [1] Prediction Value []] ..silpredictionvalue ..[[]
-                                        [2] Prediction []] ..silpredictionstatus ..[[]
-                                        [3] Grabbed Check []] ..silgrabbedvalue ..[[]
-                                        [4] K.O Check []] ..silkodcheckstatus ..[[]
-                                        [5] Change FOV Radius []] ..silentfovvalue ..[[]
-                                        [6] Show FOV Circle []] ..silentfovcirclestatus ..[[]
-                                        [7] Unlock when Anti Lock is Detected []] ..antidetectstatus ..[[]
-                                        [8] Prioritize Silent Aim on Camlock Target (TESTING) []] ..camlockprioritystatus ..[[]
-                                        [9] Silent Aim Toggle Key []] ..silentkeybindvalue ..[[]
+                                        [2] Grabbed Check []] ..silgrabbedvalue ..[[]
+                                        [3] K.O Check []] ..silkodcheckstatus ..[[]
+                                        [4] Change FOV Radius []] ..silentfovvalue ..[[]
+                                        [5] Show FOV Circle []] ..silentfovcirclestatus ..[[]
+                                        [6] Unlock when Anti Lock is Detected []] ..antidetectstatus ..[[]
+                                        [7] Prioritize Silent Aim on Camlock Target (TESTING) []] ..camlockprioritystatus ..[[]
+                                        [8] Silent Aim Toggle Key []] ..silentkeybindvalue ..[[]
                                 
                                         [X] Go back to main menu
 ]])
@@ -863,16 +862,6 @@ function aorisilmiscresponse()
         rconsoleclear()
         aorisilmiscs()
     elseif aorisilmisc == "2" then
-        if getgenv().AorinjectSettings.PredictionStatus == true then
-            getgenv().AorinjectSettings.PredictionStatus = false
-            silpredictionstatus = "Disabled"
-        elseif getgenv().AorinjectSettings.PredictionStatus == false then
-            getgenv().AorinjectSettings.PredictionStatus = true
-            silpredictionstatus = "Enabled"
-        end
-        rconsoleclear()
-        aorisilmiscs()
-    elseif aorisilmisc == "3" then
         if getgenv().GrabbedCheck == true then
             getgenv().GrabbedCheck = false
             silgrabbedvalue = "false"
@@ -882,7 +871,7 @@ function aorisilmiscresponse()
         end
         rconsoleclear()
         aorisilmiscs()
-    elseif aorisilmisc == "4" then
+    elseif aorisilmisc == "3" then
         if getgenv().KoCheck == true then
             getgenv().KoCheck = false
             silkodcheckstatus = "false"
@@ -892,13 +881,13 @@ function aorisilmiscresponse()
         end
         rconsoleclear()
         aorisilmiscs()
-    elseif aorisilmisc == "5" then
+    elseif aorisilmisc == "4" then
         rconsoleprint("FOV: ")
         silentfovvalue = rconsoleinput("")
         getgenv().Aorinject.FOV = tonumber(silentfovvalue)
         rconsoleclear()
         aorisilmiscs()
-    elseif aorisilmisc == "6" then
+    elseif aorisilmisc == "5" then
         if getgenv().Aorinject.ShowFOV == true then
             getgenv().Aorinject.ShowFOV = false
             silentfovcirclestatus = "false"
@@ -908,7 +897,7 @@ function aorisilmiscresponse()
         end
         rconsoleclear()
         aorisilmiscs()()
-    elseif aorisilmisc == "7" then
+    elseif aorisilmisc == "6" then
         if getgenv().AntiDetect == true then
             getgenv().AntiDetect = false
             antidetectstatus = "false"
@@ -918,7 +907,7 @@ function aorisilmiscresponse()
         end
         rconsoleclear()
         aorisilmiscs()
-    elseif aorisilmisc == "8" then
+    elseif aorisilmisc == "7" then
         if getgenv().CamlockPriority == true then
             getgenv().CamlockPriority = false
             camlockprioritystatus = "false"
@@ -928,7 +917,7 @@ function aorisilmiscresponse()
         end
         rconsoleclear()
         aorisilmiscs()
-    elseif aorisilmisc == "9" then
+    elseif aorisilmisc == "8" then
         rconsoleprint("Keybind: ")
         silentkeybindvalue = rconsoleinput("")
         getgenv().silentkeybind = silentkeybindvalue
