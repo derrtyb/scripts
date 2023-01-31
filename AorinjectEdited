@@ -19,7 +19,7 @@ getgenv().CamlockPriority = false
 getgenv().loaded = false
 getgenv().AorinjectSettings = {
     SilentAim = true,
-    Prediction = 0.1242,
+    Prediction = 0.1389,
 }
 Drawing = Drawing
 mousemoverel = mousemoverel
@@ -74,7 +74,7 @@ local aorinjectbase = function(a)
 end
 local aori, aoricammisc, aorisilmisc = nil, nil, nil
 local smoothnessstatus, notifstatus, unlockwhendeadstatus, unlockwhenlocalplayerknockedstatus, tracewhentargetradiusstatus, fovcirclestatus, silentfovcirclestatus  = "false", "false", "false", "false", "false", "false", "false"
-local smoothnessvalue, predictionvalue, silpredictionvalue = "Default", "Default", "Default"
+local smoothnessvalue, predictionvalue, silpredictionvalue = "Default", "Default", "0.1389"
 local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus, camlockprioritystatus, camantidetectstatus = "true", "true", "true", "true", "true", "false", "false"
 local aorinjectstatus = "Not Loaded"
 local silpredictionstatus, silentaimstatus = "Enabled", "Enabled"
