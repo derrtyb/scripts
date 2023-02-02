@@ -14,7 +14,6 @@ getgenv().TracerRadius = false
 getgenv().GrabbedCheck = true
 getgenv().KoCheck = true
 getgenv().AntiDetect = true
-getgenv().AntiDetectNumber = 29
 getgenv().CamAntiDetect = false
 getgenv().CamlockPriority = false
 getgenv().loaded = false
@@ -85,7 +84,6 @@ local silentfovvalue = "40"
 local keybindvalue = "q"
 local silentkeybindvalue = "None"
 local antilockdetected = nil
-local antidetectvalue = "30"
 
 getgenv().Aorinject = {
     Enabled = true,
@@ -327,7 +325,7 @@ function Aorinject.Check()
         end
     end
     if getgenv().AntiDetect then
-        if math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > getgenv().AntiDetectNumber or Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y > getgenv().AntiDetectNumber or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > getgenv().AntiDetectNumber then
+        if math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > 29 or Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y > 29 or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > 29 then
             return false
         end
     end
@@ -615,7 +613,7 @@ aorinjectbase([[
                                         [1] Notifications []] ..notifstatus ..[[]
                                         [2] Smoothness []] ..smoothnessstatus ..[[]
                                         [3] Smoothness Value []] ..smoothnessvalue ..[[]
-                                        [4] Auto Desync Resolver []] ..camantidetectstatus ..[[]
+                                        [4] Desync Resolver []] ..camantidetectstatus ..[[]
                                         [5] Prediction Value []] ..predictionvalue ..[[]
                                         [6] Unlock When Target Dies []] ..unlockwhendeadstatus ..[[]
                                         [7] Unlock When You Die []] ..unlockwhenlocalplayerknockedstatus ..[[]
@@ -654,14 +652,10 @@ aorinjectbase([[
                                         [3] K.O Check []] ..silkodcheckstatus ..[[]
                                         [4] Change FOV Radius []] ..silentfovvalue ..[[]
                                         [5] Show FOV Circle []] ..silentfovcirclestatus ..[[]
-                                        [6] Prioritize Silent Aim on Camlock Target (TESTING) []] ..camlockprioritystatus ..[[]
-                                        [7] Silent Aim Toggle Key []] ..silentkeybindvalue ..[[]
+                                        [6] Unlock when Anti Lock is Detected []] ..antidetectstatus ..[[]
+                                        [7] Prioritize Silent Aim on Camlock Target (TESTING) []] ..camlockprioritystatus ..[[]
+                                        [8] Silent Aim Toggle Key []] ..silentkeybindvalue ..[[]
                                 
-                                            [Auto Resolving Method]
-
-                                        [8] Unlock when Anti Lock is Detected (Legit) / MoveDIR (WIP) []] ..antidetectstatus ..[[]
-                                        [9] Anti Lock Detection Amount []] ..antidetectvalue ..[[]
-
                                         [X] Go back to main menu
 ]])
 aorisilmisc = rconsoleinput("")
@@ -904,6 +898,16 @@ function aorisilmiscresponse()
         rconsoleclear()
         aorisilmiscs()()
     elseif aorisilmisc == "6" then
+        if getgenv().AntiDetect == true then
+            getgenv().AntiDetect = false
+            antidetectstatus = "false"
+        elseif getgenv().AntiDetect == false then
+            getgenv().AntiDetect = true
+            antidetectstatus = "true"
+        end
+        rconsoleclear()
+        aorisilmiscs()
+    elseif aorisilmisc == "7" then
         if getgenv().CamlockPriority == true then
             getgenv().CamlockPriority = false
             camlockprioritystatus = "false"
@@ -913,27 +917,10 @@ function aorisilmiscresponse()
         end
         rconsoleclear()
         aorisilmiscs()
-    elseif aorisilmisc == "7" then
+    elseif aorisilmisc == "8" then
         rconsoleprint("Keybind: ")
         silentkeybindvalue = rconsoleinput("")
         getgenv().silentkeybind = silentkeybindvalue
-        rconsoleclear()
-        aorisilmiscs()
-    elseif aorisilmisc == "8" then
-        if getgenv().AntiDetect == true then
-            getgenv().AntiDetect = false
-            antidetectstatus = "MoveDIR"
-        elseif getgenv().AntiDetect == false then
-            getgenv().AntiDetect = true
-            antidetectstatus = "Legit"
-        end
-        rconsoleclear()
-        aorisilmiscs()
-    end
-    elseif aorisilmisc == "9" then
-        rconsoleprint("Velocity Amount: ")
-        antidetectvalue = rconsoleinput("")
-        getgenv().AntiDetectNumber = tonumber(antidetectvalue)
         rconsoleclear()
         aorisilmiscs()
     elseif aorisilmisc == "X" or aorisilmisc == "x" then
