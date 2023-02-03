@@ -352,7 +352,7 @@ function Aimbot()
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 and getgenv().CamUndergroundResolver then
                                     local hrp = Enemy.HumanoidRootPart
-                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
+                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
                                 end
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 then
@@ -372,7 +372,7 @@ function Aimbot()
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 and getgenv().CamUndergroundResolver then
                                 local hrp = Enemy.HumanoidRootPart
-                                hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
+                                hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
                             end
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 then
@@ -402,7 +402,7 @@ function Aimbot()
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 and getgenv().CamUndergroundResolver then
                                     local hrp = Enemy.HumanoidRootPart
-                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
+                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
                                 end
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 then
@@ -422,7 +422,7 @@ function Aimbot()
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 and getgenv().CamUndergroundResolver then
                                 local hrp = Enemy.HumanoidRootPart
-                                hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
+                                hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
                             end
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 then
@@ -452,7 +452,7 @@ function Aimbot()
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 and getgenv().CamUndergroundResolver then
                                     local hrp = Enemy.HumanoidRootPart
-                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
+                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
                                 end
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 then
@@ -470,7 +470,7 @@ function Aimbot()
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 and getgenv().CamUndergroundResolver then
                                 local hrp = Enemy.HumanoidRootPart
-                                hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
+                                hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
                             end
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 then
@@ -498,7 +498,7 @@ function Aimbot()
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 and getgenv().CamUndergroundResolver then
                                     local hrp = Enemy.HumanoidRootPart
-                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
+                                    hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
                                 end
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 then
@@ -516,7 +516,7 @@ function Aimbot()
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 and getgenv().CamUndergroundResolver then
                                 local hrp = Enemy.HumanoidRootPart
-                                hrp.Velocity = Vector3.new(hrp.Velocity.X, math.clamp(hrp.Velocity.Y, 0, 50), hrp.Velocity.Z)
+                                hrp.Velocity = Vector3.new(hrp.Velocity.X, 0, hrp.Velocity.Z)
                             end
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 then
@@ -583,6 +583,7 @@ aorinjectbase([[
 
         Made by delusional#7743 & aori#0001 / discord.gg/aorinject | Edited by red.#7074
 
+                                BELLA IS A LOCKER 😰😰😱 PREY IS UNLEGIT 😨🤯😧
 
                                 [1] Load Aorinject []] ..aorinjectstatus ..[[]
                                 [2] Camlock Settings
