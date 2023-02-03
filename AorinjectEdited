@@ -76,7 +76,7 @@ end
 local aori, aoricammisc, aorisilmisc = nil, nil, nil
 local smoothnessstatus, notifstatus, unlockwhendeadstatus, unlockwhenlocalplayerknockedstatus, tracewhentargetradiusstatus, fovcirclestatus, silentfovcirclestatus  = "false", "false", "false", "false", "false", "false", "false"
 local smoothnessvalue, predictionvalue, silpredictionvalue = "Default", "Default", "0.1389"
-local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus, camlockprioritystatus, camantidetectstatus = "true", "true", "true", "true", "true", "false", "false"
+local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus, camlockprioritystatus, camantidetectstatus = "true", "true", "true", "true", "Legit", "false", "false"
 local aorinjectstatus = "Not Loaded"
 local silpredictionstatus, silentaimstatus = "Enabled", "Enabled"
 local silresolverstatus = "Enabled"
@@ -583,7 +583,7 @@ aorinjectbase([[
 
         Made by delusional#7743 & aori#0001 / discord.gg/aorinject | Edited by red.#7074
 
-                                BELLA IS A LOCKER 😰😰😱 PREY IS UNLEGIT 😨🤯😧
+                                BELLA IS A LOCKER !! 😰😰😱 PREY IS UNLEGIT !! 😨🤯😧
 
                                 [1] Load Aorinject []] ..aorinjectstatus ..[[]
                                 [2] Camlock Settings
@@ -655,7 +655,7 @@ aorinjectbase([[
                                         [3] K.O Check []] ..silkodcheckstatus ..[[]
                                         [4] Change FOV Radius []] ..silentfovvalue ..[[]
                                         [5] Show FOV Circle []] ..silentfovcirclestatus ..[[]
-                                        [6] Prioritize Silent Aim on Camlock Target (TESTING) []] ..camlockprioritystatus ..[[]
+                                        [6] Prioritize Silent Aim on Camlock Target (WIP) []] ..camlockprioritystatus ..[[]
                                         [7] Silent Aim Toggle Key []] ..silentkeybindvalue ..[[]
                                 
                                             [Auto Resolving Method]
