@@ -1,5 +1,5 @@
 getgenv().keybind = "q"
-getgenv().silentkeybind = nil
+getgenv().silentkeybind = "z"
 getgenv().prediction = 0.1258
 getgenv().ballistics = 0.35
 getgenv().smoothness = 11
@@ -17,6 +17,8 @@ getgenv().AntiDetect = true
 getgenv().AntiDetectNumber = 29
 getgenv().CamAntiDetect = false
 getgenv().CamlockPriority = false
+getgenv().CamShake = false
+getgenv().CamShakeNumber = 100
 getgenv().loaded = false
 getgenv().AorinjectSettings = {
     SilentAim = true,
@@ -74,18 +76,19 @@ local aorinjectbase = function(a)
     rconsoleprint(a) 
 end
 local aori, aoricammisc, aorisilmisc = nil, nil, nil
-local smoothnessstatus, notifstatus, unlockwhendeadstatus, unlockwhenlocalplayerknockedstatus, tracewhentargetradiusstatus, fovcirclestatus, silentfovcirclestatus  = "false", "false", "false", "false", "false", "false", "false"
+local smoothnessstatus, notifstatus, unlockwhendeadstatus, unlockwhenlocalplayerknockedstatus, tracewhentargetradiusstatus, fovcirclestatus, silentfovcirclestatus, camshakestatus  = "true", "false", "false", "false", "false", "false", "false", "false"
 local smoothnessvalue, predictionvalue, silpredictionvalue = "Default", "Default", "0.1389"
-local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus, camlockprioritystatus, camantidetectstatus = "true", "true", "true", "true", "Legit", "false", "false"
+local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus, camlockprioritystatus, camantidetectstatus = "true", "true", "true", "true", "true", "false", "false"
 local aorinjectstatus = "Not Loaded"
 local silpredictionstatus, silentaimstatus = "Enabled", "Enabled"
 local silresolverstatus = "Enabled"
 local fovvalue = "60"
 local silentfovvalue = "40"
 local keybindvalue = "q"
-local silentkeybindvalue = "None"
+local silentkeybindvalue = "z"
 local antilockdetected = nil
 local antidetectvalue = "30"
+local camshakevalue = "100"
 
 getgenv().Aorinject = {
     Enabled = true,
@@ -231,11 +234,8 @@ function Aorinject.GetClosestPlayerToCursor()
             end
         end
     end
-    if getgenv().CamlockPriority and Locking then
-        Aorinject.Selected = Enemy
-    else
-        Aorinject.Selected = ClosestPlayer
-    end
+
+    Aorinject.Selected = ClosestPlayer
     Aorinject.SelectedPart = TargetPart
 end
 
@@ -245,6 +245,12 @@ Heartbeat:Connect(function()
     if Aorinject.Selected and Aorinject.Selected ~= game.Players.LocalPlayer and Aorinject.Selected.Character:WaitForChild("BodyEffects")["K.O"].Value == false and Aorinject.Selected.Character:FindFirstChild("GRABBING_CONSTRAINT") == false then
         Aorinject.SelectedPart.Velocity = Vector3.new(Aorinject.SelectedPart.Velocity.X, math.clamp(Aorinject.SelectedPart.Velocity.Y, 0, 50), Aorinject.SelectedPart.Velocity.Z)
         Aorinject.SelectedPart.AssemblyLinearVelocity = Vector3.new(Aorinject.SelectedPart.Velocity.X, math.clamp(Aorinject.SelectedPart.Velocity.Y, 0, 50), Aorinject.SelectedPart.Velocity.Z)
+    end
+
+    if Locking and Enemy ~= nil and getgenv().CamShake then
+        local CamVel = Enemy.HumanoidRootPart
+        CamVel.Velocity = Vector3.new(CamVel.Velocity.X, CamVel.Velocity.Y, CamVel.Velocity.Z) + 
+        Vector3.new(math.random(-CamShakeNumber, CamShakeNumber), math.random(-CamShakeNumber, CamShakeNumber), math.random(-CamShakeNumber, CamShakeNumber))
     end
 end) 
 
@@ -583,7 +589,7 @@ aorinjectbase([[
 
         Made by delusional#7743 & aori#0001 / discord.gg/aorinject | Edited by red.#7074
 
-                  BELLA IS A LOCKER !! 😰😰😱 PREY IS UNLEGIT !! 😨🤯😧 TREY LIKES GUYS
+                  BELLA IS A LOCKER !! 😰😰😱 PREY IS UNLEGIT !! 😨🤯😧 TREY LIKES GUYS !!
 
                                 [1] Load Aorinject []] ..aorinjectstatus ..[[]
                                 [2] Camlock Settings
@@ -622,7 +628,9 @@ aorinjectbase([[
                                         [7] Unlock When You Die []] ..unlockwhenlocalplayerknockedstatus ..[[]
                                         [8] Trace Only if Target is in Radius []] ..tracewhentargetradiusstatus ..[[]
                                         [9] Show FOV Circle []] ..fovcirclestatus ..[[]
-                                        [10] Keybind []] ..keybindvalue ..[[]
+                                        [10] Use Shake (Recommended Smoothness Off) []] ..camshakestatus ..[[]
+                                        [11] Shake Power []] ..camshakevalue ..[[]
+                                        [12] Keybind []] ..keybindvalue ..[[]
 
                                         [X] Go back to main menu
 ]])
@@ -655,13 +663,11 @@ aorinjectbase([[
                                         [3] K.O Check []] ..silkodcheckstatus ..[[]
                                         [4] Change FOV Radius []] ..silentfovvalue ..[[]
                                         [5] Show FOV Circle []] ..silentfovcirclestatus ..[[]
-                                        [6] Prioritize Silent Aim on Camlock Target (WIP) []] ..camlockprioritystatus ..[[]
-                                        [7] Silent Aim Toggle Key []] ..silentkeybindvalue ..[[]
+                                        [6] Silent Aim Toggle Key []] ..silentkeybindvalue ..[[]
                                 
-                                            [Auto Resolving Method]
-
-                                        [8] Unlock when Anti Lock is Detected (Legit) / MoveDIR (WIP) []] ..antidetectstatus ..[[]
-                                        [9] Anti Lock Detection Amount []] ..antidetectvalue ..[[]
+                                            [Legit Methods]
+                                        [7] Unlock when Anti Lock is Detected []] ..antidetectstatus ..[[]
+                                        [8] Anti Lock Detection Amount []] ..antidetectvalue ..[[]
 
                                         [X] Go back to main menu
 ]])
@@ -829,6 +835,22 @@ function aoricammiscresponse()
         rconsoleclear()
         aoricammiscs()
     elseif aoricammisc == "10" then
+        if getgenv().CamShake == true then
+            getgenv().CamShake = false
+            camshakestatus = "false"
+        elseif getgenv().CamShake == false then
+            getgenv().CamShake = true
+            camshakestatus = "true"
+        end
+        rconsoleclear()
+        aoricammiscs()
+    elseif aoricammisc == "11" then
+        rconsoleprint("Power: ")
+        camshakevalue = rconsoleinput("")
+        getgenv().CamShakeNumber = camshakevalue
+        rconsoleclear()
+        aoricammiscs()
+    elseif aoricammisc == "12" then
         rconsoleprint("Keybind: ")
         keybindvalue = rconsoleinput("")
         getgenv().keybind = keybindvalue
@@ -905,32 +927,22 @@ function aorisilmiscresponse()
         rconsoleclear()
         aorisilmiscs()()
     elseif aorisilmisc == "6" then
-        if getgenv().CamlockPriority == true then
-            getgenv().CamlockPriority = false
-            camlockprioritystatus = "false"
-        elseif getgenv().CamlockPriority == false then
-            getgenv().CamlockPriority = true
-            camlockprioritystatus = "true"
-        end
-        rconsoleclear()
-        aorisilmiscs()
-    elseif aorisilmisc == "7" then
         rconsoleprint("Keybind: ")
         silentkeybindvalue = rconsoleinput("")
         getgenv().silentkeybind = silentkeybindvalue
         rconsoleclear()
         aorisilmiscs()
-    elseif aorisilmisc == "8" then
+    elseif aorisilmisc == "7" then
         if getgenv().AntiDetect == true then
             getgenv().AntiDetect = false
-            antidetectstatus = "MoveDIR"
+            antidetectstatus = "false"
         elseif getgenv().AntiDetect == false then
             getgenv().AntiDetect = true
-            antidetectstatus = "Legit"
+            antidetectstatus = "true"
         end
         rconsoleclear()
         aorisilmiscs()
-    elseif aorisilmisc == "9" then
+    elseif aorisilmisc == "8" then
         rconsoleprint("Velocity Amount: ")
         antidetectvalue = rconsoleinput("")
         getgenv().AntiDetectNumber = tonumber(antidetectvalue)
