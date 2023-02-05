@@ -8,8 +8,8 @@ getgenv().Notifications = false
 getgenv().SmoothnessValue = true
 getgenv().PredictionState = true
 getgenv().CamUndergroundResolver = true
-getgenv().UnlockWhenTargetDies = false
-getgenv().UnlockWhenPlayerDies = false
+getgenv().UnlockWhenTargetDies = true
+getgenv().UnlockWhenPlayerDies = true
 getgenv().TracerRadius = false
 getgenv().GrabbedCheck = true
 getgenv().KoCheck = true
@@ -78,7 +78,7 @@ local aorinjectbase = function(a)
     rconsoleprint(a) 
 end
 local aori, aoricammisc, aorisilmisc = nil, nil, nil
-local smoothnessstatus, notifstatus, unlockwhendeadstatus, unlockwhenlocalplayerknockedstatus, tracewhentargetradiusstatus, fovcirclestatus, silentfovcirclestatus, camshakestatus  = "true", "false", "false", "false", "false", "false", "false", "false"
+local smoothnessstatus, notifstatus, unlockwhendeadstatus, unlockwhenlocalplayerknockedstatus, tracewhentargetradiusstatus, fovcirclestatus, silentfovcirclestatus, camshakestatus  = "true", "false", "true", "true", "false", "false", "false", "false"
 local smoothnessvalue, predictionvalue, silpredictionvalue = "11", "Default", "0.1389"
 local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus, camlockprioritystatus, camantidetectstatus, humanizestatus = "true", "true", "true", "true", "true", "false", "false", "false"
 local aorinjectstatus = "Not Loaded"
