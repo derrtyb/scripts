@@ -19,6 +19,8 @@ getgenv().CamAntiDetect = false
 getgenv().CamlockPriority = false
 getgenv().CamShake = false
 getgenv().CamShakeNumber = 100
+getgenv().Humanize = false
+getgenv().HumanizePower = 20
 getgenv().loaded = false
 getgenv().AorinjectSettings = {
     SilentAim = true,
@@ -77,8 +79,8 @@ local aorinjectbase = function(a)
 end
 local aori, aoricammisc, aorisilmisc = nil, nil, nil
 local smoothnessstatus, notifstatus, unlockwhendeadstatus, unlockwhenlocalplayerknockedstatus, tracewhentargetradiusstatus, fovcirclestatus, silentfovcirclestatus, camshakestatus  = "true", "false", "false", "false", "false", "false", "false", "false"
-local smoothnessvalue, predictionvalue, silpredictionvalue = "Default", "Default", "0.1389"
-local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus, camlockprioritystatus, camantidetectstatus = "true", "true", "true", "true", "true", "false", "false"
+local smoothnessvalue, predictionvalue, silpredictionvalue = "11", "Default", "0.1389"
+local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus, camlockprioritystatus, camantidetectstatus, humanizestatus = "true", "true", "true", "true", "true", "false", "false", "false"
 local aorinjectstatus = "Not Loaded"
 local silpredictionstatus, silentaimstatus = "Enabled", "Enabled"
 local silresolverstatus = "Enabled"
@@ -89,6 +91,7 @@ local silentkeybindvalue = "z"
 local antilockdetected = nil
 local antidetectvalue = "30"
 local camshakevalue = "100"
+local humanizevalue = "20"
 
 getgenv().Aorinject = {
     Enabled = true,
@@ -242,15 +245,22 @@ end
 Heartbeat:Connect(function()
     Aorinject.UpdateFOV()
     Aorinject.GetClosestPlayerToCursor()
-    if Aorinject.Selected and Aorinject.Selected ~= game.Players.LocalPlayer and Aorinject.Selected.Character:WaitForChild("BodyEffects")["K.O"].Value == false and Aorinject.Selected.Character:FindFirstChild("GRABBING_CONSTRAINT") == false then
+    
+    --[[if Aorinject.Selected and Aorinject.Selected ~= game.Players.LocalPlayer and Aorinject.Selected.Character:WaitForChild("BodyEffects")["K.O"].Value == false and Aorinject.Selected.Character:FindFirstChild("GRABBING_CONSTRAINT") == false then
         Aorinject.SelectedPart.Velocity = Vector3.new(Aorinject.SelectedPart.Velocity.X, math.clamp(Aorinject.SelectedPart.Velocity.Y, 0, 50), Aorinject.SelectedPart.Velocity.Z)
         Aorinject.SelectedPart.AssemblyLinearVelocity = Vector3.new(Aorinject.SelectedPart.Velocity.X, math.clamp(Aorinject.SelectedPart.Velocity.Y, 0, 50), Aorinject.SelectedPart.Velocity.Z)
-    end
+    end--]]
 
     if Locking and Enemy ~= nil and getgenv().CamShake then
         local CamVel = Enemy.HumanoidRootPart
         CamVel.Velocity = Vector3.new(CamVel.Velocity.X, CamVel.Velocity.Y, CamVel.Velocity.Z) + 
         Vector3.new(math.random(-CamShakeNumber, CamShakeNumber), math.random(-CamShakeNumber, CamShakeNumber), math.random(-CamShakeNumber, CamShakeNumber))
+    end
+
+    if getgenv().Humanize then
+        local SilVel = Aorinject.Selected.Character.HumanoidRootPart
+        SilVel.Velocity = Vector3.new(SilVel.Velocity.X, SilVel.Velocity.Y, SilVel.Velocity.Z) + 
+        Vector3.new(math.random(-HumanizePower, HumanizePower), math.random(-HumanizePower, HumanizePower), math.random(-HumanizePower, HumanizePower)) * 0.1
     end
 end) 
 
@@ -587,7 +597,7 @@ aorinjectbase([[
                                                                          888P                                 
                                                                        .J88"                            
 
-        Made by delusional#7743 & aori#0001 / discord.gg/aorinject | Edited by red.#7074
+                  Made by delusional#7743 & aori#0001 / discord.gg/aorinject | Edited by red.#7074
 
                   BELLA IS A LOCKER !! 😰😰😱 PREY IS UNLEGIT !! 😨🤯😧 TREY LIKES GUYS !!
 
@@ -664,10 +674,12 @@ aorinjectbase([[
                                         [4] Change FOV Radius []] ..silentfovvalue ..[[]
                                         [5] Show FOV Circle []] ..silentfovcirclestatus ..[[]
                                         [6] Silent Aim Toggle Key []] ..silentkeybindvalue ..[[]
-                                
+
                                             [Legit Methods]
                                         [7] Unlock when Anti Lock is Detected []] ..antidetectstatus ..[[]
                                         [8] Anti Lock Detection Amount []] ..antidetectvalue ..[[]
+                                        [9] Humanize Shots []] ..humanizestatus ..[[]
+                                        [10] Humanize Power []] ..humanizevalue ..[[]
 
                                         [X] Go back to main menu
 ]])
@@ -946,6 +958,22 @@ function aorisilmiscresponse()
         rconsoleprint("Velocity Amount: ")
         antidetectvalue = rconsoleinput("")
         getgenv().AntiDetectNumber = tonumber(antidetectvalue)
+        rconsoleclear()
+        aorisilmiscs()
+    elseif aorisilmisc == "9" then
+        if getgenv().Humanize == true then
+            getgenv().Humanize = false
+            humanizestatus = "false"
+        elseif getgenv().Humanize == false then
+            getgenv().Humanize = true
+            humanizestatus = "true"
+        end
+        rconsoleclear()
+        aorisilmiscs()
+    elseif aorisilmisc == "10" then
+        rconsoleprint("Humanize Power: ")
+        humanizevalue = rconsoleinput("")
+        getgenv().HumanizePower = tonumber(humanizevalue)
         rconsoleclear()
         aorisilmiscs()
     elseif aorisilmisc == "X" or aorisilmisc == "x" then
