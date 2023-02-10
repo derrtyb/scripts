@@ -19,8 +19,8 @@ getgenv().CamAntiDetect = false
 getgenv().CamlockPriority = false
 getgenv().CamShake = false
 getgenv().CamShakeNumber = 25
-getgenv().Humanize = false
-getgenv().HumanizePower = 10
+getgenv().HitChance = false
+getgenv().HitChanceNumber = 75
 getgenv().loaded = false
 getgenv().AorinjectSettings = {
     SilentAim = true,
@@ -80,7 +80,7 @@ end
 local aori, aoricammisc, aorisilmisc = nil, nil, nil
 local smoothnessstatus, notifstatus, unlockwhendeadstatus, unlockwhenlocalplayerknockedstatus, tracewhentargetradiusstatus, fovcirclestatus, silentfovcirclestatus, camshakestatus  = "true", "false", "true", "true", "false", "false", "false", "false"
 local smoothnessvalue, predictionvalue, silpredictionvalue = "11", "Default", "0.1389"
-local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus, camlockprioritystatus, camantidetectstatus, humanizestatus = "true", "true", "true", "true", "true", "false", "false", "false"
+local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus, camlockprioritystatus, camantidetectstatus, hitchancestatus = "true", "true", "true", "true", "true", "false", "false", "false"
 local aorinjectstatus = "Not Loaded"
 local silpredictionstatus, silentaimstatus = "Enabled", "Enabled"
 local silresolverstatus = "Enabled"
@@ -91,7 +91,7 @@ local silentkeybindvalue = "z"
 local antilockdetected = nil
 local antidetectvalue = "30"
 local camshakevalue = "25"
-local humanizevalue = "10"
+local hitchancevalue = "75"
 
 getgenv().Aorinject = {
     Enabled = true,
@@ -257,11 +257,6 @@ Heartbeat:Connect(function()
         Vector3.new(math.random(-CamShakeNumber, CamShakeNumber), math.random(-CamShakeNumber, CamShakeNumber), math.random(-CamShakeNumber, CamShakeNumber))
     end
 
-    if getgenv().Humanize then
-        local SilVel = Aorinject.Selected.Character.HumanoidRootPart
-        SilVel.Velocity = Vector3.new(SilVel.Velocity.X, SilVel.Velocity.Y, SilVel.Velocity.Z) + 
-        Vector3.new(math.random(-HumanizePower, HumanizePower), math.random(-HumanizePower, HumanizePower), math.random(-HumanizePower, HumanizePower)) * 0.1
-    end
 end) 
 
 local lplr = game.Players.LocalPlayer
@@ -332,6 +327,10 @@ function Aorinject.Check()
     local Character = Aorinject.Character(Aorinject.Selected)
     local KOd = Character:WaitForChild("BodyEffects")["K.O"].Value
     local Grabbed = Character:FindFirstChild("GRABBING_CONSTRAINT") ~= nil
+
+    HitchanceNumber = math.floor(HitchanceNumber)
+    local chance = math.floor(Randomnew().NextNumber(Randomnew(), 0, 1) * 100) / 100
+
     if getgenv().GrabbedCheck then
         if Grabbed then
             return false
@@ -344,6 +343,11 @@ function Aorinject.Check()
     end
     if getgenv().AntiDetect then
         if math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > getgenv().AntiDetectNumber or Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y > getgenv().AntiDetectNumber or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > getgenv().AntiDetectNumber then
+            return false
+        end
+    end
+    if getgenv().HitChance then
+        if not (chance <= HitchanceNumber / 100) then
             return false
         end
     end
@@ -678,8 +682,8 @@ aorinjectbase([[
                                             [Legit Methods]
                                         [7] Unlock when Anti Lock is Detected []] ..antidetectstatus ..[[]
                                         [8] Anti Lock Detection Amount []] ..antidetectvalue ..[[]
-                                        [9] Humanize Shots []] ..humanizestatus ..[[]
-                                        [10] Humanize Power []] ..humanizevalue ..[[]
+                                        [9] Hit Chance []] ..hitchancestatus ..[[]
+                                        [10] Hit Chance Percentage []] ..hitchancevalue ..[[]
 
                                         [X] Go back to main menu
 ]])
@@ -961,19 +965,19 @@ function aorisilmiscresponse()
         rconsoleclear()
         aorisilmiscs()
     elseif aorisilmisc == "9" then
-        if getgenv().Humanize == true then
-            getgenv().Humanize = false
-            humanizestatus = "false"
-        elseif getgenv().Humanize == false then
-            getgenv().Humanize = true
-            humanizestatus = "true"
+        if getgenv().HitChance == true then
+            getgenv().HitChance = false
+            hitchancestatus = "false"
+        elseif getgenv().HitChance == false then
+            getgenv().HitChance = true
+            hitchancestatus = "true"
         end
         rconsoleclear()
         aorisilmiscs()
     elseif aorisilmisc == "10" then
-        rconsoleprint("Humanize Power: ")
-        humanizevalue = rconsoleinput("")
-        getgenv().HumanizePower = tonumber(humanizevalue)
+        rconsoleprint("Percentage: ")
+        hitchancevalue = rconsoleinput("")
+        getgenv().HitchanceNumber = tonumber(hitchancevalue)
         rconsoleclear()
         aorisilmiscs()
     elseif aorisilmisc == "X" or aorisilmisc == "x" then
