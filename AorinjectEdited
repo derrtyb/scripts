@@ -328,7 +328,7 @@ function Aorinject.Check()
     local KOd = Character:WaitForChild("BodyEffects")["K.O"].Value
     local Grabbed = Character:FindFirstChild("GRABBING_CONSTRAINT") ~= nil
 
-    HitchanceNumber = math.floor(HitchanceNumber)
+    HitChanceNumber = math.floor(HitChanceNumber)
     local chance = math.floor(Randomnew().NextNumber(Randomnew(), 0, 1) * 100) / 100
 
     if getgenv().GrabbedCheck then
@@ -347,7 +347,7 @@ function Aorinject.Check()
         end
     end
     if getgenv().HitChance then
-        if not (chance <= HitchanceNumber / 100) then
+        if not (chance <= HitChanceNumber / 100) then
             return false
         end
     end
@@ -977,7 +977,7 @@ function aorisilmiscresponse()
     elseif aorisilmisc == "10" then
         rconsoleprint("Percentage: ")
         hitchancevalue = rconsoleinput("")
-        getgenv().HitchanceNumber = tonumber(hitchancevalue)
+        getgenv().HitChanceNumber = tonumber(hitchancevalue)
         rconsoleclear()
         aorisilmiscs()
     elseif aorisilmisc == "X" or aorisilmisc == "x" then
