@@ -1,4 +1,4 @@
-getgenv().keybind = "q"
+getgenv().keybind = "c"
 getgenv().silentkeybind = "z"
 getgenv().espToggleKey = nil
 getgenv().prediction = 0.1258
