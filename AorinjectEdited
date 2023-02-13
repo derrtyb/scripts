@@ -4,7 +4,7 @@ getgenv().espToggleKey = nil
 getgenv().prediction = 0.1258
 getgenv().ballistics = 0.35
 getgenv().smoothness = 11
-getgenv().fovradius = 60
+getgenv().fovradius = 120
 getgenv().Notifications = false
 getgenv().SmoothnessValue = true
 getgenv().PredictionState = true
@@ -85,7 +85,7 @@ local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodchecks
 local aorinjectstatus = "Not Loaded"
 local silpredictionstatus, silentaimstatus = "Enabled", "Enabled"
 local silresolverstatus = "Enabled"
-local fovvalue = "60"
+local fovvalue = "120"
 local silentfovvalue = "40"
 local keybindvalue = "c"
 local silentkeybindvalue = "z"
