@@ -264,7 +264,7 @@ Heartbeat:Connect(function()
         SilVel.Velocity = Vector3.new(SilVel.Velocity.X, SilVel.Velocity.Y, SilVel.Velocity.Z) + 
         Vector3.new(math.random(-HumanizePower, HumanizePower), math.random(-HumanizePower, HumanizePower), math.random(-HumanizePower, HumanizePower)) * 0.1
     end
-end) 
+end)
 
 local lplr = game.Players.LocalPlayer
 local resolver
@@ -278,6 +278,7 @@ local function AddResolver()
         if Locking and antilockdetected then
             AoriCamHRP = Enemy.HumanoidRootPart
             AoriCamHRP.Velocity = Vector3.new(0, 0, 0)
+            AoriCamHRP.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
         end
     end)
 end
