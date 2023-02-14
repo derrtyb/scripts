@@ -279,9 +279,13 @@ local function AddResolver()
             AoriCamHRP = Enemy.HumanoidRootPart
             AoriCamHRP.Velocity = Vector3.new(0, 0, 0)
             AoriCamHRP.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+            getgenv().prediction = 0
+        else
+            getgenv().prediction = tonumber(predictionvalue)
         end
     end)
 end
+
 
 resolver = Heartbeat:Connect(AddResolver)
 
@@ -558,7 +562,7 @@ end
 
 RunService.Stepped:Connect(function()
     if Locking and Enemy ~= nil and getgenv().CamAntiDetect then
-        if math.abs(Enemy.HumanoidRootPart.Velocity.X) > 99 or Enemy.HumanoidRootPart.Velocity.Y > 99 or math.abs(Enemy.HumanoidRootPart.Velocity.Z) > 99 then
+        if math.abs(Enemy.HumanoidRootPart.Velocity.X) > 49 or Enemy.HumanoidRootPart.Velocity.Y > 49 or math.abs(Enemy.HumanoidRootPart.Velocity.Z) > 49 then
             antilockdetected = true
         else
             antilockdetected = false
