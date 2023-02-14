@@ -279,13 +279,9 @@ local function AddResolver()
             AoriCamHRP = Enemy.HumanoidRootPart
             AoriCamHRP.Velocity = Vector3.new(0, 0, 0)
             AoriCamHRP.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
-            getgenv().prediction = 0
-        else
-            getgenv().prediction = tonumber(predictionvalue)
         end
     end)
 end
-
 
 resolver = Heartbeat:Connect(AddResolver)
 
@@ -298,6 +294,17 @@ task.spawn(function()
 		resolver = Heartbeat:Connect(AddResolver)
 	end)
 end)
+
+--// backup if camlock resolver doesn't work 🤣😭
+
+task.spawn(function()
+    if antilockdetected then
+        getgenv().prediction = 0
+    else
+        getgenv().prediction = tonumber(predictionvalue)
+    end
+end)
+
 
 Move_Circle = RunService.RenderStepped:Connect(function()
     FOV_Circle.Position = Vector2.new(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y)
