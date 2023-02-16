@@ -1,6 +1,6 @@
 getgenv().keybind = "c"
 getgenv().silentkeybind = "z"
-getgenv().espToggleKey = nil
+getgenv().espToggleKey = "t"
 getgenv().prediction = 0.1258
 getgenv().ballistics = 0.35
 getgenv().smoothness = 11
@@ -89,7 +89,7 @@ local fovvalue = "120"
 local silentfovvalue = "40"
 local keybindvalue = "c"
 local silentkeybindvalue = "z"
-local espkeybindvalue = "None"
+local espkeybindvalue = "t"
 local antilockdetected = nil
 local antidetectvalue = "30"
 local camshakevalue = "25"
@@ -569,7 +569,7 @@ end
 
 RunService.Stepped:Connect(function()
     if Locking and Enemy ~= nil and getgenv().CamAntiDetect then
-        if math.abs(Enemy.HumanoidRootPart.Velocity.X) > 49 or Enemy.HumanoidRootPart.Velocity.Y > 49 or math.abs(Enemy.HumanoidRootPart.Velocity.Z) > 49 then
+        if math.abs(Enemy.HumanoidRootPart.Velocity.X) > 49 or Enemy.HumanoidRootPart.Velocity.Y > 49 or math.abs(Enemy.HumanoidRootPart.Velocity.Z) > 49 or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > getgenv().AntiDetectNumber or Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y > getgenv().AntiDetectNumber or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > getgenv().AntiDetectNumber then
             antilockdetected = true
         else
             antilockdetected = false
@@ -644,18 +644,19 @@ aorinjectbase([[
                                                                        .J88"                                                                 
 
                                         [0] Change FOV Radius []] ..fovvalue ..[[]
-                                        [1] Notifications []] ..notifstatus ..[[]
-                                        [2] Smoothness []] ..smoothnessstatus ..[[]
-                                        [3] Smoothness Value []] ..smoothnessvalue ..[[]
-                                        [4] Auto Desync Resolver []] ..camantidetectstatus ..[[]
-                                        [5] Prediction Value []] ..predictionvalue ..[[]
+                                        [1] Show FOV Circle []] ..fovcirclestatus ..[[]
+                                        [2] Notifications []] ..notifstatus ..[[]
+                                        [3] Smoothness []] ..smoothnessstatus ..[[]
+                                        [4] Smoothness Value []] ..smoothnessvalue ..[[]
+                                        [5] Auto Desync Resolver []] ..camantidetectstatus ..[[]
                                         [6] Unlock When Target Dies []] ..unlockwhendeadstatus ..[[]
-                                        [7] Unlock When You Die []] ..unlockwhenlocalplayerknockedstatus ..[[]
-                                        [8] Trace Only if Target is in Radius []] ..tracewhentargetradiusstatus ..[[]
-                                        [9] Show FOV Circle []] ..fovcirclestatus ..[[]
-                                        [10] Use Shake []] ..camshakestatus ..[[]
+                                        [7] Prediction Value []] ..predictionvalue ..[[]
+                                        [8] Keybind []] ..keybindvalue ..[[]
+
+                                            [1v1 Methods]
+                                        [9] Trace Only if Target is in Radius []] ..tracewhentargetradiusstatus ..[[]
+                                        [10] Use Shake (WIP) []] ..camshakestatus ..[[]
                                         [11] Shake Power []] ..camshakevalue ..[[]
-                                        [12] Keybind []] ..keybindvalue ..[[]
 
                                         [X] Go back to main menu
 ]])
@@ -785,7 +786,7 @@ function aoriresponse()
 end
 
 function aoricammiscresponse()
-    if aoricammisc == "1" then
+    if aoricammisc == "2" then
         if getgenv().Notifications == true then
             getgenv().Notifications = false
             notifstatus = "false"
@@ -795,7 +796,7 @@ function aoricammiscresponse()
         end
         rconsoleclear()
         aoricammiscs()
-    elseif aoricammisc == "2" then
+    elseif aoricammisc == "3" then
         if getgenv().SmoothnessValue == true then
             getgenv().SmoothnessValue = false
             smoothnessstatus = "false"
@@ -805,13 +806,20 @@ function aoricammiscresponse()
         end
         rconsoleclear()
         aoricammiscs()
-    elseif aoricammisc == "3" then
+    elseif aoricammisc == "4" then
         rconsoleprint("Smoothness: ")
         smoothnessvalue = rconsoleinput("")
+        if not tonumber(smoothnessvalue) then
+            rconsoleprint([[Invalid Number
+]])
+            aoricammisc = rconsoleinput("")
+            aoricammiscresponse()
+        else
         getgenv().smoothness = tonumber(smoothnessvalue)
         rconsoleclear()
         aoricammiscs()
-    elseif aoricammisc == "4" then
+        end
+    elseif aoricammisc == "5" then
         if getgenv().CamAntiDetect == true then
             getgenv().CamAntiDetect  = false
             camantidetectstatus = "false"
@@ -821,12 +829,19 @@ function aoricammiscresponse()
         end
         rconsoleclear()
         aoricammiscs()
-    elseif aoricammisc == "5" then
+    elseif aoricammisc == "7" then
         rconsoleprint("Prediction: ")
         predictionvalue = rconsoleinput("")
+        if not tonumber(predictionvalue) then
+            rconsoleprint([[Invalid Number
+]])
+            aoricammisc = rconsoleinput("")
+            aoricammiscresponse()
+        else
         getgenv().prediction = tonumber(predictionvalue)
         rconsoleclear()
         aoricammiscs()
+        end
     elseif aoricammisc == "6" then
         if getgenv().UnlockWhenTargetDies == true then
             getgenv().UnlockWhenTargetDies = false
@@ -837,17 +852,7 @@ function aoricammiscresponse()
         end
         rconsoleclear()
         aoricammiscs()
-    elseif aoricammisc == "7" then
-        if getgenv().UnlockWhenPlayerDies == true then
-            getgenv().UnlockWhenPlayerDies = false
-            unlockwhenlocalplayerknockedstatus = "false"
-        elseif getgenv().UnlockWhenPlayerDies == false then
-            getgenv().UnlockWhenPlayerDies = true
-            unlockwhenlocalplayerknockedstatus = "true"
-        end
-        rconsoleclear()
-        aoricammiscs()
-    elseif aoricammisc == "8" then
+    elseif aoricammisc == "9" then
         if getgenv().TracerRadius == true then
             getgenv().TracerRadius = false
             tracewhentargetradiusstatus = "false"
@@ -857,7 +862,7 @@ function aoricammiscresponse()
         end
         rconsoleclear()
         aoricammiscs()
-    elseif aoricammisc == "9" then
+    elseif aoricammisc == "1" then
         if FOV_Circle.Visible == true then
             FOV_Circle.Visible = false
             fovcirclestatus = "false"
@@ -880,21 +885,42 @@ function aoricammiscresponse()
     elseif aoricammisc == "11" then
         rconsoleprint("Power: ")
         camshakevalue = rconsoleinput("")
+        if not tonumber(camshakevalue) then
+            rconsoleprint([[Invalid Number
+]])
+            aoricammisc = rconsoleinput("")
+            aoricammiscresponse()
+        else
         getgenv().CamShakeNumber = camshakevalue
         rconsoleclear()
         aoricammiscs()
-    elseif aoricammisc == "12" then
+        end
+    elseif aoricammisc == "8" then
         rconsoleprint("Keybind: ")
         keybindvalue = rconsoleinput("")
+        if not tostring(keybindvalue) then
+            rconsoleprint([[Invalid Key
+]])
+            aoricammisc = rconsoleinput("")
+            aoricammiscresponse()
+        else
         getgenv().keybind = keybindvalue
         rconsoleclear()
         aoricammiscs()
+        end
     elseif aoricammisc == "0" then
         rconsoleprint("FOV: ")
         fovvalue = rconsoleinput("")
+        if not tonumber(fovvalue) then
+            rconsoleprint([[Invalid Number
+]])
+            aoricammisc = rconsoleinput("")
+            aoricammiscresponse()
+        else
         FOV_Circle.Radius = tonumber(fovvalue)
         rconsoleclear()
         aoricammiscs()
+        end
     elseif aoricammisc == "X" or aoricammisc == "x" then
         rconsoleclear()
         aorimain()
@@ -920,9 +946,16 @@ function aorisilmiscresponse()
     elseif aorisilmisc == "1" then
         rconsoleprint("Prediction: ")
         silpredictionvalue = rconsoleinput("")
+        if not tonumber(silpredictionvalue) then
+            rconsoleprint([[Invalid Number
+]])
+            aorisilmisc = rconsoleinput("")
+            aorisilmiscresponse()
+        else
         getgenv().AorinjectSettings.Prediction = tonumber(silpredictionvalue)
         rconsoleclear()
         aorisilmiscs()
+        end
     elseif aorisilmisc == "2" then
         if getgenv().GrabbedCheck == true then
             getgenv().GrabbedCheck = false
@@ -946,9 +979,16 @@ function aorisilmiscresponse()
     elseif aorisilmisc == "4" then
         rconsoleprint("FOV: ")
         silentfovvalue = rconsoleinput("")
+        if not tonumber(silentfovvalue) then
+            rconsoleprint([[Invalid Number
+]])
+            aorisilmisc = rconsoleinput("")
+            aorisilmiscresponse()
+        else
         getgenv().Aorinject.FOV = tonumber(silentfovvalue)
         rconsoleclear()
         aorisilmiscs()
+        end
     elseif aorisilmisc == "5" then
         if getgenv().Aorinject.ShowFOV == true then
             getgenv().Aorinject.ShowFOV = false
@@ -962,9 +1002,16 @@ function aorisilmiscresponse()
     elseif aorisilmisc == "6" then
         rconsoleprint("Keybind: ")
         silentkeybindvalue = rconsoleinput("")
+        if not tostring(silentkeybindvalue) then
+            rconsoleprint([[Invalid Number
+]])
+            aorisilmisc = rconsoleinput("")
+            aorisilmiscresponse()
+        else
         getgenv().silentkeybind = silentkeybindvalue
         rconsoleclear()
         aorisilmiscs()
+        end
     elseif aorisilmisc == "7" then
         if getgenv().AntiDetect == true then
             getgenv().AntiDetect = false
@@ -978,9 +1025,16 @@ function aorisilmiscresponse()
     elseif aorisilmisc == "8" then
         rconsoleprint("Velocity Amount: ")
         antidetectvalue = rconsoleinput("")
+        if not tonumber(antidetectvalue) then
+            rconsoleprint([[Invalid Number
+]])
+            aorisilmisc = rconsoleinput("")
+            aorisilmiscresponse()
+        else
         getgenv().AntiDetectNumber = tonumber(antidetectvalue)
         rconsoleclear()
         aorisilmiscs()
+        end
     elseif aorisilmisc == "9" then
         if getgenv().Humanize == true then
             getgenv().Humanize = false
@@ -994,9 +1048,16 @@ function aorisilmiscresponse()
     elseif aorisilmisc == "10" then
         rconsoleprint("Humanize Power: ")
         humanizevalue = rconsoleinput("")
+        if not tonumber(humanizevalue) then
+            rconsoleprint([[Invalid Number
+]])
+            aorisilmisc = rconsoleinput("")
+            aorisilmiscresponse()
+        else
         getgenv().HumanizePower = tonumber(humanizevalue)
         rconsoleclear()
         aorisilmiscs()
+        end
     elseif aorisilmisc == "X" or aorisilmisc == "x" then
         rconsoleclear()
         aorimain()
