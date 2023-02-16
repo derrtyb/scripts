@@ -79,7 +79,7 @@ local aorinjectbase = function(a)
     rconsoleprint(a) 
 end
 local aori, aoricammisc, aorisilmisc = nil, nil, nil
-local smoothnessstatus, notifstatus, unlockwhendeadstatus, unlockwhenlocalplayerknockedstatus, tracewhentargetradiusstatus, fovcirclestatus, silentfovcirclestatus, camshakestatus  = "true", "false", "true", "true", "false", "false", "false", "false"
+local smoothnessstatus, notifstatus, unlockwhendeadstatus, tracewhentargetradiusstatus, fovcirclestatus, silentfovcirclestatus, camshakestatus  = "true", "false", "true", "false", "false", "false", "false"
 local smoothnessvalue, predictionvalue, silpredictionvalue = "11", "Default", "0.1389"
 local predictionstatus, undergroundresolverstatus, silgrabbedvalue, silkodcheckstatus, antidetectstatus, camlockprioritystatus, camantidetectstatus, humanizestatus = "true", "true", "true", "true", "true", "false", "false", "false"
 local aorinjectstatus = "Not Loaded"
@@ -293,16 +293,6 @@ task.spawn(function()
 		wait(5)
 		resolver = Heartbeat:Connect(AddResolver)
 	end)
-end)
-
---// backup if camlock resolver doesn't work 🤣😭
-
-task.spawn(function()
-    if antilockdetected then
-        getgenv().prediction = 0
-    else
-        getgenv().prediction = tonumber(predictionvalue)
-    end
 end)
 
 
@@ -571,8 +561,10 @@ RunService.Stepped:Connect(function()
     if Locking and Enemy ~= nil and getgenv().CamAntiDetect then
         if math.abs(Enemy.HumanoidRootPart.Velocity.X) > 49 or Enemy.HumanoidRootPart.Velocity.Y > 49 or math.abs(Enemy.HumanoidRootPart.Velocity.Z) > 49 or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > getgenv().AntiDetectNumber or Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y > getgenv().AntiDetectNumber or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > getgenv().AntiDetectNumber then
             antilockdetected = true
+            getgenv().prediction = 0
         else
             antilockdetected = false
+            getgenv().prediction = tonumber(predictionvalue)
         end
     end
     if getgenv().UnlockWhenTargetDies then
@@ -620,6 +612,7 @@ aorinjectbase([[
                                 [3] Silent-Aim Settings
                                 [4] ESP Keybind []] ..espkeybindvalue ..[[]
 
+                                IDK WHATS CAUSING FPS DROPSDAFKJASFHLLAj
 ]])
 aori = rconsoleinput("")
 aoriresponse()
