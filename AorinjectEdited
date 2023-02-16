@@ -557,6 +557,13 @@ function Aimbot()
 end
 
 RunService.Stepped:Connect(function()
+    if Locking and Enemy ~= nil then
+        if Enemy.HumanoidRootPart.Velocity.Y > 1 then
+            Settings.Head = "Head"
+        else
+            Settings.Head = "HumanoidRootPart"
+        end
+    end
     if Locking and Enemy ~= nil and getgenv().CamAntiDetect then
         if math.abs(Enemy.HumanoidRootPart.Velocity.X) > 49 or Enemy.HumanoidRootPart.Velocity.Y > 49 or math.abs(Enemy.HumanoidRootPart.Velocity.Z) > 49 or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > getgenv().AntiDetectNumber or Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y > getgenv().AntiDetectNumber or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > getgenv().AntiDetectNumber then
             antilockdetected = true
