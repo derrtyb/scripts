@@ -610,7 +610,6 @@ aorinjectbase([[
                                 [3] Silent-Aim Settings
                                 [4] ESP Keybind []] ..espkeybindvalue ..[[]
 
-                                IDK WHATS CAUSING FPS DROPSDAFKJASFHLLAj
 ]])
 aori = rconsoleinput("")
 aoriresponse()
@@ -1094,7 +1093,7 @@ getgenv().taffyesp = {
     box = {
         enabled1 = true,
         enabled = false,
-        outline = false,
+        outline = true,
         healthbar = false,
         color1 = Color3.fromRGB(0, 0, 0),
         color2 = Color3.fromRGB(255, 255, 255),
@@ -1298,21 +1297,6 @@ end
 game.Players.PlayerAdded:Connect(function(v)
     esp(v)
 end)
-
-task.spawn(function ()
-    while true do
-        wait()
-        if getgenv().taffyesp.box.healthbar or getgenv().taffyesp.box.enabled then
-            getgenv().taffyesp.box.outline = true
-        elseif getgenv().taffyesp.box.healthbar == false or getgenv().taffyesp.box.enabled == false then
-            getgenv().taffyesp.box.outline = false
-        end
-        if getgenv().taffyesp.box.healthbar == true and getgenv().taffyesp.box.enabled == false then
-            getgenv().taffyesp.box.outline = false
-        end
-    end
-end)
-
 
 
 local __index
