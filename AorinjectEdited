@@ -19,7 +19,7 @@ getgenv().AntiDetectNumber = 29
 getgenv().CamAntiDetect = false
 getgenv().CamlockPriority = false
 getgenv().CamShake = false
-getgenv().CamShakeNumber = 25
+getgenv().CamShakeNumber = 5
 getgenv().Humanize = false
 getgenv().HumanizePower = 10
 getgenv().loaded = false
@@ -92,7 +92,7 @@ local silentkeybindvalue = "z"
 local espkeybindvalue = "t"
 local antilockdetected = nil
 local antidetectvalue = "30"
-local camshakevalue = "25"
+local camshakevalue = "5"
 local humanizevalue = "10"
 
 getgenv().Aorinject = {
@@ -254,9 +254,8 @@ Heartbeat:Connect(function()
     end--]]
 
     if Locking and Enemy ~= nil and getgenv().CamShake then
-        local CamVel = Enemy.HumanoidRootPart
-        CamVel.Velocity = Vector3.new(CamVel.Velocity.X, CamVel.Velocity.Y, CamVel.Velocity.Z) + 
-        Vector3.new(math.random(-CamShakeNumber, CamShakeNumber), math.random(-CamShakeNumber, CamShakeNumber), math.random(-CamShakeNumber, CamShakeNumber))
+        mousemoverel(math.random(-CamShakeNumber, CamShakeNumber), (math.random(-CamShakeNumber, CamShakeNumber)) * 0.5)
+        wait(5)
     end
 
     if getgenv().Humanize then
@@ -645,7 +644,7 @@ aorinjectbase([[
 
                                             [1v1 Methods]
                                         [9] Trace Only if Target is in Radius []] ..tracewhentargetradiusstatus ..[[]
-                                        [10] Use Shake (WIP) []] ..camshakestatus ..[[]
+                                        [10] Use Shake []] ..camshakestatus ..[[]
                                         [11] Shake Power []] ..camshakevalue ..[[]
 
                                         [X] Go back to main menu
@@ -1071,10 +1070,12 @@ lol.KeyDown:Connect(function(aaa)
 			if taffy == false then
 				taffy = true
 				getgenv().taffyesp.box.enabled = true
+                getgenv().taffyesp.box.outline = true
 				getgenv().taffyesp.name.enabled = true
 			elseif taffy == true then
 				taffy = false
 				getgenv().taffyesp.box.enabled = false
+                getgenv().taffyesp.box.outline = false
 				getgenv().taffyesp.name.enabled = false
 			end
 		end)
@@ -1093,7 +1094,7 @@ getgenv().taffyesp = {
     box = {
         enabled1 = true,
         enabled = false,
-        outline = true,
+        outline = false,
         healthbar = false,
         color1 = Color3.fromRGB(0, 0, 0),
         color2 = Color3.fromRGB(255, 255, 255),
