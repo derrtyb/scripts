@@ -296,7 +296,6 @@ task.spawn(function()
 end)
 
 
-
 Move_Circle = RunService.RenderStepped:Connect(function()
     FOV_Circle.Position = Vector2.new(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y)
 end)
@@ -562,10 +561,8 @@ RunService.Stepped:Connect(function()
     if Locking and Enemy ~= nil and getgenv().CamAntiDetect then
         if math.abs(Enemy.HumanoidRootPart.Velocity.X) > 49 or Enemy.HumanoidRootPart.Velocity.Y > 49 or math.abs(Enemy.HumanoidRootPart.Velocity.Z) > 49 or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > getgenv().AntiDetectNumber or Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y > getgenv().AntiDetectNumber or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > getgenv().AntiDetectNumber then
             antilockdetected = true
-            getgenv().prediction = 0
         else
             antilockdetected = false
-            getgenv().prediction = tonumber(predictionvalue)
         end
     end
     if getgenv().UnlockWhenTargetDies then
