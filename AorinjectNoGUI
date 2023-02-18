@@ -1,35 +1,9 @@
-getgenv().keybind = getgenv().Aori.Camlock.CamlockKeybind
-getgenv().silentkeybind = getgenv().Aori.Silent.SilentKeybind
-getgenv().espToggleKey = getgenv().Aori.Esp.Keybind
-getgenv().prediction = getgenv().Aori.Camlock.Prediction
 getgenv().ballistics = 0.35
-getgenv().smoothness = getgenv().Aori.Camlock.SmoothnessAmount
-getgenv().fovradius = getgenv().Aori.Camlock.FOVSize
-getgenv().Notifications = getgenv().Aori.Camlock.Notifications
-getgenv().SmoothnessValue = getgenv().Aori.Camlock.Smoothness
 getgenv().PredictionState = true
 getgenv().CamUndergroundResolver = true
-getgenv().UnlockWhenTargetDies = getgenv().Aori.Camlock.UnlockWhenTargetDies
 getgenv().UnlockWhenPlayerDies = true
-getgenv().TracerRadius = getgenv().Aori.CamLegit.UnlockOutsideFOVRadius
-getgenv().GrabbedCheck = getgenv().Aori.Silent.GrabbedCheck
-getgenv().KoCheck = getgenv().Aori.Silent.KOCheck
-getgenv().AntiDetect = getgenv().Aori.Legit.UnlockWhenAntiDetected
-getgenv().AntiDetectNumber = getgenv().Aori.Legit.VelocityDetectionAmount
-getgenv().CamAntiDetect = getgenv().Aori.Camlock.AutoDesyncResolver
 getgenv().CamlockPriority = false
-getgenv().CamShake = getgenv().Aori.CamLegit.Shake
-getgenv().CamShakeNumber = getgenv().Aori.CamLegit.ShakePower
-getgenv().Humanize = getgenv().Aori.Legit.Humanize
-getgenv().HumanizePower = getgenv().Aori.Legit.HumanizePower
 getgenv().loaded = true
-getgenv().AorinjectSettings = {
-    SilentAim = nil,
-    Prediction = nil,
-}
-
-getgenv().AorinjectSettings.SilentAim = getgenv().Aori.Silent.Enabled
-getgenv().AorinjectSettings.SilentAim.Prediction = getgenv().Aori.Silent.Prediction
 
 Drawing = Drawing
 mousemoverel = mousemoverel
@@ -72,26 +46,18 @@ local Render_Lock = nil
 local FOV_Circle = Drawing.new("Circle")
 FOV_Circle.Filled = false
 FOV_Circle.Color = Color3.fromRGB(170, 255, 255)
-FOV_Circle.Radius = getgenv().fovradius
 FOV_Circle.Thickness = 1
-FOV_Circle.Visible = getgenv().Aori.Camlock.ShowFOV
+FOV_Circle.Visible = false
 FOV_Circle.Position = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
 local Move_Circle = nil
 local accomidationfactor = 0.1
-local aorinjectbase = function(a) 
-    rconsoleprint("@@WHITE@@") 
-    rconsoleprint(a) 
-end
-
 local aori, aoricammisc, aorisilmisc = nil, nil, nil
 local antilockdetected = nil
 
 
 
 getgenv().Aorinject = {
-    Enabled = nil,
-    ShowFOV = nil,
-    FOV = nil,
+    Enabled = true,
     FOVSides = 25,
     FOVColour = Color3fromRGB(255, 255, 255),
     VisibleCheck = true,
@@ -100,10 +66,6 @@ getgenv().Aorinject = {
     SelectedPart = nil,
     TargetPart = {"Head", "UpperTorso", "HumanoidRootPart", "LowerTorso", "LeftLowerArm", "RightLowerArm", "LeftUpperArm", "RightUpperArm", "LeftLowerLeg",  "LeftUpperLeg", "RightLowerLeg", "RightUpperLeg"},
 }
-
-getgenv().Aorinject.Enabled = getgenv().Aori.Silent.Enabled
-getgenv().Aorinject.ShowFOV = getgenv().Aori.Silent.ShowFOV
-getgenv().Aorinject.FOV = getgenv().Aori.Silent.FOVSize
 
 
 local circle = Drawingnew("Circle")
@@ -117,8 +79,8 @@ function Aorinject.UpdateFOV()
     if not (circle) then
         return
     end
-    circle.Visible = Aorinject.ShowFOV
-    circle.Radius = Aorinject.FOV
+    circle.Visible = getgenv().Aori.Silent.ShowFOV
+    circle.Radius = getgenv().Aori.Silent.FOVSize
     circle.Position = Vector2new(Mouse.X, Mouse.Y + GetGuiInset(GuiService).Y)
     circle.NumSides = Aorinject.FOVSides
     circle.Color = Aorinject.FOVColour
@@ -251,16 +213,23 @@ Heartbeat:Connect(function()
         Aorinject.SelectedPart.AssemblyLinearVelocity = Vector3.new(Aorinject.SelectedPart.Velocity.X, math.clamp(Aorinject.SelectedPart.Velocity.Y, 0, 50), Aorinject.SelectedPart.Velocity.Z)
     end--]]
 
-    if Locking and Enemy ~= nil and getgenv().CamShake then
-        mousemoverel(math.random(-CamShakeNumber, CamShakeNumber), (math.random(-CamShakeNumber, CamShakeNumber)) * 0.5)
+    if Locking and Enemy ~= nil and getgenv().Aori.CamLegit.Shake then
+        mousemoverel(math.random(-getgenv().Aori.CamLegit.ShakePower, getgenv().Aori.CamLegit.ShakePower), (math.random(-getgenv().Aori.CamLegit.ShakePower, getgenv().Aori.CamLegit.ShakePower)) * 0.5)
         wait(5)
     end
 
-    if getgenv().Humanize then
+    if getgenv().Aori.Legit.Humanize then
         local SilVel = Aorinject.Selected.Character.HumanoidRootPart
         SilVel.Velocity = Vector3.new(SilVel.Velocity.X, SilVel.Velocity.Y, SilVel.Velocity.Z) + 
-        Vector3.new(math.random(-HumanizePower, HumanizePower), math.random(-HumanizePower, HumanizePower), math.random(-HumanizePower, HumanizePower)) * 0.1
+        Vector3.new(math.random(-getgenv().Aori.Legit.HumanizePower, getgenv().Aori.Legit.HumanizePower), math.random(-getgenv().Aori.Legit.HumanizePower, getgenv().Aori.Legit.HumanizePower), math.random(-getgenv().Aori.Legit.HumanizePower, getgenv().Aori.Legit.HumanizePower)) * 0.1
     end
+
+    if FOV_Circle.Visible == false and Aori.Camlock.ShowFOV == true then
+        FOV_Circle.Visible == true
+    elseif FOV_Circle.Visible == true and Aori.Camlock.ShowFOV == false then
+        FOV_Circle.Visible == false
+    end
+
 end)
 
 local lplr = game.Players.LocalPlayer
@@ -316,7 +285,7 @@ function InRadius()
                 if Visible then
                     local Real_Magnitude = (Vector2.new(Mouse.X, Mouse.Y) -
                                                Vector2.new(RootPartPosition.X, RootPartPosition.Y)).Magnitude
-                    if Real_Magnitude < Distance and Real_Magnitude < FOV_Circle.Radius then
+                    if Real_Magnitude < Distance and Real_Magnitude < getgenv().Aori.Camlock.FOVSize then
                         Distance = Real_Magnitude
                         Target = Enemy
                     end
@@ -333,18 +302,18 @@ function Aorinject.Check()
     local Character = Aorinject.Character(Aorinject.Selected)
     local KOd = Character:WaitForChild("BodyEffects")["K.O"].Value
     local Grabbed = Character:FindFirstChild("GRABBING_CONSTRAINT") ~= nil
-    if getgenv().GrabbedCheck then
+    if getgenv().Aori.Silent.GrabbedCheck then
         if Grabbed then
             return false
         end
     end
-    if getgenv().KoCheck then
+    if getgenv().Aori.Silent.KOCheck then
         if KOd then
             return false
         end
     end
-    if getgenv().AntiDetect then
-        if math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > getgenv().AntiDetectNumber or Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y > getgenv().AntiDetectNumber or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > getgenv().AntiDetectNumber then
+    if getgenv().Aori.Legit.UnlockWhenAntiDetected then
+        if math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > getgenv().Aori.Legit.VelocityDetectionAmount or Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y > getgenv().Aori.Legit.VelocityDetectionAmount or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > getgenv().Aori.Legit.VelocityDetectionAmount then
             return false
         end
     end
@@ -358,14 +327,14 @@ function Aimbot()
             local GetPositionsFromVector3 = nil
             local Distance = 9e9
             if Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health > 0 and
-                getgenv().SmoothnessValue and getgenv().PredictionState then
+            getgenv().Aori.Camlock.Smoothness and getgenv().PredictionState then
                 Render_Lock = RunService.Stepped:Connect(function()
                     pcall(function()
-                        if getgenv().TracerRadius then
+                        if getgenv().Aori.CamLegit.UnlockOutsideFOVRadius then
                             local RootPartPosition = Camera:WorldToViewportPoint(Enemy[Settings.Head].Position)
                             local Real_Magnitude = (Vector2.new(Mouse.X, Mouse.Y) -
                                                        Vector2.new(RootPartPosition.X, RootPartPosition.Y)).Magnitude
-                            if Real_Magnitude < Distance and Real_Magnitude < FOV_Circle.Radius then
+                            if Real_Magnitude < Distance and Real_Magnitude < getgenv().Aori.Camlock.FOVSize then
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 and getgenv().CamUndergroundResolver then
                                     local hrp = Enemy.HumanoidRootPart
@@ -375,17 +344,17 @@ function Aimbot()
                                     Enemy[Settings.Humanoid].Health > 0 then
                                     Predicted_Position = Enemy[Settings.Head].Position +
                                                              (Enemy[Settings.Head].AssemblyLinearVelocity *
-                                                                 getgenv().prediction + Settings.NeckOffSet)
+                                                             getgenv().Aori.Camlock.Prediction + Settings.NeckOffSet)
                                     GetPositionsFromVector3 = Camera:WorldToScreenPoint(Predicted_Position)
-                                    mousemoverel((GetPositionsFromVector3.X - Mouse.X) / getgenv().smoothness,
-                                        (GetPositionsFromVector3.Y - Mouse.Y) / getgenv().smoothness)
+                                    mousemoverel((GetPositionsFromVector3.X - Mouse.X) / getgenv().Aori.Camlock.SmoothnessAmount,
+                                        (GetPositionsFromVector3.Y - Mouse.Y) / getgenv().Aori.Camlock.SmoothnessAmount)
                                 elseif Locking == false then
                                     Enemy = nil
                                 elseif Enemy == nil then
                                     Locking = false
                                 end
                             end
-                        elseif getgenv().TracerRadius == false then
+                        elseif getgenv().Aori.CamLegit.UnlockOutsideFOVRadius == false then
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 and getgenv().CamUndergroundResolver then
                                 local hrp = Enemy.HumanoidRootPart
@@ -395,10 +364,10 @@ function Aimbot()
                                 0 then
                                 Predicted_Position = Enemy[Settings.Head].Position +
                                                          (Enemy[Settings.Head].AssemblyLinearVelocity *
-                                                             getgenv().prediction + Settings.NeckOffSet)
+                                                         getgenv().Aori.Camlock.Prediction + Settings.NeckOffSet)
                                 GetPositionsFromVector3 = Camera:WorldToScreenPoint(Predicted_Position)
-                                mousemoverel((GetPositionsFromVector3.X - Mouse.X) / getgenv().smoothness,
-                                    (GetPositionsFromVector3.Y - Mouse.Y) / getgenv().smoothness)
+                                mousemoverel((GetPositionsFromVector3.X - Mouse.X) / getgenv().Aori.Camlock.SmoothnessAmount,
+                                    (GetPositionsFromVector3.Y - Mouse.Y) / getgenv().Aori.Camlock.SmoothnessAmount)
                             elseif Locking == false then
                                 Enemy = nil
                             elseif Enemy == nil then
@@ -408,14 +377,14 @@ function Aimbot()
                     end)
                 end)
             elseif Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health > 0 and
-                getgenv().SmoothnessValue == false and getgenv().PredictionState then
+            getgenv().Aori.Camlock.Smoothness == false and getgenv().PredictionState then
                 Render_Lock = RunService.Stepped:Connect(function()
                     pcall(function()
-                        if getgenv().TracerRadius then
+                        if getgenv().Aori.CamLegit.UnlockOutsideFOVRadius then
                             local RootPartPosition = Camera:WorldToViewportPoint(Enemy[Settings.Head].Position)
                             local Real_Magnitude = (Vector2.new(Mouse.X, Mouse.Y) -
                                                        Vector2.new(RootPartPosition.X, RootPartPosition.Y)).Magnitude
-                            if Real_Magnitude < Distance and Real_Magnitude < FOV_Circle.Radius then
+                            if Real_Magnitude < Distance and Real_Magnitude < getgenv().Aori.Camlock.FOVSize then
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 and getgenv().CamUndergroundResolver then
                                     local hrp = Enemy.HumanoidRootPart
@@ -425,7 +394,7 @@ function Aimbot()
                                     Enemy[Settings.Humanoid].Health > 0 then
                                     Predicted_Position = Enemy[Settings.Head].Position +
                                                              (Enemy[Settings.Head].AssemblyLinearVelocity *
-                                                                 getgenv().prediction + Settings.NeckOffSet)
+                                                             getgenv().Aori.Camlock.Prediction + Settings.NeckOffSet)
                                     GetPositionsFromVector3 = Camera:WorldToScreenPoint(Predicted_Position)
                                     mousemoverel((GetPositionsFromVector3.X - Mouse.X) / 0.55,
                                         (GetPositionsFromVector3.Y - Mouse.Y) / 0.55)
@@ -435,7 +404,7 @@ function Aimbot()
                                     Locking = false
                                 end
                             end
-                        elseif getgenv().TracerRadius == false then
+                        elseif getgenv().Aori.CamLegit.UnlockOutsideFOVRadius == false then
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 and getgenv().CamUndergroundResolver then
                                 local hrp = Enemy.HumanoidRootPart
@@ -445,7 +414,7 @@ function Aimbot()
                                 0 then
                                 Predicted_Position = Enemy[Settings.Head].Position +
                                                          (Enemy[Settings.Head].AssemblyLinearVelocity *
-                                                             getgenv().prediction + Settings.NeckOffSet)
+                                                         getgenv().Aori.Camlock.Prediction + Settings.NeckOffSet)
                                 GetPositionsFromVector3 = Camera:WorldToScreenPoint(Predicted_Position)
                                 mousemoverel((GetPositionsFromVector3.X - Mouse.X) / 0.55,
                                     (GetPositionsFromVector3.Y - Mouse.Y) / 0.55)
@@ -458,14 +427,14 @@ function Aimbot()
                     end)
                 end)
             elseif Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health > 0 and
-                getgenv().SmoothnessValue and getgenv().PredictionState == false then
+            getgenv().Aori.Camlock.Smoothness and getgenv().PredictionState == false then
                 Render_Lock = RunService.Stepped:Connect(function()
                     pcall(function()
-                        if getgenv().TracerRadius then
+                        if getgenv().Aori.CamLegit.UnlockOutsideFOVRadius then
                             local RootPartPosition = Camera:WorldToViewportPoint(Enemy[Settings.Head].Position)
                             local Real_Magnitude = (Vector2.new(Mouse.X, Mouse.Y) -
                                                        Vector2.new(RootPartPosition.X, RootPartPosition.Y)).Magnitude
-                            if Real_Magnitude < Distance and Real_Magnitude < FOV_Circle.Radius then
+                            if Real_Magnitude < Distance and Real_Magnitude < getgenv().Aori.Camlock.FOVSize then
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 and getgenv().CamUndergroundResolver then
                                     local hrp = Enemy.HumanoidRootPart
@@ -475,15 +444,15 @@ function Aimbot()
                                     Enemy[Settings.Humanoid].Health > 0 then
                                     Predicted_Position = Enemy[Settings.Head].Position
                                     GetPositionsFromVector3 = Camera:WorldToScreenPoint(Predicted_Position)
-                                    mousemoverel((GetPositionsFromVector3.X - Mouse.X) / getgenv().smoothness,
-                                        (GetPositionsFromVector3.Y - Mouse.Y) / getgenv().smoothness)
+                                    mousemoverel((GetPositionsFromVector3.X - Mouse.X) / getgenv().Aori.Camlock.SmoothnessAmount,
+                                        (GetPositionsFromVector3.Y - Mouse.Y) / getgenv().Aori.Camlock.SmoothnessAmount)
                                 elseif Locking == false then
                                     Enemy = nil
                                 elseif Enemy == nil then
                                     Locking = false
                                 end
                             end
-                        elseif getgenv().TracerRadius == false then
+                        elseif getgenv().Aori.CamLegit.UnlockOutsideFOVRadius == false then
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 and getgenv().CamUndergroundResolver then
                                 local hrp = Enemy.HumanoidRootPart
@@ -493,8 +462,8 @@ function Aimbot()
                                 0 then
                                 Predicted_Position = Enemy[Settings.Head].Position
                                 GetPositionsFromVector3 = Camera:WorldToScreenPoint(Predicted_Position)
-                                mousemoverel((GetPositionsFromVector3.X - Mouse.X) / getgenv().smoothness,
-                                    (GetPositionsFromVector3.Y - Mouse.Y) / getgenv().smoothness)
+                                mousemoverel((GetPositionsFromVector3.X - Mouse.X) / getgenv().Aori.Camlock.SmoothnessAmount,
+                                    (GetPositionsFromVector3.Y - Mouse.Y) / getgenv().Aori.Camlock.SmoothnessAmount)
                             elseif Locking == false then
                                 Enemy = nil
                             elseif Enemy == nil then
@@ -504,14 +473,14 @@ function Aimbot()
                     end)
                 end)
             elseif Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health > 0 and
-                getgenv().SmoothnessValue == false and getgenv().PredictionState == false then
+            getgenv().Aori.Camlock.Smoothness == false and getgenv().PredictionState == false then
                 Render_Lock = RunService.Stepped:Connect(function()
                     pcall(function()
-                        if getgenv().TracerRadius then
+                        if getgenv().Aori.CamLegit.UnlockOutsideFOVRadius then
                             local RootPartPosition = Camera:WorldToViewportPoint(Enemy[Settings.Head].Position)
                             local Real_Magnitude = (Vector2.new(Mouse.X, Mouse.Y) -
                                                        Vector2.new(RootPartPosition.X, RootPartPosition.Y)).Magnitude
-                            if Real_Magnitude < Distance and Real_Magnitude < FOV_Circle.Radius then
+                            if Real_Magnitude < Distance and Real_Magnitude < getgenv().Aori.Camlock.FOVSize then
                                 if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and
                                     Enemy[Settings.Humanoid].Health > 0 and getgenv().CamUndergroundResolver then
                                     local hrp = Enemy.HumanoidRootPart
@@ -529,7 +498,7 @@ function Aimbot()
                                     Locking = false
                                 end
                             end
-                        elseif getgenv().TracerRadius == false then
+                        elseif getgenv().Aori.CamLegit.UnlockOutsideFOVRadius == false then
                             if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] and Enemy[Settings.Humanoid].Health >
                                 0 and getgenv().CamUndergroundResolver then
                                 local hrp = Enemy.HumanoidRootPart
@@ -562,14 +531,14 @@ RunService.Stepped:Connect(function()
             Settings.Head = "HumanoidRootPart"
         end
     end
-    if Locking and Enemy ~= nil and getgenv().CamAntiDetect then
-        if math.abs(Enemy.HumanoidRootPart.Velocity.X) > 49 or Enemy.HumanoidRootPart.Velocity.Y > 49 or math.abs(Enemy.HumanoidRootPart.Velocity.Z) > 49 or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > getgenv().AntiDetectNumber or Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y > getgenv().AntiDetectNumber or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > getgenv().AntiDetectNumber then
+    if Locking and getgenv().Aori.Camlock.AutoDesyncResolver then
+        if math.abs(Enemy.HumanoidRootPart.Velocity.X) > 49 or Enemy.HumanoidRootPart.Velocity.Y > 49 or math.abs(Enemy.HumanoidRootPart.Velocity.Z) > 49 or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.X) > getgenv().Aori.Legit.VelocityDetectionAmount or Aorinject.Selected.Character.HumanoidRootPart.Velocity.Y > getgenv().Aori.Legit.VelocityDetectionAmount or math.abs(Aorinject.Selected.Character.HumanoidRootPart.Velocity.Z) > getgenv().Aori.Legit.VelocityDetectionAmount then
             antilockdetected = true
         else
             antilockdetected = false
         end
     end
-    if getgenv().UnlockWhenTargetDies then
+    if getgenv().Aori.Camlock.UnlockWhenTargetDies then
         if Locking and Enemy ~= nil and Enemy[Settings.Humanoid] then
             if Enemy.BodyEffects['K.O'].Value == true and Enemy[Settings.Humanoid] then
                 Locking = false
@@ -589,18 +558,18 @@ end)
 
 
 Mouse.KeyDown:Connect(function(KeyPressed)
-    if KeyPressed == string.lower(getgenv().silentkeybind) then
+    if KeyPressed == string.lower(getgenv().Aori.Silent.SilentKeybind) then
         pcall(function()
-            if getgenv().AorinjectSettings.SilentAim == true then
-                getgenv().AorinjectSettings.SilentAim = false
+            if getgenv().Aori.Silent.Enabled == true then
+                getgenv().Aori.Silent.Enabled = false
                 silentaimstatus = "Disabled"
                 game.StarterGui:SetCore("SendNotification", {
                     Title = "Silent Aim",
                     Text = "OFF",
                     Duration = 1
                 })
-            elseif getgenv().AorinjectSettings.SilentAim == false then
-                getgenv().AorinjectSettings.SilentAim = true
+            elseif getgenv().Aori.Silent.Enabled == false then
+                getgenv().Aori.Silent.Enabled = true
                 silentaimstatus = "Enabled"
                 game.StarterGui:SetCore("SendNotification", {
                     Title = "Silent Aim",
@@ -610,13 +579,13 @@ Mouse.KeyDown:Connect(function(KeyPressed)
             end
         end)
     end
-    if KeyPressed == string.lower(getgenv().keybind) then
+    if KeyPressed == string.lower(getgenv().Aori.Camlock.CamlockKeybind) then
         pcall(function()
             if Locking == false then
                 Locking = true
                 Aimbot()
                 Enemy = InRadius()
-                if getgenv().Notifications then
+                if getgenv().Aori.Camlock.Notifications then
                     game.StarterGui:SetCore("SendNotification", {
                         Title = "aorinject",
                         Text = "Target:  " .. tostring(Enemy.Humanoid.DisplayName .. ".")
@@ -626,7 +595,7 @@ Mouse.KeyDown:Connect(function(KeyPressed)
                     Locking = false
                 end
             elseif Locking == true then
-                if getgenv().Notifications then
+                if getgenv().Aori.Camlock.Notifications then
                     game.StarterGui:SetCore("SendNotification", {
                         Title = "aorinject",
                         Text = "Unlocked."
@@ -647,7 +616,7 @@ local LocalPlayer = game:GetService("Players").LocalPlayer
 local lol = LocalPlayer:GetMouse()
 
 lol.KeyDown:Connect(function(aaa)
-	if aaa == string.lower(espToggleKey) then
+	if aaa == string.lower(getgenv().Aori.Esp.Keybind) then
 		pcall(function()
 			if taffy == false then
 				taffy = true
@@ -886,13 +855,11 @@ local __index
 __index = hookmetamethod(game, "__index", function(t, k)
     if (t:IsA("Mouse") and (k == "Hit" or k == "Target") and Aorinject.Check()) then
         local SelectedPart = Aorinject.SelectedPart
-        if (getgenv().AorinjectSettings.SilentAim and (k == "Hit" or k == "Target")) then
-            local Hit = SelectedPart.CFrame + (SelectedPart.Velocity * getgenv().AorinjectSettings.Prediction)
+        if (getgenv().Aori.Silent.Enabled and (k == "Hit" or k == "Target")) then
+            local Hit = SelectedPart.CFrame + (SelectedPart.Velocity * getgenv().Aori.Silent.Prediction)
             return (k == "Hit" and Hit or SelectedPart)
         end
     end
     return __index(t, k)
 end)
 
-rconsoleclear()
-aorimain()
