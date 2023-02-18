@@ -46,6 +46,7 @@ local Render_Lock = nil
 local FOV_Circle = Drawing.new("Circle")
 FOV_Circle.Filled = false
 FOV_Circle.Color = Color3.fromRGB(170, 255, 255)
+FOV_Circle.Radius = getgenv().Aori.Camlock.FOVSize
 FOV_Circle.Thickness = 1
 FOV_Circle.Visible = false
 FOV_Circle.Position = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
