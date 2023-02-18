@@ -225,9 +225,9 @@ Heartbeat:Connect(function()
     end
 
     if FOV_Circle.Visible == false and Aori.Camlock.ShowFOV == true then
-        FOV_Circle.Visible == true
+        FOV_Circle.Visible = true
     elseif FOV_Circle.Visible == true and Aori.Camlock.ShowFOV == false then
-        FOV_Circle.Visible == false
+        FOV_Circle.Visible = false
     end
 
 end)
