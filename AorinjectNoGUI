@@ -231,6 +231,11 @@ Heartbeat:Connect(function()
         FOV_Circle.Visible = false
     end
 
+    --// anti macro fling
+    if LocalPlayer.Character.Humanoid:GetStateEnabled(Enum.HumanoidStateType.FallingDown) then
+        LocalPlayer.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+    end
+
 end)
 
 local lplr = game.Players.LocalPlayer
