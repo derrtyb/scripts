@@ -742,7 +742,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
             local Vector, onScreen = camera:worldToViewportPoint(v.Character.HumanoidRootPart.Position)
             local Distance = (CurrentCamera.CFrame.p - v.Character.HumanoidRootPart.Position).Magnitude
             local RootPart = v.Character.HumanoidRootPart
-            local Head = v.Character.Head
+            local Head = v.Character:WaitForChild("Head")
             local RootPosition, RootVis = worldToViewportPoint(CurrentCamera, RootPart.Position)
             local HeadPosition = worldToViewportPoint(CurrentCamera, Head.Position + Vector3.new(0,0.5,0))
             local LegPosition = worldToViewportPoint(CurrentCamera, RootPart.Position - Vector3.new(0,3,0))
