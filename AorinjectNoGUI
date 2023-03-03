@@ -232,8 +232,8 @@ Heartbeat:Connect(function()
     end
 
     --// anti macro fling
-    if LocalPlayer.Character.Humanoid:GetStateEnabled(Enum.HumanoidStateType.FallingDown) then
-        LocalPlayer.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+    if LocalPlayer.Character:WaitForChild("Humanoid"):GetStateEnabled(Enum.HumanoidStateType.FallingDown) then
+        LocalPlayer.Character:WaitForChild("Humanoid"):SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
     end
 
 end)
