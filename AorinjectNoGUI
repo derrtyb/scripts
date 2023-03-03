@@ -552,11 +552,13 @@ RunService.Stepped:Connect(function()
             end
         end
     end
-    if getgenv().UnlockWhenPlayerDies then
-        if game.Players.LocalPlayer.Character.BodyEffects['K.O'].Value == true or
-            game.Players.LocalPlayer.Character.Humanoid.Health <= 0 then
-            Locking = false
-            Render_Lock:Disconnect()
+    if Locking and Enemy ~= nil then
+        if getgenv().UnlockWhenPlayerDies then
+            if game.Players.LocalPlayer.Character.BodyEffects['K.O'].Value == true or
+                game.Players.LocalPlayer.Character.Humanoid.Health <= 0 then
+                Locking = false
+                Render_Lock:Disconnect()
+            end
         end
     end
 end)
@@ -616,6 +618,9 @@ end)
 
 
 --// esp section
+
+task.spawn(function()
+    if getgenv().Aori.Esp.Enabled then
 local taffy = false
 local noob = game:GetService("RunService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
@@ -855,7 +860,8 @@ end
 game.Players.PlayerAdded:Connect(function(v)
     esp(v)
 end)
-
+end
+end)
 
 local __index
 __index = hookmetamethod(game, "__index", function(t, k)
