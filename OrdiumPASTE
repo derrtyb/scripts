@@ -1,3 +1,43 @@
+getgenv().PlsBuyAPaidScript = {
+    SilentAim = {
+        Key = "Q",
+        Enabled = true,
+        Prediction = 0.1289,
+        AimingType = "Closest Part",
+        AimPart = "HumanoidRootPart",
+        
+        ResolverDetection = 49,
+
+        ChanceData = {
+            UseChance = false,
+            Chance = 100
+        },
+        FOVData = {
+            Radius = 40,
+            Visibility = false,
+            Filled = false
+        },
+        AimingData = {
+            CheckKnocked = true,
+            CheckGrabbed = true,
+            CheckWalls = true
+        },
+    },
+
+    Tracing = { --// Camlock, ngl kinda broken
+        Key = "C",
+        Enabled = false,
+        Prediction = 8,
+        AimPart = "HumanoidRootPart",
+
+        TracingOptions = {
+            Strength = "Hard", --// "Hard" or "Soft"
+            AimingType = "Closest Part",
+            Smoothness = 0.11
+        } 
+    }
+}
+
 local PlsBuyAPaidScript = {functions = {}}
 
 local Vector2New, Cam, Mouse, client, find, Draw, Inset, players, RunService, UIS=
@@ -192,7 +232,7 @@ end)
 
 RunService.Heartbeat:Connect(function()
     if Targetting ~= nil and getgenv().PlsBuyAPaidScript.SilentAim.Enabled then
-        if Targetting.Character:FindFirstChild("Humanoid") == Enum.HumanoidStateType.Freefall then
+        if Targetting.Character:FindFirstChild("Humanoid") == Enum.HumanoidStateType.Freefall or Targetting.Character:WaitForChild("HumanoidRootPart").Velocity < 0 then
             pcall(function()
                 local silpart = Targetting.Character[getgenv().PlsBuyAPaidScript.SilentAim.AimPart]
                 silpart.Velocity = Vector3.new(silpart.Velocity.X, 0, silpart.Velocity.Z)
